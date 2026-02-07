@@ -35,13 +35,13 @@
                 <div class="flex items-center gap-3 pl-4 border-l border-gray-200">
                     <div class="hidden sm:block text-right">
                         <p class="text-sm font-medium text-gray-900">
-                            Admin
+                            {{ Auth::user()->name }}
                         </p>
                         <p class="text-xs text-gray-500">Administrator</p>
                     </div>
                     <div
                         class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold">
-                        A
+                        {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
                     </div>
                 </div>
             </div>

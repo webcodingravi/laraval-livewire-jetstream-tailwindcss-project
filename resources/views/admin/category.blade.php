@@ -20,6 +20,15 @@
         <div class="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-6">
             <div class="flex justify-end items-center gap-4">
                 <div>
+                    <button wire:click="export">
+                        <i class="ri-file-excel-2-fill text-4xl text-green-600 hover:text-green-800"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div>
                     <button wire:click="$toggle('showTrashed')"
                         class="bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition px-6 py-2">
                         {{ $showTrashed ? 'Show Active' : 'Show Trash' }}

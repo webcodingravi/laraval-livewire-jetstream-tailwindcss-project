@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Admin;
 
+use App\Exports\CategoriesExport;
 use App\Models\Category as CategoryModel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Category extends Component
 {
@@ -195,7 +197,7 @@ class Category extends Component
         try{
           $category = CategoryModel::onlyTrashed()->findOrFail($id);
           if(!empty($category->image)) {
-            Storage::disk('public')->delete('uploads/category/'.$category->id);
+            Storage::disk('public')->delete('uploads/category/'.$category->image);
           }
 
           $category->forceDelete();
@@ -209,6 +211,11 @@ class Category extends Component
 
     public function resetForm() {
         $this->reset(['name','slug','image','oldImage','status','isOpen','isEdit']);
+    }
+
+
+    public function export() {
+       return Excel::download(new CategoriesExport,'categories.xlsx');
     }
 
 
