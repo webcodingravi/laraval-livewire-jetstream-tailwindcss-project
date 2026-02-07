@@ -6,6 +6,7 @@
                 <h2 class="text-3xl font-bold text-gray-900">Categories</h2>
                 <p class="text-gray-600 mt-1">Manage your product categories</p>
             </div>
+
             <button wire:click="openModal"
                 class="w-full sm:w-auto px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center justify-center gap-2 ">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,15 +20,23 @@
         <div class="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-6">
             <div class="flex justify-end items-center gap-4">
                 <div>
-                    <select
+                    <button wire:click="$toggle('showTrashed')"
+                        class="bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition px-6 py-2">
+                        {{ $showTrashed ? 'Show Active' : 'Show Trash' }}
+                    </button>
+                </div>
+
+                <div>
+                    <select wire:model.live.debounce.500ms="filtterStatus"
                         class="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="">All</option>
                         <option value="active">Active</option>
                         <option value="deactive">Deactive</option>
                     </select>
                 </div>
 
                 <div>
-                    <input type="text" name="search" placeholder="Search categories..."
+                    <input type="text" wire:model.live.debounce.500ms="search" placeholder="Search categories..."
                         class="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
 
@@ -40,7 +49,7 @@
                 <table class="w-full text-sm">
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
-
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">S.No.</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Category Name</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Slug</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Status</th>
@@ -52,6 +61,14 @@
                         @if ($categories->isNotEmpty())
                             @foreach ($categories as $category)
                                 <tr class=" border-b border-gray-200 hover:bg-gray-50 transition">
+                                    <td class="py-4 px-4">
+                                        <p class="font-semibold text-gray-900">
+                                            {{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}
+                                        </p>
+
+
+                                    </td>
+
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-3">
                                             <div
@@ -92,7 +109,8 @@
                                     </td>
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-2">
-                                            <button class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                                            <button wire:click="edit({{ $category->id }})"
+                                                class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -100,14 +118,29 @@
                                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
                                             </button>
-                                            <button class=" p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
+                                            @if (!$showTrashed)
+                                                <button wire:click="delete({{ $category->id }})"
+                                                    class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
+                                            @else
+                                                <button wire:click="restore({{ $category->id }})"
+                                                    class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition">
+                                                    <i class="ri-reset-right-fill text-xl"></i>
+                                                </button>
+
+                                                <button wire:click="forceDelete({{ $category->id }})"
+                                                    class="p-2 text-rose-600 hover:bg-indigo-50 rounded-lg transition">
+                                                    <i class="ri-delete-bin-2-line text-xl"></i>
+                                                    force delete
+                                                </button>
+                                            @endif
+
 
                                         </div>
                                     </td>
@@ -115,7 +148,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-center">No Category</td>
+                                <td colspan="6" class="text-center p-4">No Category</td>
                             </tr>
                         @endif
 
@@ -159,7 +192,8 @@
                             <label class="font-medium text-md text-slate-800">Slug<span
                                     class="text-rose-500">*</span></label>
                             <input type="text" wire:model="slug" readonly
-                                class="border rounded-md border-slate-200 p-4 focus:outline-none" placeholder="Slug...">
+                                class="border rounded-md border-slate-200 p-4 focus:outline-none"
+                                placeholder="Slug...">
                             @error('slug')
                                 <span class="text-rose-500">{{ $message }}</span>
                             @enderror
@@ -199,7 +233,7 @@
 
                             <button
                                 class="bg-indigo-500 px-4 py-2 active:scale-90 duration-300 transition-all text-white rounded w-fit">
-                                {{ $isEdit ? 'Upddate Category' : 'Add Category' }}</button>
+                                {{ $isEdit ? 'Update Category' : 'Add Category' }}</button>
 
 
                         </div>
