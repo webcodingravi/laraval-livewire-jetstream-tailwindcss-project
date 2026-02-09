@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('brand_name');
             $table->string('slug')->unique();
-            $table->string('image')->nullable();
-            $table->foreignId('created_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum('status',['active','deactive'])->default('active');
+            $table->foreignId('created_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnDelete();
+            $table->enum('status',['active','Deactive'])->default('active');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('brands');
     }
 };

@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Exports\CategoriesExport;
-use App\Models\Category as CategoryModel;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -11,10 +11,9 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
-class Category extends Component
+class CategoryCreateOrUpdate extends Component
 {
     use WithFileUploads, WithPagination;
-
 
     public $name;
     public $slug;
@@ -33,6 +32,7 @@ class Category extends Component
     public function openModal() {
         $this->isOpen = true;
     }
+
     public function closeModal() {
         $this->isOpen = false;
         $this->resetForm();
@@ -73,7 +73,7 @@ class Category extends Component
          $data['image'] = $imageName;
          }
 
-        CategoryModel::create($data);
+        Category::create($data);
 
         $this->dispatch('alert',
                type:'success',
@@ -95,7 +95,7 @@ class Category extends Component
 
     public function edit($id) {
         try{
-          $category = CategoryModel::findOrFail($id);
+          $category = Category::findOrFail($id);
           $this->name = $category->name;
           $this->slug = $category->slug;
           $this->oldImage = $category->image;
@@ -120,7 +120,7 @@ class Category extends Component
         $this->validate();
 
         try{
-            $category = CategoryModel::findOrFail($this->categoryId);
+            $category = Category::findOrFail($this->categoryId);
 
             $data = $this->only(['name','slug','status']);
 
@@ -159,7 +159,7 @@ class Category extends Component
 
     public function delete($id) {
         try{
-           $category = CategoryModel::findOrFail($id);
+           $category = Category::findOrFail($id);
 
            $category->delete();
 
@@ -181,7 +181,7 @@ class Category extends Component
 
     public function restore($id) {
        try{
-           CategoryModel::onlyTrashed()->findOrFail($id)->restore();
+           Category::onlyTrashed()->findOrFail($id)->restore();
            $this->dispatch('alert',type:'success',title:'Success!',text:'Category Restored Successfully');
        }
        catch(\Exception $e) {
@@ -195,7 +195,7 @@ class Category extends Component
 
     public function forceDelete($id){
         try{
-          $category = CategoryModel::onlyTrashed()->findOrFail($id);
+          $category = Category::onlyTrashed()->findOrFail($id);
           if(!empty($category->image)) {
             Storage::disk('public')->delete('uploads/category/'.$category->image);
           }
@@ -219,9 +219,11 @@ class Category extends Component
     }
 
 
+
+
     public function render()
     {
-        $categories = CategoryModel::query()
+        $categories = Category::query()
         ->when($this->showTrashed,function($query) {
             $query->onlyTrashed();
         })
@@ -234,9 +236,9 @@ class Category extends Component
         ->when(!empty($this->filtterStatus),function($query) {
             $query->where('status',$this->filtterStatus);
         })
-
-
-        ->orderBy('id','desc')->paginate(10);
-        return view('admin.category',compact('categories'))->layout('layouts.admin');
+        ->orderBy('id','desc')
+        ->paginate(10);
+        return view('admin.category-create-or-update',compact('categories'))->layout('layouts.admin');
     }
-}
+
+    }

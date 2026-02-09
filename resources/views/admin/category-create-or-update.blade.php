@@ -240,7 +240,8 @@
 
                         <div class="flex gap-1 flex-col">
 
-                            <button
+                            <button wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed"
+                                wire:target={{ $isEdit ? 'update' : 'save' }}
                                 class="bg-indigo-500 px-4 py-2 active:scale-90 duration-300 transition-all text-white rounded w-fit">
                                 {{ $isEdit ? 'Update Category' : 'Add Category' }}</button>
 

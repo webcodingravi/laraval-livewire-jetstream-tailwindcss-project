@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Admin\Category;
+use App\Livewire\Admin\CategoryCreateOrUpdate;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Front\Home;
 use Illuminate\Support\Facades\Auth;
@@ -20,12 +20,12 @@ Route::middleware([
 
     // 🔁 Jetstream default dashboard (decision maker)
     Route::get('/dashboard', function () {
-
-        if (Auth::user()->role === 'admin') {
+        $user = Auth::user();
+        if ($user && $user->role === 'admin') {
             return redirect()->route('admin.dashboard');
+        }else{
+          return redirect()->route('user.dashboard');
         }
-
-        return redirect()->route('user.dashboard');
 
     })->name('dashboard');
 
@@ -48,7 +48,6 @@ Route::middleware([
 
     Route::get('/dashboard', Dashboard::class)
         ->name('dashboard');
-
-        Route::get('/category',Category::class)->name('category');
+ Route::get('/category',CategoryCreateOrUpdate::class)->name('category');
 
 });
