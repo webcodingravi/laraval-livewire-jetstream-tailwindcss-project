@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('brand_name');
             $table->string('slug')->unique();
-            $table->foreignId('created_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnDelete();
-            $table->enum('status',['active','Deactive'])->default('active');
+            $table->foreignId('category_id')->references('id')->on('categories')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('sub_category_id')->references('id')->on('sub_categories')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->enum('status',['active','deactive'])->default('active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

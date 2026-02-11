@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->foreignId('category_id')->references('id')->on('categories')->cascadeOnDelete()->cascadeOnDelete();
-            $table->foreignId('created_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnDelete();
             $table->enum('status',['active','deactive'])->default('active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

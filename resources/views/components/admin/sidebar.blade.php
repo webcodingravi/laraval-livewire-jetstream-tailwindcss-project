@@ -31,6 +31,30 @@
                 <span>Category</span>
             </a>
 
+
+
+            <a href="{{ route('admin.sub-category') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg text-indigo-100 {{ Request::segment(2) === 'sub-category' ? 'bg-indigo-600' : '' }}  hover:bg-indigo-600 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2z" />
+                </svg>
+                <span>Sub Category</span>
+            </a>
+
+
+            <a href="{{ route('admin.brand') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg text-indigo-100 {{ Request::segment(2) === 'brand' ? 'bg-indigo-600' : '' }}  hover:bg-indigo-600 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2z" />
+                </svg>
+                <span>Brands</span>
+            </a>
+
+
+
+
             <a href="#"
                 class="flex items-center gap-3 px-4 py-3 rounded-lg text-indigo-100 hover:bg-indigo-600 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

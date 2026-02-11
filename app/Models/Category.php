@@ -10,4 +10,6 @@ class Category extends Model
     use SoftDeletes;
 
       protected $guarded = [];
+
+
 }

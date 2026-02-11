@@ -8,6 +8,6 @@ class ProductCreateOrUpdate extends Component
 {
     public function render()
     {
-        return view('admin.product-create-or-update');
+        return view('admin.product-create-or-update')->layout('layouts.admin');
     }
 }

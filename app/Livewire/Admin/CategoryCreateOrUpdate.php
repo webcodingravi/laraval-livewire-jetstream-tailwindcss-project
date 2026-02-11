@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Exports\CategoriesExport;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -120,6 +121,7 @@ class CategoryCreateOrUpdate extends Component
         $this->validate();
 
         try{
+
             $category = Category::findOrFail($this->categoryId);
 
             $data = $this->only(['name','slug','status']);
@@ -136,7 +138,15 @@ class CategoryCreateOrUpdate extends Component
 
             }
 
-            $category->update($data);
+            $category->fill($data);
+
+            if(!$category->isDirty()) {
+                $this->dispatch('alert',type:"error",title:"Error!",text:"You did not update anything.");
+
+                return;
+            }
+
+            $category->save();
 
              $this->dispatch('alert',
                  type:"success",
@@ -228,7 +238,7 @@ class CategoryCreateOrUpdate extends Component
             $query->onlyTrashed();
         })
         ->when(!$this->showTrashed,function($query) {
-            $query->where('deleted_at',null);
+            $query->withoutTrashed();
         })
         ->when(!empty($this->search),function($query) {
           $query->where("name",'like','%'.$this->search.'%');

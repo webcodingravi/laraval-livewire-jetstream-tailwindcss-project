@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('image')->nullable();
-            $table->foreignId('created_by')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->enum('status',['active','deactive'])->default('active');
             $table->timestamps();
         });
