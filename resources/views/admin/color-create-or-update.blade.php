@@ -3,8 +3,8 @@
         <!-- Page Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Brands</h2>
-                <p class="text-gray-600 mt-1">Manage your Brands</p>
+                <h2 class="text-3xl font-bold text-gray-900">Product Colors</h2>
+                <p class="text-gray-600 mt-1">Manage your Product Color</p>
             </div>
 
             <button wire:click="openModal"
@@ -12,7 +12,7 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Add Brand
+                Add Color
             </button>
         </div>
 
@@ -58,8 +58,8 @@
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">S.No.</th>
-                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Brand</th>
-                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Slug</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Color Name</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Color Code</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Category</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Sub Category</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Status</th>
@@ -68,12 +68,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($brands->isNotEmpty())
-                            @foreach ($brands as $brand)
+                        @if ($colors->isNotEmpty())
+                            @foreach ($colors as $color)
                                 <tr class=" border-b border-gray-200 hover:bg-gray-50 transition">
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
-                                            {{ ($brands->currentPage() - 1) * $brands->perPage() + $loop->iteration }}
+                                            {{ ($colors->currentPage() - 1) * $colors->perPage() + $loop->iteration }}
                                         </p>
 
 
@@ -81,7 +81,7 @@
 
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
-                                            {{ $brand->brand_name }}</p>
+                                            {{ $color->name }}</p>
 
 
                                     </td>
@@ -89,21 +89,21 @@
 
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
-                                            {{ $brand->slug }}</p>
+                                            {{ $color->code }}</p>
 
 
                                     </td>
 
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
-                                            {{ $brand->category->name }}</p>
+                                            {{ $color->category->name }}</p>
 
 
                                     </td>
 
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
-                                            {{ $brand->SubCategory->name }}</p>
+                                            {{ $color->subCategory->name }}</p>
 
 
                                     </td>
@@ -111,7 +111,7 @@
 
 
                                     <td class="py-4 px-4">
-                                        @if ($brand->status === 'active')
+                                        @if ($color->status === 'active')
                                             <span
                                                 class='px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold'>Active</span>
                                         @else
@@ -122,12 +122,12 @@
 
                                     </td>
                                     <td class="py-4 px-4 text-gray-600">
-                                        {{ \Carbon\Carbon::parse($brand->created_at)->format('d M Y') }}
+                                        {{ \Carbon\Carbon::parse($color->created_at)->format('d M Y') }}
 
                                     </td>
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-2">
-                                            <button wire:click="edit({{ $brand->id }})"
+                                            <button wire:click="edit({{ $color->id }})"
                                                 class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
@@ -137,7 +137,7 @@
                                                 </svg>
                                             </button>
                                             @if (!$showTrashed)
-                                                <button wire:click="delete({{ $brand->id }})"
+                                                <button wire:click="delete({{ $color->id }})"
                                                     class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
@@ -147,12 +147,12 @@
                                                     </svg>
                                                 </button>
                                             @else
-                                                <button wire:click="restore({{ $brand->id }})"
+                                                <button wire:click="restore({{ $color->id }})"
                                                     class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition">
                                                     <i class="ri-reset-right-fill text-xl"></i>
                                                 </button>
 
-                                                <button wire:click="forceDelete({{ $brand->id }})"
+                                                <button wire:click="forceDelete({{ $color->id }})"
                                                     class="p-2 text-rose-600 hover:bg-indigo-50 rounded-lg transition">
                                                     <i class="ri-delete-bin-2-line text-xl"></i>
                                                     force delete
@@ -177,7 +177,7 @@
 
             <!-- Pagination -->
             <div class="p-4">
-                {{ $brands->links() }}
+                {{ $colors->links() }}
             </div>
         </div>
 
@@ -197,25 +197,20 @@
 
                     <form wire:submit.prevent="{{ $isEdit ? 'update' : 'save' }}" class="flex flex-col gap-8">
                         <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Brand Name<span
+                            <label class="font-medium text-md text-slate-800">Color Name<span
                                     class="text-rose-500">*</span></label>
-                            <input type="text" wire:model.live.debounce.500ms="brand_name"
+                            <input type="text" wire:model.live.debounce.500ms="name"
                                 class="border rounded-md border-slate-200 p-4 focus:outline-none"
-                                placeholder="Enter Brand Name...">
-                            @error('brand_name')
+                                placeholder="Enter Color Name...">
+                            @error('name')
                                 <span class="text-rose-500">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Slug<span
+                            <label class="font-medium text-md text-slate-800">Color Code<span
                                     class="text-rose-500">*</span></label>
-                            <input type="text" wire:model="slug" readonly
-                                class="border rounded-md border-slate-200 p-4 focus:outline-none"
-                                placeholder="Slug...">
-                            @error('slug')
-                                <span class="text-rose-500">{{ $message }}</span>
-                            @enderror
+                            <input type="color" wire:model="code" class="w-full">
                         </div>
 
                         <div class="flex gap-1 flex-col">
@@ -275,7 +270,7 @@
                             <button wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed"
                                 wire:target={{ $isEdit ? 'update' : 'save' }}
                                 class="bg-indigo-500 px-4 py-2 active:scale-90 duration-300 transition-all text-white rounded w-fit">
-                                {{ $isEdit ? 'Update Brand' : 'Add Brand' }}</button>
+                                {{ $isEdit ? 'Update Color' : 'Add Color' }}</button>
 
 
                         </div>

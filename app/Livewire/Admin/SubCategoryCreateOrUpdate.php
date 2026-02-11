@@ -197,6 +197,8 @@ class SubCategoryCreateOrUpdate extends Component
         ->orderBy('id','desc')
         ->paginate(10);
 
-        return view('admin.sub-category-create-or-update',compact('SubCategories'))->layout('layouts.admin');
+        return view('admin.sub-category-create-or-update',compact('SubCategories'))
+          ->layout('layouts.admin')
+          ->layoutData(['metaTitle'=>'Sub Categories - Admin','metaDescription'=>'Manage Sub Categories']);
     }
 }

@@ -248,7 +248,10 @@ class CategoryCreateOrUpdate extends Component
         })
         ->orderBy('id','desc')
         ->paginate(10);
-        return view('admin.category-create-or-update',compact('categories'))->layout('layouts.admin');
+        return view('admin.category-create-or-update',compact('categories'))
+        ->layout('layouts.admin')
+        ->layoutData(['metaTitle'=>'Product Category - Admin','metaDescription'=>'Manage Product Category']);
+
     }
 
     }

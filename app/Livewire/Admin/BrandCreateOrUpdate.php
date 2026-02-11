@@ -198,6 +198,7 @@ class BrandCreateOrUpdate extends Component
         })
         ->orderBy('id','desc')
         ->paginate(10);
-        return view('admin.brand-create-or-update',compact('brands'))->layout('layouts.admin');
+        return view('admin.brand-create-or-update',compact('brands'))
+        ->layout('layouts.admin')->layoutData(['metaTitle'=>'Product Brand - Admin','metaDescription'=>'Manage Product Brand']);;
     }
 }

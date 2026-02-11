@@ -8,6 +8,6 @@ class Dashboard extends Component
 {
     public function render()
     {
-        return view('admin.dashboard')->layout('layouts.admin');
+        return view('admin.dashboard')->layout('layouts.admin')->layoutData(['metaTitle'=>'Dashboard - Admin','metaDescription'=>'Manage Dashboard']);
     }
 }
