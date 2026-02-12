@@ -32,16 +32,42 @@
                 </div>
 
                 <!-- Profile Dropdown -->
-                <div class="flex items-center gap-3 pl-4 border-l border-gray-200">
+                <div class="relative group flex items-center gap-3 pl-4 border-l border-gray-200">
                     <div class="hidden sm:block text-right">
                         <p class="text-sm font-medium text-gray-900">
                             {{ Auth::user()->name }}
                         </p>
                         <p class="text-xs text-gray-500">Administrator</p>
                     </div>
+                    <button
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold hover:shadow-lg transition">
+                        @if (!empty(Auth::user()->profile_photo_path))
+                            <img src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" alt="Profile"
+                                class="w-full h-full rounded-full object-cover">
+                        @else
+                            {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+                        @endif
+
+
+                    </button>
+
+
+                    <!-- Dropdown Menu -->
                     <div
-                        class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold">
-                        {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+                        class="absolute right-0 mt-[175px] w-48 bg-white rounded-lg shadow-lg border border-gray-200 hidden group-hover:block z-50">
+                        <div class="px-4 py-3 border-b border-gray-100">
+                            <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
+                            <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
+                        </div>
+                        <a href="{{ route('admin.account-setting') }}"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">⚙️ Account
+                            Settings</a>
+                        <form method="POST" action="{{ route('logout') }}" class="block">
+                            @csrf
+                            <button type="submit"
+                                class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">🚪
+                                Logout</button>
+                        </form>
                     </div>
                 </div>
             </div>

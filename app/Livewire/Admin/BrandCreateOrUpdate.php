@@ -89,7 +89,7 @@ class BrandCreateOrUpdate extends Component
 
          Brand::create($data);
 
-         $this->dispatch('alert',type:'success',title:'Error!',text:'Brand Successfully Created !');
+         $this->dispatch('alert',type:'success',title:'Success!',text:'Brand Successfully Created !');
         $this->resetForm();
        }
        catch(\Exception $e) {
@@ -199,6 +199,6 @@ class BrandCreateOrUpdate extends Component
         ->orderBy('id','desc')
         ->paginate(10);
         return view('admin.brand-create-or-update',compact('brands'))
-        ->layout('layouts.admin')->layoutData(['metaTitle'=>'Product Brand - Admin','metaDescription'=>'Manage Product Brand']);;
+        ->layout('layouts.admin')->layoutData(['metaTitle'=>'Product Brand - Admin','metaDescription'=>'Manage Product Brand']);
     }
 }

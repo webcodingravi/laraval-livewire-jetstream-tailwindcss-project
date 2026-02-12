@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Admin\AccountSetting;
 use App\Livewire\Admin\BrandCreateOrUpdate;
 use App\Livewire\Admin\CategoryCreateOrUpdate;
 use App\Livewire\Admin\ColorCreateOrUpdate;
@@ -50,9 +51,10 @@ Route::middleware([
 ])->prefix('admin')->name('admin.')->group(function () {
 
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
- Route::get('/category',CategoryCreateOrUpdate::class)->name('category');
+Route::get('/category',CategoryCreateOrUpdate::class)->name('category');
  Route::get('/sub-category',SubCategoryCreateOrUpdate::class)->name('sub-category');
  Route::get('/brand',BrandCreateOrUpdate::class)->name('brand');
  Route::get('/color',ColorCreateOrUpdate::class)->name('color');
+Route::get('/account-setting',AccountSetting::class)->name('account-setting');
 
 });
