@@ -3,7 +3,7 @@
 
     <!-- Main Navigation Header -->
     <nav class="fixed top-0 w-full bg-white z-[999] transition-all shadow">
-        <div class="px-4 md:px-8 lg:px-12 xl:px-16 py-4">
+        <div class="w-11/12 mx-auto py-4">
             <!-- Top Row: Logo, Search, Icons -->
             <div class="flex items-center justify-between gap-4 mb-3">
                 <!-- Logo with Brand Name -->
@@ -25,9 +25,14 @@
                     </div>
                 </a>
 
-                <div class="hidden md:flex items-center justify-center gap-1 flex-1 mx-w-2xl">
+                <div class="hidden md:flex items-center justify-center gap-5 flex-1 mx-w-2xl">
                     <a href="#"
                         class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Home</a>
+
+                    <a href="#"
+                        class="px-4 py-2 text-gray-700 hover:text-indigo-600  transition font-medium text-md flex items-center gap-1">
+                        About Us
+                    </a>
 
                     <!-- Categories Mega Menu -->
                     <div class="relative group">
@@ -97,14 +102,8 @@
                         </div>
                     </div>
 
-                    <a href="#"
-                        class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition font-medium text-md">Deals</a>
 
-                    <!-- Flash Sale Badge -->
-                    <a href="#"
-                        class="px-4 py-2 text-gray-700 hover:text-indigo-600  transition font-medium text-md flex items-center gap-1">
-                        About Us
-                    </a>
+
 
                     <a href="#"
                         class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition font-medium text-md">Contact</a>
@@ -145,7 +144,7 @@
 
                     <!-- Shopping Cart -->
                     <a href="#"
-                        class="relative p-2 md:p-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition"
+                        class="relative p-2 md:p-3 text-gray-700 hover:text-[#0b7a93] hover:bg-indigo-50 rounded-full transition"
                         title="Cart">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2">
@@ -154,16 +153,16 @@
                             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                         </svg>
                         <span
-                            class="absolute -top-1 -right-1 bg-gradient-to-br from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">5</span>
+                            class="absolute -top-1 -right-1 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">5</span>
                     </a>
 
                     <!-- User Account Dropdown -->
                     @if (Auth::check())
                         <div class="relative hidden md:block">
                             <button @click="userOpen = !userOpen"
-                                class="flex items-center gap-2 p-2 md:p-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition">
+                                class="flex items-center gap-2 p-2 md:p-3 text-gray-700 hover:text-[#24bad8] hover:bg-indigo-50 rounded-full transition">
                                 <div
-                                    class="w-6 h-6 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                    class="w-10 h-10 md:-mt-3 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full flex items-center justify-center text-white text-xs font-bold">
                                     {{ substr(Auth::user()->name, 0, 1) }}
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -175,7 +174,7 @@
                             <div x-show="userOpen" @click.outside="userOpen = false"
                                 class="absolute right-0 mt-2 w-56 bg-white border-2 border-gray-100 rounded-xl shadow-xl overflow-hidden z-50"
                                 style="display:none;">
-                                <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3">
+                                <div class="bg-gradient-to-r from-[#24bad8] to-[#0b7a93] px-4 py-3">
                                     <p class="text-white font-semibold">{{ Auth::user()->name }}</p>
                                     <p class="text-indigo-100 text-sm">{{ Auth::user()->email ?? 'user@example.com' }}
                                     </p>
@@ -291,6 +290,10 @@
                 <a href="#"
                     class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition font-medium">Home</a>
 
+                <a href="#"
+                    class="block px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition font-bold">About Us
+                </a>
+
                 <!-- Mobile Categories Accordion -->
                 <div>
                     <button @click="categoriesOpen = !categoriesOpen"
@@ -332,11 +335,7 @@
                     </div>
                 </div>
 
-                <a href="#"
-                    class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition font-medium">Deals</a>
-                <a href="#"
-                    class="block px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition font-bold">About Us
-                </a>
+
                 <a href="#"
                     class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition font-medium">Contact</a>
 
@@ -344,10 +343,10 @@
 
                 <!-- Mobile Auth Section -->
                 @if (Auth::check())
-                    <div class="space-y-2 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-4">
+                    <div class="space-y-2 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg">
                         <div class="flex items-center gap-3">
                             <div
-                                class="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                class="w-10 h-10 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full flex items-center justify-center text-white text-sm font-bold">
                                 {{ substr(Auth::user()->name, 0, 1) }}
                             </div>
                             <div>
@@ -373,11 +372,11 @@
                 @else
                     <div class="space-y-2">
                         <a href="/login"
-                            class="block px-4 py-3 text-sm text-indigo-600 border-2 border-indigo-600 rounded-lg hover:bg-indigo-50 transition text-center font-medium">
+                            class="block px-4 py-3 text-sm text-[#0b7a93]  border-2 border-[#0b7a93] rounded-lg hover:bg-indigo-50 transition text-center font-medium">
                             Login
                         </a>
                         <a href="/register"
-                            class="block px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm rounded-lg hover:shadow-lg transition text-center font-medium">
+                            class="block px-4 py-3 bg-gradient-to-r from-[#24bad8] to-[#0b7a93] text-white text-sm rounded-lg hover:shadow-lg transition text-center font-medium">
                             Register
                         </a>
                     </div>

@@ -7,6 +7,7 @@ use App\Livewire\Admin\ColorCreateOrUpdate;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\SubCategoryCreateOrUpdate;
 use App\Livewire\Front\Home;
+use App\Livewire\Front\Products;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/',Home::class)->name('home');
+Route::get('/products',Products::class)->name('products');
 
 Route::middleware([
     'auth:sanctum',

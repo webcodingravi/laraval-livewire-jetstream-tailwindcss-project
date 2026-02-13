@@ -37,7 +37,7 @@
                             guaranteed satisfaction.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                            <a href="#"
+                            <a href="{{ route('products') }}"
                                 class="px-8 py-4 bg-white text-[#24bad8] font-bold rounded-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-center">
                                 Shop Now
                             </a>

@@ -63,7 +63,7 @@
                                 <span class="text-sm text-gray-500 line-through ml-2">$299</span>
                             </div>
                             <button
-                                class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition transform hover:scale-110">
+                                class="p-2 bg-[#24bad8] text-white rounded-lg hover:bg-[#0b7a93] transition transform hover:scale-110">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="9" cy="21" r="1"></circle>
@@ -121,7 +121,7 @@
                                 <span class="text-sm text-gray-500 line-through ml-2">$299</span>
                             </div>
                             <button
-                                class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition transform hover:scale-110">
+                                class="p-2 bg-[#24bad8] text-white rounded-lg hover:bg-[#0b7a93] transition transform hover:scale-110">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="9" cy="21" r="1"></circle>
@@ -179,7 +179,7 @@
                                 <span class="text-sm text-gray-500 line-through ml-2">$299</span>
                             </div>
                             <button
-                                class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition transform hover:scale-110">
+                                class="p-2 bg-[#24bad8] text-white rounded-lg hover:bg-[#0b7a93] transition transform hover:scale-110">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="9" cy="21" r="1"></circle>
@@ -237,7 +237,7 @@
                                 <span class="text-sm text-gray-500 line-through ml-2">$299</span>
                             </div>
                             <button
-                                class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition transform hover:scale-110">
+                                class="p-2 bg-[#24bad8] text-white rounded-lg hover:bg-[#0b7a93] transition transform hover:scale-110">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="9" cy="21" r="1"></circle>
@@ -248,6 +248,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="text-center mt-12 md:hidden">
