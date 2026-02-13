@@ -113,9 +113,6 @@
                             </div>
 
 
-
-
-
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
                                 <input type="password" placeholder="Enter new password"

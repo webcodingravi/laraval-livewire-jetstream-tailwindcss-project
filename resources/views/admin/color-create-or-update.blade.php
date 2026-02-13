@@ -108,8 +108,6 @@
 
                                     </td>
 
-
-
                                     <td class="py-4 px-4">
                                         @if ($color->status === 'active')
                                             <span

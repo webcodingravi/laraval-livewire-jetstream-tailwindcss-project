@@ -116,7 +116,6 @@ public function updatedPasswordConfirmation()
             }
 
 
-
             $user->update($data);
 
 

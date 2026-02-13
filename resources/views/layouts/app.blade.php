@@ -22,6 +22,8 @@
     <x-front.footer />
 
     @livewireScripts
+
+    @stack('script')
 </body>
 
 </html>

@@ -1,83 +1,402 @@
-<div>
-    <nav
-        class="h-[70px] relative w-full px-6 md:px-16 lg:px-24 xl:px-32 flex items-center justify-between z-30 bg-gradient-to-r from-indigo-700 to-violet-500 transition-all">
+<div x-data="ecommerceHeader()" x-cloak>
+    <!-- Top Bar - Promo/Info -->
 
-        <a href="https://prebuiltui.com">
-            <svg width="157" height="40" viewBox="0 0 157 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M47.904 28.28q-1.54 0-2.744-.644a5.1 5.1 0 0 1-1.904-1.82q-.672-1.148-.672-2.604v-3.864q0-1.456.7-2.604a4.9 4.9 0 0 1 1.904-1.792q1.204-.672 2.716-.672 1.82 0 3.276.952a6.44 6.44 0 0 1 2.324 2.52q.868 1.567.868 3.556 0 1.96-.868 3.556a6.5 6.5 0 0 1-2.324 2.492q-1.456.924-3.276.924m-7.196 5.32V14.56h3.08v3.612l-.532 3.276.532 3.248V33.6zm6.692-8.232q1.12 0 1.96-.504a3.6 3.6 0 0 0 1.344-1.456q.504-.924.504-2.128t-.504-2.128a3.43 3.43 0 0 0-1.344-1.428q-.84-.532-1.96-.532t-1.988.532a3.43 3.43 0 0 0-1.344 1.428q-.476.924-.476 2.128t.476 2.128a3.6 3.6 0 0 0 1.344 1.456q.868.504 1.988.504M56.95 28V14.56h3.08V28zm3.08-7.476-1.064-.532q0-2.548 1.12-4.116 1.148-1.596 3.444-1.596 1.008 0 1.82.364.812.365 1.512 1.176l-2.016 2.072a2.1 2.1 0 0 0-.812-.56 3 3 0 0 0-1.036-.168q-1.287 0-2.128.812-.84.811-.84 2.548m14.156 7.756q-2.016 0-3.64-.896a7 7 0 0 1-2.548-2.52q-.924-1.596-.924-3.584t.924-3.556a6.87 6.87 0 0 1 2.492-2.52q1.596-.924 3.528-.924 1.876 0 3.304.868a6.05 6.05 0 0 1 2.268 2.38q.84 1.512.84 3.444 0 .336-.056.7a7 7 0 0 1-.112.756H69.23v-2.52h9.436l-1.148 1.008q-.056-1.232-.476-2.072a3 3 0 0 0-1.204-1.288q-.756-.448-1.876-.448-1.176 0-2.044.504a3.43 3.43 0 0 0-1.344 1.428q-.476.896-.476 2.156t.504 2.212 1.428 1.484q.924.504 2.128.504 1.037 0 1.904-.364a4 4 0 0 0 1.512-1.064l1.96 1.988a6.3 6.3 0 0 1-2.38 1.736 7.6 7.6 0 0 1-2.968.588m15.91 0q-1.54 0-2.745-.644a5.1 5.1 0 0 1-1.904-1.82q-.672-1.148-.672-2.604v-3.864q0-1.456.7-2.604a4.9 4.9 0 0 1 1.904-1.792q1.204-.672 2.716-.672 1.821 0 3.276.952a6.44 6.44 0 0 1 2.324 2.52q.869 1.567.868 3.556 0 1.96-.868 3.556a6.5 6.5 0 0 1-2.324 2.492q-1.455.924-3.276.924M82.898 28V7.84h3.08v10.024l-.532 3.248.532 3.276V28zm6.692-2.632q1.12 0 1.96-.504a3.6 3.6 0 0 0 1.344-1.456q.504-.924.504-2.128t-.504-2.128a3.43 3.43 0 0 0-1.344-1.428q-.84-.532-1.96-.532t-1.988.532a3.43 3.43 0 0 0-1.344 1.428q-.476.924-.476 2.128.001 1.204.476 2.128a3.6 3.6 0 0 0 1.344 1.456q.87.504 1.988.504m15.067 2.912q-1.708 0-3.052-.756a5.5 5.5 0 0 1-2.072-2.072q-.728-1.344-.728-3.08V14.56h3.08v7.672q0 .98.308 1.68.336.672.952 1.036.644.364 1.512.364 1.344 0 2.044-.784.728-.812.728-2.296V14.56h3.08v7.812q0 1.764-.756 3.108a5.3 5.3 0 0 1-2.044 2.072q-1.317.728-3.052.728m8.976-.28V14.56h3.08V28zm1.54-15.904q-.783 0-1.316-.532-.504-.532-.504-1.316t.504-1.316a1.8 1.8 0 0 1 1.316-.532q.813 0 1.316.532t.504 1.316q0 .784-.504 1.316t-1.316.532M120.169 28V7.84h3.08V28zm8.552 0V8.96h3.08V28zm-3.22-10.64v-2.8h9.52v2.8zm17.274 10.92q-1.708 0-3.052-.756a5.5 5.5 0 0 1-2.072-2.072q-.728-1.344-.728-3.08V14.56h3.08v7.672q0 .98.308 1.68.336.672.952 1.036.643.364 1.512.364 1.344 0 2.044-.784.728-.812.728-2.296V14.56h3.08v7.812q0 1.764-.756 3.108a5.3 5.3 0 0 1-2.044 2.072q-1.317.728-3.052.728m8.977-.28V14.56h3.08V28zm1.54-15.904q-.785 0-1.316-.532-.504-.532-.504-1.316t.504-1.316a1.8 1.8 0 0 1 1.316-.532q.812 0 1.316.532t.504 1.316-.504 1.316-1.316.532"
-                    fill="#F5F5F5" />
-                <path
-                    d="m8.75 11.3 6.75 3.884 6.75-3.885M8.75 34.58v-7.755L2 22.939m27 0-6.75 3.885v7.754M2.405 15.408 15.5 22.954l13.095-7.546M15.5 38V22.939M29 28.915V16.962a2.98 2.98 0 0 0-1.5-2.585L17 8.4a3.01 3.01 0 0 0-3 0L3.5 14.377A3 3 0 0 0 2 16.962v11.953A2.98 2.98 0 0 0 3.5 31.5L14 37.477a3.01 3.01 0 0 0 3 0L27.5 31.5a3 3 0 0 0 1.5-2.585"
-                    stroke="#F5F5F5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-        </a>
-
-        <ul class="text-white md:flex hidden items-center gap-10">
-            <li><a class="hover:text-white/70 transition" href="#">Home</a></li>
-            <li><a class="hover:text-white/70 transition" href="#">Services</a></li>
-            <li><a class="hover:text-white/70 transition" href="#">Portfolio</a></li>
-            <li><a class="hover:text-white/70 transition" href="#">Pricing</a></li>
-        </ul>
-
-        <div class="flex gap-4">
-            @if (Auth::check())
-                <a href="/dashboard"
-                    class="bg-white text-center text-gray-700 md:inline hidden text-sm hover:opacity-90 active:scale-95 transition-all px-6 py-3 rounded-full">
-                    Dashboard
+    <!-- Main Navigation Header -->
+    <nav class="fixed top-0 w-full bg-white z-[999] transition-all shadow">
+        <div class="px-4 md:px-8 lg:px-12 xl:px-16 py-4">
+            <!-- Top Row: Logo, Search, Icons -->
+            <div class="flex items-center justify-between gap-4 mb-3">
+                <!-- Logo with Brand Name -->
+                <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-lg flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="white" stroke="white" stroke-width="1.5">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                    </div>
+                    <div class="sm:block">
+                        <h1
+                            class="text-xl font-bold bg-gradient-to-r from-[#24bad8] to-[#0b7a93] bg-clip-text text-transparent">
+                            ShopHub</h1>
+                        <p class="text-xs text-gray-500">Online Store</p>
+                    </div>
                 </a>
 
-                <form action="{{ route('logout') }}" method="post">
-                    @csrf
-                    <button
-                        class="bg-white text-center text-gray-700 md:inline hidden text-sm hover:opacity-90 active:scale-95 transition-all px-6 py-3 rounded-full">
-                        Logout
+                <div class="hidden md:flex items-center justify-center gap-1 flex-1 mx-w-2xl">
+                    <a href="#"
+                        class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Home</a>
+
+                    <!-- Categories Mega Menu -->
+                    <div class="relative group">
+                        <button
+                            class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition font-medium text-md flex items-center gap-1">
+                            Shop
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <!-- Mega Menu Dropdown -->
+                        <div class="absolute left-0 mt-0 w-screen max-w-3xl bg-white border-t-4 border-indigo-600 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50"
+                            style="left: 50%; transform: translateX(-50%);">
+                            <div class="grid grid-cols-4 gap-6 p-6">
+                                <!-- Column 1 -->
+                                <div>
+                                    <h3 class="font-bold text-gray-800 mb-3 text-md">Electronics</h3>
+                                    <ul class="space-y-2 text-sm">
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Laptops</a></li>
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Smartphones</a>
+                                        </li>
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Tablets</a></li>
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Cameras</a></li>
+                                    </ul>
+                                </div>
+                                <!-- Column 2 -->
+                                <div>
+                                    <h3 class="font-bold text-gray-800 mb-3 text-md">Fashion</h3>
+                                    <ul class="space-y-2 text-sm">
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Men's
+                                                Clothing</a></li>
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Women's
+                                                Clothing</a>
+                                        </li>
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Shoes</a></li>
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Accessories</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Column 3 -->
+                                <div>
+                                    <h3 class="font-bold text-gray-800 mb-3 text-md">Home & Garden</h3>
+                                    <ul class="space-y-2 text-sm">
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Furniture</a>
+                                        </li>
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Bedding</a></li>
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Kitchen</a></li>
+                                        <li><a href="#"
+                                                class="text-gray-600 hover:text-indigo-600 transition">Outdoor</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#"
+                        class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition font-medium text-md">Deals</a>
+
+                    <!-- Flash Sale Badge -->
+                    <a href="#"
+                        class="px-4 py-2 text-gray-700 hover:text-indigo-600  transition font-medium text-md flex items-center gap-1">
+                        About Us
+                    </a>
+
+                    <a href="#"
+                        class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition font-medium text-md">Contact</a>
+                </div>
+
+                <!-- Search Bar - Hidden on Mobile -->
+                <div class="hidden lg:flex items-center justify-center w-full max-w-md">
+                    <form class="w-full relative ">
+                        <input type="text" placeholder="Search for products, brands, and more..."
+                            class="w-full px-5 py-4 rounded-full border-2 border-gray-200 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm transition">
+                        <button type="submit"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-indigo-600 hover:text-indigo-700 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+
+                <!-- Right Icons -->
+                <div class="flex items-center md:gap-4">
+                    <!-- Wishlist -->
+                    <a href="#"
+                        class="relative p-2 md:p-3 text-gray-700 hover:text-red-500 hover:bg-red-50 rounded-full transition"
+                        title="Wishlist">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                            </path>
+                        </svg>
+                        <span
+                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                    </a>
+
+                    <!-- Shopping Cart -->
+                    <a href="#"
+                        class="relative p-2 md:p-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition"
+                        title="Cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span
+                            class="absolute -top-1 -right-1 bg-gradient-to-br from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">5</span>
+                    </a>
+
+                    <!-- User Account Dropdown -->
+                    @if (Auth::check())
+                        <div class="relative hidden md:block">
+                            <button @click="userOpen = !userOpen"
+                                class="flex items-center gap-2 p-2 md:p-3 text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition">
+                                <div
+                                    class="w-6 h-6 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    :class="{ 'rotate-180': userOpen }">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <div x-show="userOpen" @click.outside="userOpen = false"
+                                class="absolute right-0 mt-2 w-56 bg-white border-2 border-gray-100 rounded-xl shadow-xl overflow-hidden z-50"
+                                style="display:none;">
+                                <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3">
+                                    <p class="text-white font-semibold">{{ Auth::user()->name }}</p>
+                                    <p class="text-indigo-100 text-sm">{{ Auth::user()->email ?? 'user@example.com' }}
+                                    </p>
+                                </div>
+                                <a href="/dashboard"
+                                    class="px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                    </svg>
+                                    Dashboard
+                                </a>
+                                <a href="#"
+                                    class="px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="9" cy="21" r="1"></circle>
+                                        <circle cx="20" cy="21" r="1"></circle>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                                        </path>
+                                    </svg>
+                                    My Orders
+                                </a>
+                                <a href="#"
+                                    class="px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="19" cy="12" r="1"></circle>
+                                        <circle cx="5" cy="12" r="1"></circle>
+                                    </svg>
+                                    Wishlist
+                                </a>
+                                <a href="#"
+                                    class="px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="19" cy="12" r="1"></circle>
+                                        <circle cx="5" cy="12" r="1"></circle>
+                                    </svg>
+                                    Settings
+                                </a>
+                                <hr class="my-1 border-gray-100">
+                                <form action="{{ route('logout') }}" method="post" class="block">
+                                    @csrf
+                                    <button
+                                        class="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                            <polyline points="16 17 21 12 16 7"></polyline>
+                                            <line x1="21" y1="12" x2="9" y2="12">
+                                            </line>
+                                        </svg>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @else
+                        <div class="hidden md:flex gap-2">
+                            <a href="/login"
+                                class="px-4 py-2 text-md font-medium text-[#0b7a93] hover:bg-indigo-50 rounded-lg transition">
+                                Login
+                            </a>
+                            <a href="/register"
+                                class="px-4 py-2 bg-gradient-to-r from-[#24bad8] to-[#0b7a93] text-white text-md font-medium rounded-lg hover:shadow-lg transition">
+                                Register
+                            </a>
+                        </div>
+                    @endif
+
+                    <!-- Mobile Menu Button -->
+                    <button @click="mobileMenuOpen = !mobileMenuOpen"
+                        class="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-full transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="lg:hidden mb-3">
+                <form class="relative">
+                    <input type="text" placeholder="Search..."
+                        class="w-full px-4 py-4 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:outline-none text-sm">
+                    <button type="submit"
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-indigo-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
                     </button>
                 </form>
-            @else
-                <a href="/login"
-                    class="bg-white text-center text-gray-700 md:inline hidden text-sm hover:opacity-90 active:scale-95 transition-all px-6 py-3 rounded-full">
-                    Login
-                </a>
+            </div>
 
-                <a href="/register"
-                    class="bg-white text-center text-gray-700 md:inline hidden text-sm hover:opacity-90 active:scale-95 transition-all px-6 py-3 rounded-full">
-                    Register
-                </a>
-            @endif
 
         </div>
 
-        <button aria-label="menu-btn" type="button" class="menu-btn inline-block md:hidden active:scale-90 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="#fff">
-                <path
-                    d="M3 7a1 1 0 1 0 0 2h24a1 1 0 1 0 0-2zm0 7a1 1 0 1 0 0 2h24a1 1 0 1 0 0-2zm0 7a1 1 0 1 0 0 2h24a1 1 0 1 0 0-2z" />
-            </svg>
-        </button>
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" @click.outside="mobileMenuOpen = false"
+            class="md:hidden bg-white border-t border-gray-200 max-h-[calc(100vh-80px)] overflow-y-auto"
+            style="display:none;">
+            <div class="p-4 space-y-1">
+                <a href="#"
+                    class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition font-medium">Home</a>
 
-        <div
-            class="mobile-menu absolute top-[70px] left-0 w-full bg-gradient-to-r from-indigo-700 to-violet-500 p-6 hidden md:hidden">
-            <ul class="flex flex-col space-y-4 text-white text-lg">
-                <li><a href="#" class="text-sm">Home</a></li>
-                <li><a href="#" class="text-sm">Services</a></li>
-                <li><a href="#" class="text-sm">Portfolio</a></li>
-                <li><a href="#" class="text-sm">Pricing</a></li>
-            </ul>
-            <button type="button"
-                class="bg-white text-gray-700 mt-6 inline md:hidden text-sm hover:opacity-90 active:scale-95 transition-all w-40 h-11 rounded-full">
-                Get started
-            </button>
+                <!-- Mobile Categories Accordion -->
+                <div>
+                    <button @click="categoriesOpen = !categoriesOpen"
+                        class="w-full text-left px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition font-medium flex items-center justify-between">
+                        Categories
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" :class="{ 'rotate-180': categoriesOpen }">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div x-show="categoriesOpen" class="pl-4 space-y-2 border-l-2 border-indigo-200"
+                        style="display:none;">
+                        <div>
+                            <p class="font-semibold text-gray-700 text-sm mt-3 mb-2">Electronics</p>
+                            <a href="#"
+                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Laptops</a>
+                            <a href="#"
+                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Smartphones</a>
+                            <a href="#"
+                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Tablets</a>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-700 text-sm mt-3 mb-2">Fashion</p>
+                            <a href="#"
+                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Men's</a>
+                            <a href="#"
+                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Women's</a>
+                            <a href="#"
+                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Shoes</a>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-gray-700 text-sm mt-3 mb-2">Home & Garden</p>
+                            <a href="#"
+                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Furniture</a>
+                            <a href="#"
+                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Bedding</a>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#"
+                    class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition font-medium">Deals</a>
+                <a href="#"
+                    class="block px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition font-bold">About Us
+                </a>
+                <a href="#"
+                    class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition font-medium">Contact</a>
+
+                <hr class="my-4 border-gray-200">
+
+                <!-- Mobile Auth Section -->
+                @if (Auth::check())
+                    <div class="space-y-2 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-4">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800">{{ Auth::user()->name }}</p>
+                                <p class="text-xs text-gray-600">Logged in</p>
+                            </div>
+                        </div>
+                        <a href="/dashboard"
+                            class="block px-3 py-2 text-sm text-gray-700 hover:bg-indigo-100 rounded transition mt-2">Dashboard</a>
+                        <a href="#"
+                            class="block px-3 py-2 text-sm text-gray-700 hover:bg-indigo-100 rounded transition">My
+                            Orders</a>
+                        <a href="#"
+                            class="block px-3 py-2 text-sm text-gray-700 hover:bg-indigo-100 rounded transition">Wishlist</a>
+                        <a href="#"
+                            class="block px-3 py-2 text-sm text-gray-700 hover:bg-indigo-100 rounded transition">Settings</a>
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button
+                                class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-100 rounded transition">Logout</button>
+                        </form>
+                    </div>
+                @else
+                    <div class="space-y-2">
+                        <a href="/login"
+                            class="block px-4 py-3 text-sm text-indigo-600 border-2 border-indigo-600 rounded-lg hover:bg-indigo-50 transition text-center font-medium">
+                            Login
+                        </a>
+                        <a href="/register"
+                            class="block px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm rounded-lg hover:shadow-lg transition text-center font-medium">
+                            Register
+                        </a>
+                    </div>
+                @endif
+            </div>
         </div>
     </nav>
 
-    <script>
-        const menuButtons = document.querySelectorAll('.menu-btn');
-        const mobileMenus = document.querySelectorAll('.mobile-menu');
-
-        menuButtons.forEach((btn, index) => {
-            btn.addEventListener('click', () => {
-                mobileMenus[index].classList.toggle('hidden');
-            });
-        });
-    </script>
+    <!-- Alpine.js Component Script -->
+    @push('script')
+        <script>
+            function ecommerceHeader() {
+                return {
+                    mobileMenuOpen: false,
+                    categoriesOpen: false,
+                    userOpen: false,
+                    showCurrency: false,
+                }
+            }
+        </script>
+    @endpush
 </div>
