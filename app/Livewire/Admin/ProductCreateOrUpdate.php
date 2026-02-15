@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use App\Exports\ProductsExport;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
@@ -15,6 +16,7 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductCreateOrUpdate extends Component
 {
@@ -176,12 +178,11 @@ catch(\Exception $e) {
 
            $product =  Product::create($data);
 
-           foreach($this->color_id as $color) {
-             $product->colors()->create([
-                 'product_id' => $product->id,
-                 'color_id' => $color
-             ]);
-           }
+
+           // Attach colors (belongsToMany)
+            if(!empty($this->color_id)) {
+                $product->colors()->sync($this->color_id);
+            }
 
             foreach($this->productSizes as $size) {
                $product->sizes()->create([
@@ -227,7 +228,7 @@ catch(\Exception $e) {
                 $this->brand_id = $product->brand_id;
                 $this->price = $product->price;
                 $this->old_price = $product->old_price;
-                $this->color_id = $product->colors->pluck('color_id')->toArray();
+                $this->color_id = $product->colors->pluck('id')->toArray();
                 $this->productSizes = $product->sizes->map(function($size){
                     return [
                         'id' => $size->id,
@@ -292,19 +293,9 @@ catch(\Exception $e) {
 
                 //   exising colors
 
-                $existingColors = $product->colors()->pluck('color_id')->toArray();
-                $newColors = $this->color_id ?? [];
+                // colors update via pivot
+             $product->colors()->sync($this->color_id ?? []);
 
-                // deleted unselected
-                $product->colors()->whereNotIn('color_id',$newColors)->delete();
-
-
-                // new color add
-                foreach($newColors as $color) {
-                    if(!in_array($color,$existingColors)) {
-                        $product->colors()->create(['color_id' => $color]);
-                    }
-           }
 
 
         // new sizes add
@@ -381,7 +372,8 @@ catch(\Exception $e) {
                 $product->productImages()->forceDelete();
                   $product->sizes()->forceDelete();
 
-                 $product->colors()->delete(); //
+                  $product->colors()->detach();
+
                 $product->forceDelete();
                 $this->dispatch('alert',type:'success',title:'Success!',text:'Product Permanently Deleted');
             }
@@ -396,6 +388,11 @@ catch(\Exception $e) {
              'quantity','is_hot','is_featured','status','productId','isEdit','isOpen','productId']);
 
 
+        }
+
+        public function export() {
+
+            return Excel::download(new ProductsExport,'Products.xlsx');
         }
 
 
