@@ -123,4 +123,11 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+     'currency' => [
+        'symbol' => env('APP_CURRENCY_SYMBOL', '₹'),
+        'code' => env('APP_CURRENCY_CODE', 'INR'),
+
+     ]
+
+
 ];

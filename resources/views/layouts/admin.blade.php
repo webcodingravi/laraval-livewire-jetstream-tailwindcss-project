@@ -9,7 +9,12 @@
     <title>{{ $metaTitle ?? 'Admin' }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet"
+        type="text/css" />
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('style')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
@@ -30,6 +35,7 @@
 
 
     @livewireScripts
+
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -60,6 +66,9 @@
             })
         })
     </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js">
+    </script>
+    @stack('script')
 </body>
 
 </html>

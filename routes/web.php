@@ -5,6 +5,7 @@ use App\Livewire\Admin\BrandCreateOrUpdate;
 use App\Livewire\Admin\CategoryCreateOrUpdate;
 use App\Livewire\Admin\ColorCreateOrUpdate;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\ProductCreateOrUpdate;
 use App\Livewire\Admin\SubCategoryCreateOrUpdate;
 use App\Livewire\Front\Home;
 use App\Livewire\Front\Products;
@@ -57,6 +58,7 @@ Route::get('/category',CategoryCreateOrUpdate::class)->name('category');
  Route::get('/sub-category',SubCategoryCreateOrUpdate::class)->name('sub-category');
  Route::get('/brand',BrandCreateOrUpdate::class)->name('brand');
  Route::get('/color',ColorCreateOrUpdate::class)->name('color');
+  Route::get('/product',ProductCreateOrUpdate::class)->name('product');
 Route::get('/account-setting',AccountSetting::class)->name('account-setting');
 
 });

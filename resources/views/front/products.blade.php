@@ -20,6 +20,7 @@
             <div class="max-w-7xl mx-auto text-center">
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">All Products</h1>
 
+
             </div>
         </div>
 

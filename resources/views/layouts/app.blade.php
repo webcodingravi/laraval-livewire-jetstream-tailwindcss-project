@@ -23,6 +23,7 @@
 
     @livewireScripts
 
+    <script src="https://cdn.jsdelivr.net/npm/froala-editor@4.2.0/js/froala_editor.min.js"></script>
     @stack('script')
 </body>
 

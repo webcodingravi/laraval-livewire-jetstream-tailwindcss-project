@@ -26,7 +26,7 @@
                 </a>
 
                 <div class="hidden md:flex items-center justify-center gap-5 flex-1 mx-w-2xl">
-                    <a href="#"
+                    <a href="{{ route('home') }}"
                         class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Home</a>
 
                     <a href="#"

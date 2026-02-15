@@ -37,7 +37,7 @@
                 <!-- Products Submenu -->
                 <div x-show="productsOpen" x-transition
                     class="ml-4 mt-2 space-y-1 border-l-4 border-indigo-400 pl-3 py-2">
-                    <a href=""
+                    <a href="{{ route('admin.product') }}"
                         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium {{ Request::segment(2) === 'product' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-600 shadow-sm' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 hover:shadow-sm' }} transition transform hover:translate-x-1">
                         <div
                             class="w-2 h-2 rounded-full {{ Request::segment(2) === 'product' ? 'bg-indigo-600' : 'bg-indigo-400' }}">

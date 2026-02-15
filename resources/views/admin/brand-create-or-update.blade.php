@@ -166,7 +166,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-center p-4">No Brand</td>
+                                <td colspan="8" class="text-center p-4">Not Found Brands</td>
                             </tr>
                         @endif
 
@@ -186,7 +186,7 @@
         {{-- open modal --}}
         @if ($isOpen)
             <div class="bg-black/50 flex fixed justify-center inset-0 items-center animate__animated animate__fadeIn">
-                <div class="bg-white rounded w-6/12 p-4 shadow-md animate__animated animate__zoomIn">
+                <div class="bg-white rounded md:w-6/12 w-full p-4 shadow-md animate__animated animate__zoomIn">
                     <div class="flex justify-between items-center">
                         <h1 class="text-2xl font-semibold">{{ $isEdit ? 'Edit Brand' : 'Add Brand' }}
                         </h1>
@@ -274,7 +274,11 @@
 
                             <button wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed"
                                 wire:target={{ $isEdit ? 'update' : 'save' }}
-                                class="bg-indigo-500 px-4 py-2 active:scale-90 duration-300 transition-all text-white rounded w-fit">
+                                class="bg-indigo-500 px-4 py-2 active:scale-90 duration-300 transition-all text-white rounded w-fit flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
                                 {{ $isEdit ? 'Update Brand' : 'Add Brand' }}</button>
 
 

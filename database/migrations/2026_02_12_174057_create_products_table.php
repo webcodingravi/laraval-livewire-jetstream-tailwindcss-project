@@ -19,14 +19,15 @@ return new class extends Migration
             $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('sub_category_id')->references('id')->on('sub_categories')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('brand_id')->references('id')->on('brands')->onDelete('cascade')->onUpdate('cascade');
-            $table->double('price',10,2)->default(0);
-            $table->double('old_price',10,2)->default(0);
+            $table->decimal('price',10,2)->default(0);
+            $table->decimal('old_price',10,2)->default(0);
             $table->text('short_description')->nullable();
             $table->longText('description')->nullable();
             $table->integer('quantity')->default(0);
             $table->tinyInteger('is_hot')->default(0);
             $table->tinyInteger('is_featured')->default(0);
             $table->enum('status',['active','deactive'])->default('active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
