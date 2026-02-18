@@ -26,7 +26,7 @@
                 </a>
 
                 <div class="hidden md:flex items-center justify-center gap-5 flex-1 mx-w-2xl">
-                    <a href="{{ route('home') }}"
+                    <a href="{{ route('home') }}" wire:navigate
                         class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Home</a>
 
                     <a href="#"
@@ -34,11 +34,14 @@
                         About Us
                     </a>
 
+
                     <!-- Categories Mega Menu -->
+
                     <div class="relative group">
                         <button
                             class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition font-medium text-md flex items-center gap-1">
                             Shop
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -50,59 +53,36 @@
                             style="left: 50%; transform: translateX(-50%);">
                             <div class="grid grid-cols-4 gap-6 p-6">
                                 <!-- Column 1 -->
-                                <div>
-                                    <h3 class="font-bold text-gray-800 mb-3 text-md">Electronics</h3>
-                                    <ul class="space-y-2 text-sm">
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Laptops</a></li>
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Smartphones</a>
-                                        </li>
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Tablets</a></li>
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Cameras</a></li>
-                                    </ul>
-                                </div>
-                                <!-- Column 2 -->
-                                <div>
-                                    <h3 class="font-bold text-gray-800 mb-3 text-md">Fashion</h3>
-                                    <ul class="space-y-2 text-sm">
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Men's
-                                                Clothing</a></li>
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Women's
-                                                Clothing</a>
-                                        </li>
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Shoes</a></li>
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Accessories</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- Column 3 -->
-                                <div>
-                                    <h3 class="font-bold text-gray-800 mb-3 text-md">Home & Garden</h3>
-                                    <ul class="space-y-2 text-sm">
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Furniture</a>
-                                        </li>
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Bedding</a></li>
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Kitchen</a></li>
-                                        <li><a href="#"
-                                                class="text-gray-600 hover:text-indigo-600 transition">Outdoor</a></li>
-                                    </ul>
-                                </div>
+                                @if ($categories->count())
+                                    @foreach ($categories as $category)
+                                        <div>
+                                            @if ($category->subCategories->count())
+                                                <a href="{{ route('products', ['category' => $category->slug]) }}"
+                                                    wire:navigate>
+                                                    <h3 class="font-bold text-gray-800 mb-3 text-md">
+                                                        {{ $category->name }}</h3>
+                                                </a>
+                                            @endif
+
+                                            @if ($category->subCategories->count())
+                                                <ul class="space-y-2 text-sm">
+
+                                                    @foreach ($category->subCategories as $subCategory)
+                                                        <li><a href="{{ route('products', ['category' => $category->slug, 'subCategory' => $subCategory->slug]) }}"
+                                                                wire:navigate
+                                                                class="text-gray-600 hover:text-indigo-600 transition">{{ $subCategory->name }}</a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @endif
+
 
                             </div>
                         </div>
                     </div>
-
-
 
 
                     <a href="#"
@@ -295,43 +275,38 @@
                 </a>
 
                 <!-- Mobile Categories Accordion -->
+
+
                 <div>
                     <button @click="categoriesOpen = !categoriesOpen"
                         class="w-full text-left px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition font-medium flex items-center justify-between">
-                        Categories
+                        Shop
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" :class="{ 'rotate-180': categoriesOpen }">
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </button>
+
                     <div x-show="categoriesOpen" class="pl-4 space-y-2 border-l-2 border-indigo-200"
                         style="display:none;">
+
+
                         <div>
-                            <p class="font-semibold text-gray-700 text-sm mt-3 mb-2">Electronics</p>
-                            <a href="#"
-                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Laptops</a>
-                            <a href="#"
-                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Smartphones</a>
-                            <a href="#"
-                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Tablets</a>
+                            @if ($categories->count())
+                                @foreach ($categories as $category)
+                                    <p class="font-semibold text-gray-700 text-sm mt-3 mb-2">{{ $category->name }}</p>
+                                @endforeach
+                            @endif
+                            @if ($category->subCategories->count())
+                                @foreach ($category->subCategories as $subCategory)
+                                    <a href="{{ route('products', ['category' => $category->slug, 'subCategory' => $subCategory->slug]) }}"
+                                        class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">{{ $subCategory->name }}</a>
+                                @endforeach
+                            @endif
+
                         </div>
-                        <div>
-                            <p class="font-semibold text-gray-700 text-sm mt-3 mb-2">Fashion</p>
-                            <a href="#"
-                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Men's</a>
-                            <a href="#"
-                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Women's</a>
-                            <a href="#"
-                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Shoes</a>
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-700 text-sm mt-3 mb-2">Home & Garden</p>
-                            <a href="#"
-                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Furniture</a>
-                            <a href="#"
-                                class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">Bedding</a>
-                        </div>
+
                     </div>
                 </div>
 

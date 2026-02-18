@@ -1,22 +1,25 @@
 <div>
     <!-- Hero Section - Premium Banner -->
-    <livewire:components.front.hero-section />
+
+    <x-front.hero-section />
 
     <!-- Category Section -->
-    <livewire:components.front.category />
+    <x-front.category :categories="$categories" />
 
     <!-- Featured Products Section -->
-    <livewire:components.front.featured-products />
+
+    <x-front.featured-products :featuredProducts="$featuredProducts" />
 
     <!-- Flash Sale Section -->
-    <livewire:components.front.flash-sale-banner />
+    {{-- <livewire:components.front.flash-sale-banner /> --}}
 
     <!-- Benefits Section -->
-    <livewire:components.front.benefits-section />
+
+    <x-front.benefits-section />
 
     <!-- Testimonials Section -->
-    <livewire:components.front.testimonials />
+    <x-front.testimonials />
 
     <!-- CTA Section - Newsletter -->
-    <livewire:components.front.newsletter />
+    <x-front.newsletter />
 </div>
