@@ -37,6 +37,7 @@ class ProductsExport implements FromCollection,WithHeadings,WithMapping
         $product->subCategory->name ?? 'N/A',
         $product->brand->brand_name ?? 'N/A',
         $product->old_price ?? 'N/A',
+        $product->discount ?? 'N/A',
         $product->price ?? 'N/A',
         $product->quantity ?? 'N/A',
         $product->short_description ?? 'N/A',
@@ -56,6 +57,6 @@ class ProductsExport implements FromCollection,WithHeadings,WithMapping
 
     public function headings():array
     {
-        return ['ID','Title','Slug','Category','Sub Category','Brand','Old Price','Price','Qty','Description','Product Colors','Product Size','Product_Size_Price','Images','Hot Products','Featured Products','Status','Created Date'];
+        return ['ID','Title','Slug','Category','Sub Category','Brand','Old Price','Discount (%)','Price','Qty','Description','Product Colors','Product Size','Product_Size_Price','Images','Hot Products','Featured Products','Status','Created Date'];
     }
 }

@@ -271,6 +271,22 @@
                         </div>
 
                         <div class="flex gap-1 flex-col">
+                            <label class="font-medium text-md text-slate-800">Meta Title<span
+                                    class="text-rose-500">*</span></label>
+                            <input wire:model="meta_title" type="text"
+                                class="border rounded-md border-slate-200 p-4 focus:outline-none"
+                                placeholder="Enter Meta Title...">
+                        </div>
+
+                        <div class="flex gap-1 flex-col">
+                            <label class="font-medium text-md text-slate-800">Meta Description<span
+                                    class="text-rose-500">*</span></label>
+                            <textarea wire:model="meta_description" class="border rounded-md border-slate-200 p-4 focus:outline-none"
+                                name="" id="" cols="2" rows="2" placeholder="Enter Meta Description..."></textarea>
+
+                        </div>
+
+                        <div class="flex gap-1 flex-col">
 
                             <button wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed"
                                 wire:target={{ $isEdit ? 'update' : 'save' }}

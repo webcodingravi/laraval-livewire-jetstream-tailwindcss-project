@@ -8,6 +8,7 @@ use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\ProductCreateOrUpdate;
 use App\Livewire\Admin\SubCategoryCreateOrUpdate;
 use App\Livewire\Front\Home;
+use App\Livewire\Front\ProductDetails;
 use App\Livewire\Front\Products;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',Home::class)->name('home');
 Route::get('/products/{category?}/{subCategory?}',Products::class)->name('products');
+Route::get('/product/{slug}',ProductDetails::class)->name('product-detail');
 
 Route::middleware([
     'auth:sanctum',

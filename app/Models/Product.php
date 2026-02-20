@@ -17,12 +17,16 @@ class Product extends Model
         'brand_id',
         'price',
         'old_price',
+        'discount',
         'short_description',
         'description',
         'quantity',
         'is_hot',
         'is_featured',
-        'status'
+        'status',
+        'meta_title',
+        'meta_description',
+        'specifications'
     ];
 
     public function category() {

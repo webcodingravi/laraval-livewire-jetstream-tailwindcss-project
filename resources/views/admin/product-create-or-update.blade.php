@@ -353,14 +353,39 @@
                                 @enderror
                             </div>
 
+                            <div class="flex gap-1 flex-col mt-4">
+                                <label class="font-medium text-md text-slate-800">Old
+                                    Price({{ config('app.currency.symbol') }})<span
+                                        class="text-rose-500">*</span></label>
+                                <input id="oldPrice" type="number" wire:model.live.debounce.500ms="old_price"
+                                    class="border rounded-md border-slate-200 p-4 focus:outline-none"
+                                    placeholder="0.0.">
+                                @error('old_price')
+                                    <span class="text-rose-500">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="flex gap-1 flex-col mt-4">
+                                <label class="font-medium text-md text-slate-800">Discount(%)
+                                    <span class="text-rose-500">*</span></label>
+                                <input id="discount" type="number" step=0.01
+                                    wire:model.live.debounce.500ms="discount"
+                                    class="border rounded-md border-slate-200 p-4 focus:outline-none" placeholder="%">
+                                @error('discount')
+                                    <span class="text-rose-500">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                         </div>
 
-                        <div class="md:grid grid-cols-2 gap-4">
+
+
+                        <div class="flex gap-1 flex-col">
                             <div class="flex gap-1 flex-col">
                                 <label
                                     class="font-medium text-md text-slate-800">Price({{ config('app.currency.symbol') }})<span
                                         class="text-rose-500">*</span></label>
-                                <input type="text" wire:model="price"
+                                <input id="price" type="number" step=0.01 wire:model="price"
                                     class="border rounded-md border-slate-200 p-4 focus:outline-none"
                                     placeholder="0.0">
                                 @error('price')
@@ -386,15 +411,6 @@
                             </div>
                         @endif
 
-                        <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Old Price<span
-                                    class="text-rose-500">*</span></label>
-                            <input type="text" wire:model="old_price"
-                                class="border rounded-md border-slate-200 p-4 focus:outline-none" placeholder="0.0.">
-                            @error('old_price')
-                                <span class="text-rose-500">{{ $message }}</span>
-                            @enderror
-                        </div>
 
 
                         <div class="flex gap-1 flex-col">
@@ -470,7 +486,7 @@
                             handleFileInput(event) {
                                 const files = event.target.files;
                                 this.previewImages = [];
-
+                        
                                 for (let i = 0; i < files.length; i++) {
                                     const reader = new FileReader();
                                     reader.onload = (e) => {
@@ -478,7 +494,7 @@
                                     };
                                     reader.readAsDataURL(files[i]);
                                 }
-
+                        
                                 this.isUploading = true;
                                 this.uploadProgress = 0;
                                 const interval = setInterval(() => {
@@ -620,6 +636,24 @@
                             @enderror
                         </div>
 
+                        <div class="flex gap-1 flex-col" x-data x-init="const editor2 = new FroalaEditor('#specifications', {
+                            events: {
+                                contentChanged: function() {
+                                    @this.set('specifications', this.html.get())
+                                }
+                            }
+                        });
+                        setTimeout(() => {
+                            editor2.html.set(@js($specifications));
+                        }, 50);" wire:ignore>
+                            <label class="font-medium text-md text-slate-800">Specifications</label>
+                            <div id="specifications"></div>
+
+                            @error('specifications')
+                                <span class="text-rose-500">{{ $message }}</span>
+                            @enderror
+                        </div>
+
                         <div class="flex gap-1 flex-col my-8">
                             <label class="font-medium text-md text-slate-800">Qty</label>
                             <input type="number" wire:model="quantity"
@@ -660,6 +694,22 @@
                             @error('status')
                                 <span class="text-rose-500">{{ $message }}</span>
                             @enderror
+                        </div>
+
+                        <div class="flex gap-1 flex-col">
+                            <label class="font-medium text-md text-slate-800">Meta Title<span
+                                    class="text-rose-500">*</span></label>
+                            <input wire:model="meta_title" type="text"
+                                class="border rounded-md border-slate-200 p-4 focus:outline-none"
+                                placeholder="Enter Meta Title...">
+                        </div>
+
+                        <div class="flex gap-1 flex-col">
+                            <label class="font-medium text-md text-slate-800">Meta Description<span
+                                    class="text-rose-500">*</span></label>
+                            <textarea wire:model="meta_description" class="border rounded-md border-slate-200 p-4 focus:outline-none"
+                                cols="2" rows="2" placeholder="Enter Meta Description..."></textarea>
+
                         </div>
 
 

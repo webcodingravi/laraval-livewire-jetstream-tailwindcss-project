@@ -61,6 +61,7 @@
                                 <span
                                     class="absolute left-3 top-2 text-gray-600">{{ config('app.currency.symbol') }}</span>
                                 <input type="number" x-model.number="priceRange[0]"
+                                    wire:model.live.debounce.300ms="minPrice"
                                     class="w-full pl-6 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-600 focus:outline-none">
                             </div>
                         </div>
@@ -70,6 +71,7 @@
                                 <span
                                     class="absolute left-3 top-2 text-gray-600">{{ config('app.currency.symbol') }}</span>
                                 <input type="number" x-model.number="priceRange[1]"
+                                    wire:model.live.debounce.300ms="maxPrice"
                                     class="w-full pl-6 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-600 focus:outline-none">
                             </div>
                         </div>

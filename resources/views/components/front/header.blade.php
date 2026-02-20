@@ -53,10 +53,10 @@
                             style="left: 50%; transform: translateX(-50%);">
                             <div class="grid grid-cols-4 gap-6 p-6">
                                 <!-- Column 1 -->
-                                @if ($categories->count())
+                                @if (!empty($categories) && $categories->count())
                                     @foreach ($categories as $category)
                                         <div>
-                                            @if ($category->subCategories->count())
+                                            @if (!empty($category->subCategories) && $category->subCategories->count())
                                                 <a href="{{ route('products', ['category' => $category->slug]) }}"
                                                     wire:navigate>
                                                     <h3 class="font-bold text-gray-800 mb-3 text-md">
@@ -64,7 +64,7 @@
                                                 </a>
                                             @endif
 
-                                            @if ($category->subCategories->count())
+                                            @if (!empty($category->subCategories) && $category->subCategories->count())
                                                 <ul class="space-y-2 text-sm">
 
                                                     @foreach ($category->subCategories as $subCategory)
@@ -293,12 +293,12 @@
 
 
                         <div>
-                            @if ($categories->count())
+                            @if (!empty($categories) && $categories->count())
                                 @foreach ($categories as $category)
                                     <p class="font-semibold text-gray-700 text-sm mt-3 mb-2">{{ $category->name }}</p>
                                 @endforeach
                             @endif
-                            @if ($category->subCategories->count())
+                            @if (!empty($category->subCategories) && $category->subCategories->count())
                                 @foreach ($category->subCategories as $subCategory)
                                     <a href="{{ route('products', ['category' => $category->slug, 'subCategory' => $subCategory->slug]) }}"
                                         class="block px-3 py-2 text-sm text-gray-600 hover:text-indigo-600 transition">{{ $subCategory->name }}</a>

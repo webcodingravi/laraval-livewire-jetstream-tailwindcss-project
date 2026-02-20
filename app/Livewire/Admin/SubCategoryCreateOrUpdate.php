@@ -18,6 +18,8 @@ class SubCategoryCreateOrUpdate extends Component
     public $slug;
     public $category_id;
     public $status = 'active';
+    public $meta_title;
+    public $meta_description;
     public $isOpen = false;
     public $SubCategoryId;
     public $showTrashed = false;
@@ -75,7 +77,7 @@ class SubCategoryCreateOrUpdate extends Component
     public function save() {
         $this->validate();
         try{
-            $data = $this->only(['name','slug','category_id','status']);
+            $data = $this->only(['name','slug','category_id','status','meta_title','meta_description']);
 
             SubCategory::create($data);
 
@@ -95,6 +97,8 @@ class SubCategoryCreateOrUpdate extends Component
           $this->category_id = $SubCategory->category_id;
           $this->SubCategoryId = $SubCategory->id;
           $this->status = $SubCategory->status;
+          $this->meta_title = $SubCategory->meta_title;
+          $this->meta_description = $SubCategory->meta_description;
           $this->isOpen = true;
           $this->isEdit = true;
 
@@ -109,7 +113,7 @@ class SubCategoryCreateOrUpdate extends Component
 
         try{
             $SubCategory = SubCategory::findOrFail($this->SubCategoryId);
-            $data = $this->only(['name','slug','category_id','status']);
+            $data = $this->only(['name','slug','category_id','status','meta_title','meta_description']);
 
             $SubCategory->fill($data);
 
@@ -170,7 +174,7 @@ class SubCategoryCreateOrUpdate extends Component
     }
 
   public function resetForm() {
-    $this->reset(['name','slug','category_id','status','SubCategoryId','isOpen','isEdit']);
+    $this->reset(['name','slug','category_id','status','meta_title','meta_description','SubCategoryId','isOpen','isEdit']);
   }
 
 

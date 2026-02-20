@@ -18,7 +18,9 @@
         <!-- Page Header Section -->
         <div class="bg-gradient-to-r from-[#24bad8] via-[#0b7a93] text-white px-4 md:px-6 lg:px-8 py-16 mt-20">
             <div class="max-w-7xl mx-auto text-center">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">All Products</h1>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                    {{ $subCategories[0]->category->name ?? '' }}
+                </h1>
 
 
             </div>

@@ -19,6 +19,8 @@ class Products extends Component
     public $selectedCategories = [];
     public $selectedBrands = [];
     public $selectedColors = [];
+    public $minPrice = null;
+    public $maxPrice = null;
 
 
 
@@ -32,9 +34,16 @@ class Products extends Component
         $this->resetPage();
     }
 
+    public function updatedMinPrice() {
+        $this->resetPage();
+    }
+
+    public function updatedMaxPrice() {
+        $this->resetPage();
+    }
 
     public function clearAllFilters() {
-        $this->reset(['selectedCategories','selectedBrands','selectedColors']);
+        $this->reset(['selectedCategories','selectedBrands','selectedColors','minPrice','maxPrice']);
         $this->resetPage();
     }
 
@@ -57,6 +66,7 @@ class Products extends Component
     public function render()
     {
         $products = Product::with(['category:id,name,slug','subCategory:id,name,slug','productImages:id,product_id,image_name','colors:id,name'])
+
         ->when(!empty($this->category),function($query) {
             $query->whereHas('category',function($q) {
                $q->where('slug',$this->category);
@@ -83,8 +93,15 @@ class Products extends Component
             $query->whereHas('colors', function ($q) {
                 $q->whereIn('colors.id', $this->selectedColors);
             });
-})
 
+})
+        ->when(!empty($this->minPrice),function($query) {
+            $query->where('price','>=',$this->minPrice);
+        })
+
+        ->when(!empty($this->maxPrice),function($query) {
+            $query->where('price','<=',$this->maxPrice);
+        })
 
         ->orderBy('id','desc')
         ->paginate(10);

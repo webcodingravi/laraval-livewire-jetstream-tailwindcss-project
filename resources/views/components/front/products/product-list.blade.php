@@ -5,10 +5,11 @@
 
                 <!-- Product Image -->
                 <div class="aspect-square bg-gray-100 overflow-hidden relative">
-
-                    <img src="{{ asset('storage/uploads/product/' . optional($product->productImages->first())->image_name) }}"
-                        alt="{{ $product->title }}"
-                        class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <a href="{{ route('product-detail', $product->slug) }}" wire:navigate>
+                        <img src="{{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }}"
+                            alt="{{ $product->title }}"
+                            class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                    </a>
 
                     <!-- Wishlist Button -->
 
@@ -40,18 +41,22 @@
                     </p>
 
                     <h3 class="font-bold text-gray-900 mb-2 line-clamp-2 h-14">
-                        {{ $product->title }}
+                        <a href="{{ route('product-detail', $product->slug) }}" wire:navigate>{{ $product->title }}</a>
+
                     </h3>
 
                     <div class="flex items-center gap-2 mb-4">
                         <span class="text-xl font-bold text-indigo-600">
-                            {{ config('app.currency.symbol') }}{{ $product->price }}
+                            {{ config('app.currency.symbol') }}{{ number_format($product->price, 2) }}
                         </span>
 
                         @if ($product->old_price)
                             <span class="text-gray-400 line-through">
-                                {{ config('app.currency.symbol') }}{{ $product->old_price }}
+                                {{ config('app.currency.symbol') }}{{ number_format($product->old_price, 2) }}
                             </span>
+                        @endif
+                        @if ($product->discount)
+                            <span class="font-medium text-rose-500">{{ $product->discount }}% OFF</span>
                         @endif
                     </div>
 
@@ -74,7 +79,7 @@
                     @else
                         <a href="{{ route('login') }}"
                             class="block text-center w-full py-2 bg-indigo-600 text-white font-bold rounded-lg">
-                            Login to Buy
+                            <i class="ri-shopping-cart-2-line"></i> Add to Cart
                         </a>
                     @endif
 

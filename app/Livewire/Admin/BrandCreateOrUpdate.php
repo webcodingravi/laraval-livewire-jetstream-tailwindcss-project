@@ -20,6 +20,8 @@ class BrandCreateOrUpdate extends Component
     public $category_id;
     public $sub_category_id;
     public $status = 'active';
+    public $meta_title;
+    public $meta_description;
     public $brandId;
     public $isOpen = false;
     public $isEdit = false;
@@ -85,7 +87,7 @@ class BrandCreateOrUpdate extends Component
     public function save() {
        $this->validate();
        try{
-         $data = $this->only(['brand_name','slug','category_id','sub_category_id','status']);
+         $data = $this->only(['brand_name','slug','category_id','sub_category_id','status','meta_title','meta_description']);
 
          Brand::create($data);
 
@@ -105,6 +107,8 @@ class BrandCreateOrUpdate extends Component
            $this->category_id = $brand->category_id;
            $this->sub_category_id = $brand->sub_category_id;
            $this->status = $brand->status;
+           $this->meta_title = $brand->meta_title;
+           $this->meta_description = $brand->meta_description;
            $this->brandId = $brand->id;
            $this->isOpen = true;
            $this->isEdit = true;
@@ -120,7 +124,7 @@ class BrandCreateOrUpdate extends Component
 
         try{
           $brand = Brand::findOrFail($this->brandId);
-          $data = $this->only(['brand_name','slug','category_id','sub_category_id','status']);
+          $data = $this->only(['brand_name','slug','category_id','sub_category_id','status','meta_title','meta_description']);
 
           $brand->fill($data);
 
@@ -177,7 +181,7 @@ class BrandCreateOrUpdate extends Component
     }
 
     public function resetForm() {
-        $this->reset(['brand_name','slug','category_id','sub_category_id','status','brandId','isOpen','isEdit']);
+        $this->reset(['brand_name','slug','category_id','sub_category_id','status','meta_title','meta_description','brandId','isOpen','isEdit']);
     }
 
 

@@ -20,6 +20,8 @@ class CategoryCreateOrUpdate extends Component
     public $slug;
     public $image;
     public $status = 'active';
+    public $meta_title;
+    public $meta_description;
     public $isOpen = false;
     public $categoryId;
     public $oldImage;
@@ -65,7 +67,7 @@ class CategoryCreateOrUpdate extends Component
     public function save() {
        $this->validate();
        try{
-        $data = $this->only(['name','slug','status']);
+        $data = $this->only(['name','slug','status','meta_title','meta_description']);
 
          if(!empty($this->image)) {
         $ext = $this->image->getClientOriginalExtension();
@@ -101,6 +103,8 @@ class CategoryCreateOrUpdate extends Component
           $this->slug = $category->slug;
           $this->oldImage = $category->image;
           $this->status = $category->status;
+          $this->meta_title = $category->meta_title;
+          $this->meta_description = $category->meta_description;
           $this->categoryId = $category->id;
           $this->isEdit = true;
           $this->isOpen = true;
@@ -124,7 +128,7 @@ class CategoryCreateOrUpdate extends Component
 
             $category = Category::findOrFail($this->categoryId);
 
-            $data = $this->only(['name','slug','status']);
+            $data = $this->only(['name','slug','status','meta_title','meta_description']);
 
             if(!empty($this->image)) {
                 if(!empty($this->oldImage)) {
@@ -220,7 +224,7 @@ class CategoryCreateOrUpdate extends Component
     }
 
     public function resetForm() {
-        $this->reset(['name','slug','image','oldImage','status','isOpen','isEdit']);
+        $this->reset(['name','slug','image','oldImage','status','meta_title','meta_description','isOpen','isEdit']);
     }
 
 

@@ -27,15 +27,19 @@ class ProductCreateOrUpdate extends Component
     public $sku;
     public $category_id;
     public $sub_category_id;
-    public $brand_id;
-    public $price;
     public $old_price;
+     public $discount;
+     public $price;
+    public $brand_id;
     public $short_description;
     public $description;
+    public $specifications;
     public $quantity;
     public $is_hot = false;
     public $is_featured = false;
     public $status = 'active';
+    public $meta_title;
+    public $meta_description;
     public $categories;
     public $subCategories;
     public $brands;
@@ -73,6 +77,7 @@ class ProductCreateOrUpdate extends Component
 
     }
 
+
  protected function rules() {
     return [
         'title' => 'required|string',
@@ -83,6 +88,7 @@ class ProductCreateOrUpdate extends Component
         'brand_id' => 'required',
         'price' => 'required|numeric',
         'old_price' => 'required|numeric',
+        'discount' => 'nullable|numeric',
         'short_description' => 'required|string',
         'description' => 'required|string',
         'quantity' => 'required|integer',
@@ -111,6 +117,19 @@ class ProductCreateOrUpdate extends Component
  public function updatedTitle($value) {
     $this->slug = Str::slug($value);
  }
+
+
+     public function updated() {
+        $this->calculatePrice();
+    }
+
+
+    // get discount price
+    public function calculatePrice() {
+        $discountAmount = ((float)$this->old_price * (float)$this->discount) / 100;
+        $this->price = (float)$this->old_price - $discountAmount;
+    }
+
 
  public function mount() {
 try{
@@ -170,8 +189,8 @@ catch(\Exception $e) {
             DB::beginTransaction();
         try{
 
-            $data = $this->only(['title','slug','sku','category_id','sub_category_id','brand_id','price','old_price',
-            'short_description','description','quantity','status']);
+            $data = $this->only(['title','slug','sku','category_id','sub_category_id','brand_id','price','old_price','discount',
+            'short_description','description','specifications','quantity','status','meta_title','meta_description']);
 
               $data['is_hot'] = $this->is_hot ? 1 : 0;
             $data['is_featured'] = $this->is_featured ? 1 : 0;
@@ -226,8 +245,9 @@ catch(\Exception $e) {
                 $this->category_id = $product->category_id;
                 $this->sub_category_id = $product->sub_category_id;
                 $this->brand_id = $product->brand_id;
-                $this->price = $product->price;
                 $this->old_price = $product->old_price;
+                $this->discount = $product->discount;
+                $this->price = $product->price;
                 $this->color_id = $product->colors->pluck('id')->toArray();
                 $this->productSizes = $product->sizes->map(function($size){
                     return [
@@ -239,10 +259,13 @@ catch(\Exception $e) {
                 $this->oldImage = $product->productImages->pluck('image_name','id')->toArray();
                 $this->short_description = $product->short_description ?? '';
                 $this->description = $product->description ?? '';
+                $this->specifications = $product->specifications ?? '';
                 $this->quantity = $product->quantity;
                 $this->is_hot = (bool) $product->is_hot;
                 $this->is_featured = (bool) $product->is_featured;
                 $this->status = $product->status;
+                $this->meta_title = $product->meta_title;
+                $this->meta_description = $product->meta_description;
                 $this->isOpen = true;
                 $this->isEdit = true;
 
@@ -283,8 +306,8 @@ catch(\Exception $e) {
               DB::beginTransaction();
             try{
                 $product = Product::findOrFail($this->productId);
-                 $data = $this->only(['title','slug','sku','category_id','sub_category_id','brand_id','price','old_price',
-                'short_description','description','quantity','is_hot','status']);
+                 $data = $this->only(['title','slug','sku','category_id','sub_category_id','brand_id','price','old_price','discount',
+                'short_description','description','specifications','quantity','is_hot','status','meta_title','meta_description']);
 
                   $data['is_hot'] = $this->is_hot ? 1 : 0;
                 $data['is_featured'] = $this->is_featured ? 1 : 0;
@@ -384,8 +407,8 @@ catch(\Exception $e) {
 
 
         public function resetForm() {
-            $this->reset(['title','slug','sku','category_id','sub_category_id','brand_id','price','old_price','productSizes','product_price','product_size','color_id','short_description','description','images','oldImage',
-             'quantity','is_hot','is_featured','status','productId','isEdit','isOpen','productId']);
+            $this->reset(['title','slug','sku','category_id','sub_category_id','brand_id','price','old_price','discount','productSizes','product_price','product_size','color_id','short_description','description','specifications','images','oldImage',
+             'quantity','is_hot','is_featured','status','meta_title','meta_description','productId','isEdit','isOpen','productId']);
 
 
         }

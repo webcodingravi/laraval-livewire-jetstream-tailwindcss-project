@@ -47,10 +47,12 @@
                                     @endif
 
                                 </div>
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <img src="{{ asset('storage/uploads/product/' . $featured->productImages->first()->image_name) }}"
-                                        class="w-full h-full object-contain cursor-pointer">
-                                </div>
+                                <a href="{{ route('product-detail', $featured->slug) }}" wire:navigate>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <img src="{{ asset('storage/uploads/product/' . $featured->productImages->first()->image_name) }}"
+                                            class="w-full h-full object-contain cursor-pointer">
+                                    </div>
+                                </a>
                             </div>
                             <div class="p-6">
                                 <p class="text-xs font-semibold text-indigo-600 mb-2 tracking-widest">
@@ -59,7 +61,7 @@
                                 </p>
                                 <h3 class="font-bold text-lg text-gray-900 mb-2 group-hover:text-indigo-600 transition">
                                     <a wire:navigate
-                                        href="{{ route('products', [$featured->category->slug, $featured->subCategory->slug]) }}">{{ $featured->title }}</a>
+                                        href="{{ route('product-detail', $featured->slug) }}">{{ $featured->title }}</a>
                                 </h3>
                                 <div class="flex items-center gap-1 mb-4">
                                     <span class="text-amber-400">★</span>
@@ -72,9 +74,17 @@
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <span
-                                            class="text-2xl font-black text-gray-900">{{ config('app.currency.symbol') }}{{ $featured->price }}</span>
-                                        <span
-                                            class="text-sm text-gray-500 line-through ml-2">{{ config('app.currency.symbol') }}{{ $featured->old_price }}</span>
+                                            class="text-2xl font-black text-gray-900">{{ config('app.currency.symbol') }}{{ number_format($featured->price, 2) }}</span>
+                                        @if ($featured->old_price)
+                                            <span
+                                                class="text-sm text-gray-500 line-through ml-2">{{ config('app.currency.symbol') }}{{ number_format($featured->old_price, 2) }}
+                                            </span>
+                                        @endif
+
+                                        @if ($featured->discount)
+                                            <span class="ms-2 font-medium text-rose-500">{{ $featured->discount }}%
+                                                OFF</span>
+                                        @endif
                                     </div>
                                     <button
                                         class="p-2 bg-[#24bad8] text-white rounded-lg hover:bg-[#0b7a93] transition transform hover:scale-110">
