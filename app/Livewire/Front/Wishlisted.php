@@ -2,21 +2,20 @@
 
 namespace App\Livewire\Front;
 
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductWishlist;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class Home extends Component
+class Wishlisted extends Component
 {
-    public $categories;
-    public $featuredProducts;
-    public $isWishlisted = false;
+
+public $wishlists = [];
+public $isWishlisted = false;
 
 
-        public function add_wishlists($productId) {
 
+public function add_wishlists($productId) {
   try{
 
     if (!Auth::check()) return;
@@ -35,6 +34,8 @@ class Home extends Component
          $this->isWishlisted = true;
      }
 
+     $this->loadWishlist();
+
      $this->dispatch('wishlistUpdated');
 
   }
@@ -44,25 +45,23 @@ class Home extends Component
 }
 
 
-    public function mount() {
-      $category = Category::withCount('product')->orderBy('name','asc')->get();
-      $this->categories = $category;
+public function loadWishlist() {
+    $this->wishlists = ProductWishlist::with('product')->where('user_id',Auth::user()->id)->get();
+}
 
-      $featured = Product::with(['category:id,name,slug','subCategory:id,name,slug','productImages:id,product_id,image_name'])->where('is_featured',true)->get();
-      $this->featuredProducts = $featured;
 
-      $product = Product::first();
- if(Auth::check()) {
+
+public function mount() {
+    $this->loadWishlist();
+    $product = Product::first();
+    if(Auth::check()) {
         $this->isWishlisted = ProductWishlist::where('user_id',Auth::id())->where('product_id',$product->id)->exists();
     }
 
-
-
-    }
-
+}
 
     public function render()
     {
-        return view('front.home')->layout('layouts.app');
+        return view('front.wishlisted');
     }
 }

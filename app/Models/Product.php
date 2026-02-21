@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Livewire\Front\Wishlisted;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -58,5 +59,10 @@ public function colors()
 
     public function getColors() {
          return $this->belongsToMany(Color::class, 'product_colors');
+    }
+
+
+    public function getWishlist() {
+        return $this->hasMany(Wishlisted::class);
     }
 }

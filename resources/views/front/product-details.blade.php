@@ -19,7 +19,6 @@
             selectedSize: 'standard',
             quantity: 1,
             activeTab: 'description',
-            showWishlist: false,
             mainImage: '{{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }}'
         }">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
@@ -164,17 +163,32 @@
                         </button>
 
                         <!-- Wishlist -->
-                        <button @click="showWishlist = !showWishlist"
-                            :class="showWishlist ? 'bg-rose-100 text-rose-600 border-rose-300' :
-                                'bg-white text-gray-700 border-gray-300 hover:border-rose-300'"
-                            class="py-4 px-6 border-2 font-bold rounded-xl transition">
-                            <svg class="w-5 h-5 mx-auto" :fill="showWishlist ? 'currentColor' : 'none'"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                </path>
-                            </svg>
-                        </button>
+                        @if ($product && Auth::check())
+                            <button wire:click="add_wishlists({{ $product->id }})"
+                                class="py-4 px-6 border-2 font-bold rounded-xl transition
+                             {{ $isWishlisted
+                                 ? 'bg-rose-100 text-rose-600 border-rose-300'
+                                 : 'bg-white text-gray-700 border-gray-300 hover:border-rose-300' }}">
+
+                                <svg class="w-5 h-5 mx-auto" fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                    </path>
+                                </svg>
+                            </button>
+                        @else
+                            <button href="{{ route('login') }}"
+                                class="flex justify-center py-4 px-6 border-2 font-bold rounded-xl transition bg-white text-gray-700 border-gray-300 hover:border-rose-300">
+
+                                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" stroke-width="2"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+
+                            </button>
+                        @endif
                     </div>
 
 

@@ -8,7 +8,7 @@
 
     <!-- Featured Products Section -->
 
-    <x-front.featured-products :featuredProducts="$featuredProducts" />
+    <x-front.featured-products :featuredProducts="$featuredProducts" :isWishlisted="$isWishlisted" />
 
     <!-- Flash Sale Section -->
     {{-- <livewire:components.front.flash-sale-banner /> --}}

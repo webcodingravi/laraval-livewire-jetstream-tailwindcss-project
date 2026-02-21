@@ -16,11 +16,12 @@
 
                     @foreach ($categories as $category)
                         <a href="{{ route('products', ['category' => $category->slug]) }}" wire:navigate
-                            class="group relative overflow-hidden rounded-2xl h-64  hover:shadow-2xl transition-all duration-300 transform hover:scale-105  bg-black/20"
+                            class="group relative overflow-hidden rounded-2xl h-64  hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
                             style="background-image: url('{{ asset('storage/uploads/category/' . $category->image) }}'); background-size: contain; background-position: center; background-repeat: no-repeat;">
                             <div
-                                class="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                                class="absolute inset-0 bg-black  group-hover:opacity-20 opacity-20 transition-opacity duration-300">
                             </div>
+
                             <div class="absolute inset-0 flex flex-col items-center justify-center text-white">
 
                                 <h3 class="text-2xl font-bold">{{ $category->name }}</h3>

@@ -109,7 +109,7 @@
                 <!-- Right Icons -->
                 <div class="flex items-center md:gap-4">
                     <!-- Wishlist -->
-                    <a href="#"
+                    <a href="{{ route('user.wishlist') }}"
                         class="relative p-2 md:p-3 text-gray-700 hover:text-red-500 hover:bg-red-50 rounded-full transition"
                         title="Wishlist">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -119,7 +119,7 @@
                             </path>
                         </svg>
                         <span
-                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ $wishlists }}</span>
                     </a>
 
                     <!-- Shopping Cart -->

@@ -11,14 +11,41 @@
                             class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
                     </a>
 
+
                     <!-- Wishlist Button -->
+                    @if ($product && Auth::check())
+                        <button wire:click="add_wishlists({{ $product->id }})"
+                            class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center {{ $isWishlisted
+                                ? 'bg-rose-100 text-rose-600 border-rose-300'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-rose-300' }}">
 
-                    <button
-                        class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center">
 
-                        <i class="ri-heart-line text-xl text-slate-400"></i>
+                            <svg class="w-5 h-5 mx-auto" fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
 
-                    </button>
+
+
+                        </button>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-700 border-gray-300 hover:border-rose-300">
+
+
+                            <svg class="w-5 h-5 mx-auto" fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+
+
+
+                        </a>
+                    @endif
 
 
 
@@ -41,7 +68,8 @@
                     </p>
 
                     <h3 class="font-bold text-gray-900 mb-2 line-clamp-2 h-14">
-                        <a href="{{ route('product-detail', $product->slug) }}" wire:navigate>{{ $product->title }}</a>
+                        <a href="{{ route('product-detail', $product->slug) }}"
+                            wire:navigate>{{ $product->title }}</a>
 
                     </h3>
 

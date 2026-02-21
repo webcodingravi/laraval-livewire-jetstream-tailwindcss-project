@@ -46,6 +46,20 @@
                         <span class="text-gray-400">/</span>
                         <span class="text-gray-900 font-semibold"><a href="{{ route('products') }}"
                                 wire:navigate>Products</a></span>
+
+                        @if (!empty($category))
+                            <span class="text-gray-400">/</span>
+                            <span class="text-gray-900 font-semibold"><a href="{{ route('products', $category) }}"
+                                    wire:navigate>{{ ucfirst($category) }}</a></span>
+                        @endif
+
+                        @if (!empty($subCategory))
+                            <span class="text-gray-400">/</span>
+                            <span class="text-gray-900 font-semibold"><a
+                                    href="{{ route('products', $category, $subCategory) }}"
+                                    wire:navigate>{{ ucfirst($subCategory) }}</a></span>
+                        @endif
+
                     </nav>
 
 
@@ -62,7 +76,7 @@
                 <!-- Products Grid Section -->
                 <div class="lg:col-span-3">
                     <!-- Products Grid -->
-                    <x-front.products.product-list :products="$products" />
+                    <x-front.products.product-list :products="$products" :isWishlisted="$isWishlisted" />
                 </div>
             </div>
 

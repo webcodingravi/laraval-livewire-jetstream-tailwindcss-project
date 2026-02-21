@@ -6,6 +6,8 @@ use App\Models\Brand;
 use App\Models\Color;
 use App\Models\SubCategory;
 use App\Models\Product;
+use App\Models\ProductWishlist;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -21,13 +23,55 @@ class Products extends Component
     public $selectedColors = [];
     public $minPrice = null;
     public $maxPrice = null;
+    public $isWishlisted = false;
+    public $meta_title;
+    public $meta_description;
+
+
+
+
+    public function add_wishlists($productId) {
+
+  try{
+
+    if (!Auth::check()) return;
+
+      $user_id = Auth::user()->id;
+     $wishlist = ProductWishlist::where('user_id',$user_id)->where('product_id',$productId)->first();
+     if($wishlist) {
+        $wishlist->delete();
+        $this->isWishlisted = false;
+     }else{
+        ProductWishlist::create([
+            'user_id' => $user_id,
+            'product_id' => $productId
+        ]);
+
+         $this->isWishlisted = true;
+     }
+
+     $this->dispatch('wishlistUpdated');
+
+  }
+  catch(\Exception $e) {
+    $this->dispatch('alert',type:'error',title:'Error!',text:$e->getMessage());
+  }
+}
 
 
 
     public function mount($category = null,$subCategory = null) {
      $this->category = $category;
      $this->subCategory = $subCategory;
+
+     $product = Product::first();
+     if(Auth::check()) {
+        $this->isWishlisted = ProductWishlist::where('user_id',Auth::id())->where('product_id',$product->id)->exists();
     }
+
+    }
+
+
 
 
     public function updatedSelectedCategories() {
@@ -143,6 +187,8 @@ class Products extends Component
 
 
         ->orderBy('name','asc')->get();
+
+
 
 
         return view('front.products',compact('products','subCategories','brands','colors'));

@@ -7,25 +7,32 @@ use App\Livewire\Admin\ColorCreateOrUpdate;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\ProductCreateOrUpdate;
 use App\Livewire\Admin\SubCategoryCreateOrUpdate;
+use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Register;
 use App\Livewire\Front\Home;
 use App\Livewire\Front\ProductDetails;
 use App\Livewire\Front\Products;
+use App\Livewire\Front\Wishlisted;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
+Route::middleware(['guest'])->group(function () {
+Route::get('/register',Register::class)->name('register');
+Route::get('/login',Login::class)->name('login');
+});
+
 
 Route::get('/',Home::class)->name('home');
 Route::get('/products/{category?}/{subCategory?}',Products::class)->name('products');
 Route::get('/product/{slug}',ProductDetails::class)->name('product-detail');
 
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-])->group(function () {
+])->prefix('user')->name('user.')->group(function () {
 
     // 🔁 Jetstream default dashboard (decision maker)
     Route::get('/dashboard', function () {
@@ -40,10 +47,11 @@ Route::middleware([
 
 
     // 👤 User dashboard
-    Route::get('/user/dashboard', function () {
+    Route::get('/dashboard', function () {
         return view('user.dashboard');
-    })->name('user.dashboard');
+    })->name('dashboard');
 
+   Route::get('/my-wishlist',Wishlisted::class)->name('wishlist');
 });
 
 
