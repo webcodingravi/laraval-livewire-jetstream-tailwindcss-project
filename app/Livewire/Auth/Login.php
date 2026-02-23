@@ -17,19 +17,19 @@ class Login extends Component
     ];
 
     public function mount(){
-        if(Auth::check()) {
-           return redirect()->route('home');
+        if(auth()->check()) {
+           return redirect()->intended(route('admin.dashboard'));
         }
     }
 
     public function login() {
         $this->validate();
         try{
-            if(Auth::attempt($this->only('email','password'),$this->remember)) {
+            if(auth()->attempt($this->only('email','password'),$this->remember)) {
 
             session()->regenerate();
 
-            return redirect()->intended('/');
+            return redirect()->intended(route('admin.dashboard'));
 
 
             }else{

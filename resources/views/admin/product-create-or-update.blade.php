@@ -25,7 +25,7 @@
 
         <!-- Search and Filter -->
         <div class="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-6">
-            <div class="flex justify-end items-center gap-4">
+            <div class="flex md:flex-row flex-col md:justify-end items-center gap-4">
                 <div>
                     <button wire:click="export">
                         <i class="ri-file-excel-2-fill text-4xl text-green-600 hover:text-green-800"></i>
@@ -486,7 +486,7 @@
                             handleFileInput(event) {
                                 const files = event.target.files;
                                 this.previewImages = [];
-                        
+
                                 for (let i = 0; i < files.length; i++) {
                                     const reader = new FileReader();
                                     reader.onload = (e) => {
@@ -494,7 +494,7 @@
                                     };
                                     reader.readAsDataURL(files[i]);
                                 }
-                        
+
                                 this.isUploading = true;
                                 this.uploadProgress = 0;
                                 const interval = setInterval(() => {

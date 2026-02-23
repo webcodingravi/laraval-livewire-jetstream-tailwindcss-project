@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('style')
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/admin/app.css', 'resources/js/admin/app.js'])
     @livewireStyles
 </head>
 
@@ -24,7 +24,7 @@
     <div class="flex h-screen bg-gray-100">
         <livewire:components.admin.sidebar />
 
-        <div class="flex-1 flex flex-col overflow-hidden">
+        <div class="flex-1 flex flex-col overflow-x-hidden">
             <livewire:components.admin.header />
             <!-- Main Content -->
             <main>

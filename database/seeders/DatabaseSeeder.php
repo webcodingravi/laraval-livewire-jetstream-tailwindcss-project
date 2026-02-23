@@ -34,6 +34,12 @@ class DatabaseSeeder extends Seeder
         //Call User Seeder
         $this->call(UserSeeder::class);
 
+        //Category Seeder
+        $this->call(CategorySeeder::class);
+
+        //Brand Seeder
+        $this->call(BrandSeeder::class);
+
 
     }
 }

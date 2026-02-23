@@ -143,8 +143,8 @@ public function updatedPasswordConfirmation()
     {
         try{
         $user = User::findOrFail(Auth::id());
-        $this->first_name = $user->first;
-        $this->last_name = $user->last;
+        $this->first_name = $user->first_name;
+        $this->last_name = $user->last_name;
         $this->email = $user->email;
         $this->phone_code = $user->phone_code ?? '+91';
         $this->phone_number = $user->phone_number;
