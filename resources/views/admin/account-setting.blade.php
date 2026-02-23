@@ -54,13 +54,24 @@
                     <form wire:submit.prevent="updateProfile" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                                <input type="text" wire:model="name" placeholder="Enter Full Name.."
+                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                <input type="text" wire:model="first_name" placeholder="Enter First Name.."
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
-                                @error('name')
+                                @error('first_name')
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                <input type="text" wire:model="name" placeholder="Enter Last Name.."
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+                                @error('last_name')
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                                 <input type="text" wire:model.live="email" placeholder="Enter Email Id.."

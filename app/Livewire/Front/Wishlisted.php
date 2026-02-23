@@ -4,6 +4,7 @@ namespace App\Livewire\Front;
 
 use App\Models\Product;
 use App\Models\ProductWishlist;
+use App\Services\WishlistService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -18,24 +19,7 @@ public $isWishlisted = false;
 public function add_wishlists($productId) {
   try{
 
-    if (!Auth::check()) return;
-
-      $user_id = Auth::user()->id;
-     $wishlist = ProductWishlist::where('user_id',$user_id)->where('product_id',$productId)->first();
-     if($wishlist) {
-        $wishlist->delete();
-        $this->isWishlisted = false;
-     }else{
-        ProductWishlist::create([
-            'user_id' => $user_id,
-            'product_id' => $productId
-        ]);
-
-         $this->isWishlisted = true;
-     }
-
-     $this->loadWishlist();
-
+    $this->isWishlisted = WishlistService::toggle($productId);
      $this->dispatch('wishlistUpdated');
 
   }
@@ -45,18 +29,12 @@ public function add_wishlists($productId) {
 }
 
 
-public function loadWishlist() {
-    $this->wishlists = ProductWishlist::with('product')->where('user_id',Auth::user()->id)->get();
-}
-
-
 
 public function mount() {
     $this->loadWishlist();
     $product = Product::first();
-    if(Auth::check()) {
-        $this->isWishlisted = ProductWishlist::where('user_id',Auth::id())->where('product_id',$product->id)->exists();
-    }
+    $this->isWishlisted = WishlistService::checkWishlist($product->id);
+
 
 }
 

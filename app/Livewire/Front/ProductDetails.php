@@ -4,6 +4,8 @@ namespace App\Livewire\Front;
 
 use App\Models\Product;
 use App\Models\ProductWishlist;
+use App\Services\AddToCartService;
+use App\Services\WishlistService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -15,29 +17,34 @@ class ProductDetails extends Component
     public $isWishlisted = false;
     public $product_size = null;
     public $relatedProducts = [];
+    public $productId;
+    public $quantity = '1';
+    public $color;
+    public $discount;
 
+
+
+
+
+
+public function increment()
+{
+    $this->quantity++;
+}
+
+public function decrement()
+{
+    if ($this->quantity > 1) {
+        $this->quantity--;
+    }
+}
 
 
 
 public function add_wishlists($productId) {
   try{
 
-    if (!Auth::check()) return;
-
-      $user_id = Auth::user()->id;
-     $wishlist = ProductWishlist::where('user_id',$user_id)->where('product_id',$productId)->first();
-     if($wishlist) {
-        $wishlist->delete();
-        $this->isWishlisted = false;
-     }else{
-        ProductWishlist::create([
-            'user_id' => $user_id,
-            'product_id' => $productId
-        ]);
-
-         $this->isWishlisted = true;
-     }
-
+    $this->isWishlisted = WishlistService::toggle($productId);
      $this->dispatch('wishlistUpdated');
 
   }
@@ -45,6 +52,29 @@ public function add_wishlists($productId) {
     $this->dispatch('alert',type:'error',title:'Error!',text:$e->getMessage());
   }
 }
+
+
+
+
+
+public function addToCart() {
+    $this->validate([
+        'color' => 'required',
+        'product_size' => 'required'
+    ]);
+
+   try{
+     AddToCartService::add($this->productId,$this->price,$this->old_price,$this->discount,$this->quantity,$this->color,$this->product_size);
+     $this->dispatch('alert',type:'success',title:'Success !',text:"Added successfully");
+
+   }catch(\Exception $e) {
+        $this->dispatch('alert',type:'error',title:'Error!',text:$e->getMessage());
+   }
+
+
+    $this->dispatch('cartUpdated');
+}
+
 
 public function calculatePrice()
 {
@@ -69,6 +99,11 @@ public function calculatePrice()
     }
 }
 
+
+
+
+
+
 public function updatedProductSize()
 {
     $this->calculatePrice();
@@ -79,6 +114,8 @@ public function updatedProductSize()
         $this->product = Product::with(['category:id,name,slug','subCategory:id,name,slug','productImages:id,image_name,product_id'])->where('slug',$slug)->firstOrFail();
         $this->old_price = $this->product->old_price;
         $this->price = $this->product->price;
+        $this->productId = $this->product->id;
+        $this->discount = $this->product->discount;
 
 
    if ($this->product->sizes->count()) {
@@ -97,9 +134,10 @@ public function updatedProductSize()
         ->get();
 
 
- if(Auth::check()) {
-        $this->isWishlisted = ProductWishlist::where('user_id',Auth::id())->where('product_id',$this->product->id)->exists();
-    }
+
+
+        $this->isWishlisted = WishlistService::checkWishlist($this->product->id);
+
 
 
     }

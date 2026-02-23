@@ -68,12 +68,14 @@
 
 
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
                 <!-- Filters Sidebar -->
                 <x-front.products.sidebar :subCategories="$subCategories" :brands="$brands" :colors="$colors" :colors="$colors"
                     :selectedColors="$selectedColors" />
 
 
                 <!-- Products Grid Section -->
+
                 <div class="lg:col-span-3">
                     <!-- Products Grid -->
                     <x-front.products.product-list :products="$products" :isWishlisted="$isWishlisted" />

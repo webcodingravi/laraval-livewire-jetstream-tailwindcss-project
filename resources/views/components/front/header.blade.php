@@ -49,11 +49,11 @@
                             </svg>
                         </button>
                         <!-- Mega Menu Dropdown -->
-                        <div class="absolute left-0 mt-0 w-screen max-w-3xl bg-white border-t-4 border-indigo-600 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50"
-                            style="left: 50%; transform: translateX(-50%);">
-                            <div class="grid grid-cols-4 gap-6 p-6">
-                                <!-- Column 1 -->
-                                @if (!empty($categories) && $categories->count())
+                        @if (!empty($categories) && $categories->count())
+                            <div class="absolute left-0 mt-0 w-screen max-w-3xl bg-white border-t-4 border-indigo-600 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50"
+                                style="left: 50%; transform: translateX(-50%);">
+                                <div class="grid grid-cols-4 gap-6 p-6">
+                                    <!-- Column 1 -->
                                     @foreach ($categories as $category)
                                         <div>
                                             @if (!empty($category->subCategories) && $category->subCategories->count())
@@ -77,11 +77,12 @@
                                             @endif
                                         </div>
                                     @endforeach
-                                @endif
 
 
+
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
 
 
@@ -123,7 +124,7 @@
                     </a>
 
                     <!-- Shopping Cart -->
-                    <a href="#"
+                    <a href="{{ route('cart') }}"
                         class="relative p-2 md:p-3 text-gray-700 hover:text-[#0b7a93] hover:bg-indigo-50 rounded-full transition"
                         title="Cart">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -133,7 +134,7 @@
                             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                         </svg>
                         <span
-                            class="absolute -top-1 -right-1 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">5</span>
+                            class="absolute -top-1 -right-1 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">{{ $cart }}</span>
                     </a>
 
                     <!-- User Account Dropdown -->
@@ -271,7 +272,8 @@
                     class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition font-medium">Home</a>
 
                 <a href="#"
-                    class="block px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition font-bold">About Us
+                    class="block px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition font-bold">About
+                    Us
                 </a>
 
                 <!-- Mobile Categories Accordion -->

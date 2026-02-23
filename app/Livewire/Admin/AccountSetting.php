@@ -13,7 +13,8 @@ class AccountSetting extends Component
 {
     use WithFileUploads;
 
-    public $name;
+    public $first_name;
+    public $last_name;
     public $email;
     public $phone_code;
     public $phone_number;
@@ -25,11 +26,12 @@ class AccountSetting extends Component
 
     protected function rules() {
        return [
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,'.Auth::id(),
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'nullable|string|max:255',
+        'email' => 'required|email:dns|unique:users,email,'.Auth::id(),
         'password' => 'nullable|min:8|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&]).{8,}$/',
         'phone_code' => 'required|string|max:5',
-        'phone_number' => 'required|max:10|digits:10|unique:users,phone_number,'.Auth::id(),
+        'phone_number' => 'required|digits:10|unique:users,phone_number,'.Auth::id(),
         'bio' => 'nullable|string|max:500',
         'profile_photo' => 'nullable|image|max:2048', // Max 2MB
     ];
@@ -96,7 +98,10 @@ public function updatedPasswordConfirmation()
         try{
             $user = User::findOrFail(Auth::id());
 
-            $data = $this->only(['name','email','phone_code','phone_number','bio']);
+            $data = $this->only(['first_name','last_name','email','phone_code','phone_number','bio']);
+
+            $fullname = $this->first_name.' '.$this->last_name;
+            $data['fullname'] = $fullname;
 
              if($this->password){
                 $data['password'] = Hash::make($this->password);
@@ -138,7 +143,8 @@ public function updatedPasswordConfirmation()
     {
         try{
         $user = User::findOrFail(Auth::id());
-        $this->name = $user->name;
+        $this->first_name = $user->first;
+        $this->last_name = $user->last;
         $this->email = $user->email;
         $this->phone_code = $user->phone_code ?? '+91';
         $this->phone_number = $user->phone_number;

@@ -6,8 +6,7 @@ use App\Models\Brand;
 use App\Models\Color;
 use App\Models\SubCategory;
 use App\Models\Product;
-use App\Models\ProductWishlist;
-use Illuminate\Support\Facades\Auth;
+use App\Services\WishlistService;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -30,26 +29,10 @@ class Products extends Component
 
 
 
-    public function add_wishlists($productId) {
-
+public function add_wishlists($productId) {
   try{
 
-    if (!Auth::check()) return;
-
-      $user_id = Auth::user()->id;
-     $wishlist = ProductWishlist::where('user_id',$user_id)->where('product_id',$productId)->first();
-     if($wishlist) {
-        $wishlist->delete();
-        $this->isWishlisted = false;
-     }else{
-        ProductWishlist::create([
-            'user_id' => $user_id,
-            'product_id' => $productId
-        ]);
-
-         $this->isWishlisted = true;
-     }
-
+    $this->isWishlisted = WishlistService::toggle($productId);
      $this->dispatch('wishlistUpdated');
 
   }
@@ -60,14 +43,18 @@ class Products extends Component
 
 
 
+
     public function mount($category = null,$subCategory = null) {
      $this->category = $category;
      $this->subCategory = $subCategory;
 
      $product = Product::first();
-     if(Auth::check()) {
-        $this->isWishlisted = ProductWishlist::where('user_id',Auth::id())->where('product_id',$product->id)->exists();
-    }
+     if(!empty($product)) {
+       $this->isWishlisted = WishlistService::checkWishlist($product->id);
+     }
+
+
+
 
     }
 
