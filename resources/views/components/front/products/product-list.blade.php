@@ -40,27 +40,31 @@
             </div>
         @else
             @foreach ($products as $product)
-                <div
+                <div wire:key="{{ $product->id }}"
                     class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden">
 
                     <!-- Product Image -->
                     <div class="aspect-square bg-gray-100 overflow-hidden relative">
                         <a href="{{ route('product-detail', $product->slug) }}" wire:navigate>
-                            <img src="{{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }}"
-                                alt="{{ $product->title }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                            @if (!empty($product->productImages->first()->image_name))
+                                <img src="{{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }}"
+                                    alt="{{ $product->title }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                            @endif
                         </a>
 
 
                         <!-- Wishlist Button -->
-                        @if ($product && Auth::check())
+
+                        @if (Auth::check())
                             <button wire:click="add_wishlists({{ $product->id }})"
-                                class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center {{ $isWishlisted
+                                class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center {{ $isWishlisted[$product->id]
                                     ? 'bg-rose-100 text-rose-600 border-rose-300'
                                     : 'bg-white text-gray-700 border-gray-300 hover:border-rose-300' }}">
 
 
-                                <svg class="w-5 h-5 mx-auto" fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
+                                <svg class="w-5 h-5 mx-auto"
+                                    fill="{{ $isWishlisted[$product->id] ? 'currentColor' : 'none' }}"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
@@ -71,11 +75,12 @@
 
                             </button>
                         @else
-                            <a href="{{ route('login') }}"
+                            <a href="{{ route('login') }}" wire:navigate
                                 class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-700 border-gray-300 hover:border-rose-300">
 
 
-                                <svg class="w-5 h-5 mx-auto" fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
+                                <svg class="w-5 h-5 mx-auto"
+                                    fill="{{ $isWishlisted[$product->id] ? 'currentColor' : 'none' }}"
                                     stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
@@ -86,8 +91,6 @@
 
                             </a>
                         @endif
-
-
 
                         @if ($product->is_hot)
                             <div
@@ -123,8 +126,12 @@
                                     {{ config('app.currency.symbol') }}{{ number_format($product->old_price, 2) }}
                                 </span>
                             @endif
-                            @if ($product->discount)
-                                <span class="font-medium text-rose-500">{{ $product->discount }}% OFF</span>
+
+                            @if ($product->old_price > $product->price)
+                                <span class="ml-2 font-medium text-green-600">
+                                    Save
+                                    {{ round((($product->old_price - $product->price) / $product->old_price) * 100) }}%
+                                </span>
                             @endif
                         </div>
 
@@ -140,12 +147,12 @@
 
                         <!-- Add to Cart Button -->
                         @if (Auth::check())
-                            <button
+                            <button wire:click="addToCart({{ $product->id }})"
                                 class="w-full py-2 bg-indigo-600 text-white font-bold rounded-lg hover:shadow-lg transition">
                                 <i class="ri-shopping-cart-2-line"></i> Add to Cart
                             </button>
                         @else
-                            <a href="{{ route('login') }}"
+                            <a href="{{ route('login') }}" wire:navigate
                                 class="block text-center w-full py-2 bg-indigo-600 text-white font-bold rounded-lg">
                                 <i class="ri-shopping-cart-2-line"></i> Add to Cart
                             </a>

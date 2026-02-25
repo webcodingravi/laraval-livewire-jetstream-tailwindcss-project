@@ -5,6 +5,7 @@ namespace App\Livewire\Front;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductWishlist;
+use App\Services\AddToCartService;
 use App\Services\WishlistService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -13,12 +14,12 @@ class Home extends Component
 {
     public $categories;
     public $featuredProducts;
-    public $isWishlisted = false;
+    public $isWishlisted = [];
 
 public function add_wishlists($productId) {
   try{
 
-    $this->isWishlisted = WishlistService::toggle($productId);
+    $this->isWishlisted[$productId] = WishlistService::toggle($productId);
      $this->dispatch('wishlistUpdated');
 
   }
@@ -28,6 +29,22 @@ public function add_wishlists($productId) {
 }
 
 
+// Add to Cart
+public function addToCart($productId) {
+     try{
+     AddToCartService::add($productId);
+     $this->dispatch('alert',type:'success',title:'Success !',text:"Added successfully");
+
+   }catch(\Exception $e) {
+        $this->dispatch('alert',type:'error',title:'Error!',text:$e->getMessage());
+   }
+
+
+    $this->dispatch('cartUpdated');
+}
+
+
+
     public function mount() {
       $category = Category::withCount('product')->orderBy('name','asc')->get();
       $this->categories = $category;
@@ -35,13 +52,9 @@ public function add_wishlists($productId) {
       $featured = Product::with(['category:id,name,slug','subCategory:id,name,slug','productImages:id,product_id,image_name'])->where('is_featured',true)->get();
       $this->featuredProducts = $featured;
 
-      $product = Product::first();
-      if(!empty($product)){
- $this->isWishlisted = WishlistService::checkWishlist($product->id);
-      }
-
-
-
+       foreach($featured as $product) {
+        $this->isWishlisted[$product->id] = WishlistService::checkWishlist($product->id);
+       }
 
     }
 

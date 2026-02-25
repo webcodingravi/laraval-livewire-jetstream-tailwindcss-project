@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('sku')->nullable();
             $table->decimal('price',10,2)->nullable();
             $table->decimal('old_price',10,2)->nullable();
-            $table->integer('discount')->nullable();
             $table->string('image')->nullable();
             $table->integer('quantity')->default(1);
             $table->string('color')->nullable();

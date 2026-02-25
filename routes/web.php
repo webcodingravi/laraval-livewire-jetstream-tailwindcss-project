@@ -32,13 +32,14 @@ Route::get('/products/{category?}/{subCategory?}',Products::class)->name('produc
 Route::get('/product/{slug}',ProductDetails::class)->name('product-detail');
 Route::get('/cart',ProductCart::class)->name('cart');
 Route::get('/checkout',Checkout::class)->name('checkout');
+Route::get('/my-wishlist',Wishlisted::class)->name('wishlist');
 
 
 
 // user route
 Route::group(['prefix' => 'user','as'=>'user.','middleware' => ['auth:sanctum',config('jetstream.auth_session'),'verified','user']],function() {
 Route::get('/dashboard',UserDashboard::class)->name('dashboard');
-Route::get('/my-wishlist',Wishlisted::class)->name('wishlist');
+
 
 });
 

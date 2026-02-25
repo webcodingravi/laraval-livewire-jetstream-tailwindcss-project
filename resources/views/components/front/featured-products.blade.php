@@ -21,8 +21,8 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Product Card 1 -->
-                    @foreach ($featuredProducts as $featured)
-                        <div
+                    @foreach ($featuredProducts as $index => $featured)
+                        <div wire:key="{{ $index }}"
                             class="group bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-300">
                             <div class="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                                 <div
@@ -31,20 +31,18 @@
                                 <div class="absolute top-2 right-4 z-10">
                                     @if ($featured && Auth::check())
                                         <button wire:click="add_wishlists({{ $featured->id }})"
-                                            class=" w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center {{ $isWishlisted
+                                            class=" w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center {{ $isWishlisted[$featured->id]
                                                 ? 'bg-rose-100 text-rose-600 border-rose-300'
                                                 : 'bg-white text-gray-700 border-gray-300 hover:border-rose-300' }}">
 
 
                                             <svg class="w-5 h-5 mx-auto"
-                                                fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
+                                                fill="{{ $isWishlisted[$featured->id] ? 'currentColor' : 'none' }}"
                                                 stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
                                                 </path>
                                             </svg>
-
-
 
                                         </button>
                                     @else
@@ -53,7 +51,7 @@
 
 
                                             <svg class="w-5 h-5 mx-auto"
-                                                fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
+                                                fill="{{ $isWishlisted[$featured->id] ? 'currentColor' : 'none' }}"
                                                 stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
@@ -66,16 +64,7 @@
                                     @endif
 
 
-                                    {{-- <button
-                                        class="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-red-50 transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            class="text-gray-400 hover:text-red-500">
-                                            <path
-                                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                            </path>
-                                        </svg>
-                                    </button> --}}
+
                                 </div>
                                 <div class="absolute top-4 left-4">
                                     @if (!empty($featured->is_hot))
@@ -118,12 +107,15 @@
                                             </span>
                                         @endif
 
-                                        @if ($featured->discount)
-                                            <span class="ms-2 font-medium text-rose-500">{{ $featured->discount }}%
-                                                OFF</span>
+
+                                        @if ($featured->old_price > $featured->price)
+                                            <span class="ml-2 font-medium text-green-600">
+                                                Save
+                                                {{ round((($featured->old_price - $featured->price) / $featured->old_price) * 100) }}%
+                                            </span>
                                         @endif
                                     </div>
-                                    <button
+                                    <button wire:click="addToCart({{ $featured->id }})"
                                         class="p-2 bg-[#24bad8] text-white rounded-lg hover:bg-[#0b7a93] transition transform hover:scale-110">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

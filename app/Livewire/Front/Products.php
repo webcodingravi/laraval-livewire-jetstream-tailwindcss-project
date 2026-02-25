@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Color;
 use App\Models\SubCategory;
 use App\Models\Product;
+use App\Services\AddToCartService;
 use App\Services\WishlistService;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -22,17 +23,18 @@ class Products extends Component
     public $selectedColors = [];
     public $minPrice = null;
     public $maxPrice = null;
-    public $isWishlisted = false;
+    public $isWishlisted = [];
     public $meta_title;
     public $meta_description;
 
 
 
 
+ // Toggle Wishlist
 public function add_wishlists($productId) {
   try{
 
-    $this->isWishlisted = WishlistService::toggle($productId);
+    $this->isWishlisted[$productId]= WishlistService::toggle($productId);
      $this->dispatch('wishlistUpdated');
 
   }
@@ -42,24 +44,31 @@ public function add_wishlists($productId) {
 }
 
 
+// Add to Cart
+public function addToCart($productId) {
+     try{
+     AddToCartService::add($productId);
+     $this->dispatch('alert',type:'success',title:'Success !',text:"Added successfully");
+
+   }catch(\Exception $e) {
+        $this->dispatch('alert',type:'error',title:'Error!',text:$e->getMessage());
+   }
+
+
+    $this->dispatch('cartUpdated');
+}
+
+
 
 
     public function mount($category = null,$subCategory = null) {
      $this->category = $category;
      $this->subCategory = $subCategory;
 
-     $product = Product::first();
-     if(!empty($product)) {
-       $this->isWishlisted = WishlistService::checkWishlist($product->id);
+     foreach(Product::all() as $product) {
+          $this->isWishlisted[$product->id] = WishlistService::checkWishlist($product->id);
      }
-
-
-
-
     }
-
-
-
 
     public function updatedSelectedCategories() {
         $this->resetPage();
@@ -174,9 +183,6 @@ public function add_wishlists($productId) {
 
 
         ->orderBy('name','asc')->get();
-
-
-
 
         return view('front.products',compact('products','subCategories','brands','colors'));
     }

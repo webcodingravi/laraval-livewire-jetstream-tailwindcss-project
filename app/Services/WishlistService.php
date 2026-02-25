@@ -39,7 +39,10 @@ class WishlistService
 
   public static function checkWishlist($productId)
 {
-    if (!Auth::check()) return false;
+    if (!Auth::check()) {
+      return false;
+    }
+
 
    return ProductWishlist::where('user_id', Auth::user()->id)
         ->where('product_id', $productId)

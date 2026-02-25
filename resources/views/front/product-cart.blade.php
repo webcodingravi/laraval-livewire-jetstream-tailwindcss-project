@@ -1,6 +1,6 @@
 <div>
     <!-- Header -->
-    <div class="bg-white shadow-sm">
+    <div class="shadow-sm mt-[100px]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <h1 class="text-3xl font-bold text-gray-900">Shopping Cart</h1>
             <p class="mt-2 text-gray-600">Review and manage your items</p>
@@ -131,7 +131,7 @@
 
                 <!-- Continue Shopping Link -->
                 <div class="mt-6">
-                    <a href="{{ route('home') }}"
+                    <a href="{{ route('home') }}" wire:navigate
                         class="flex items-center text-blue-600 hover:text-blue-700 font-medium">
                         <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -206,15 +206,7 @@
                             </div>
                         </div>
 
-                        <!-- Security Badge -->
-                        <div class="mt-6 text-center text-xs text-gray-600">
-                            <svg class="w-5 h-5 mx-auto mb-2 text-green-600" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m7.784-4.817a.5.5 0 00-.596.72c.4.533.534 1.158.534 1.697 0 2.071-1.679 3.75-3.75 3.75-2.07 0-3.75-1.679-3.75-3.75 0-.539.134-1.164.534-1.697a.5.5 0 00-.596-.72M9 12l2 2 4-4m5.784-4.817a.5.5 0 00-.596.72c.4.533.534 1.158.534 1.697" />
-                            </svg>
-                            Secure checkout powered by Stripe
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -222,7 +214,7 @@
     </div>
 
     <!-- Benefits Section -->
-    <div class="bg-gray-100 py-12 mt-12">
+    <div class="bg-white py-12 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">

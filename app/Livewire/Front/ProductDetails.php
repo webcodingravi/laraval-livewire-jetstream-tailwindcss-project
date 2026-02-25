@@ -58,13 +58,16 @@ public function add_wishlists($productId) {
 
 
 public function addToCart() {
-    $this->validate([
-        'color' => 'required',
-        'product_size' => 'required'
-    ]);
+
+  $this->validate([
+    'color' => $this->product->colors->count() > 0 ? 'required' : 'nullable',
+    'product_size' => $this->product->sizes->count() > 0 ? 'required' : 'nullable',
+]);
 
    try{
-     AddToCartService::add($this->productId,$this->price,$this->old_price,$this->discount,$this->quantity,$this->color,$this->product_size);
+
+     AddToCartService::add($this->productId,$this->price,$this->old_price,$this->quantity,$this->color,$this->product_size);
+
      $this->dispatch('alert',type:'success',title:'Success !',text:"Added successfully");
 
    }catch(\Exception $e) {

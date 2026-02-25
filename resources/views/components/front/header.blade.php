@@ -7,7 +7,8 @@
             <!-- Top Row: Logo, Search, Icons -->
             <div class="flex items-center justify-between gap-4 mb-3">
                 <!-- Logo with Brand Name -->
-                <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition">
+                <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition"
+                    wire:navigate>
                     <div
                         class="w-12 h-12 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-lg flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -110,7 +111,7 @@
                 <!-- Right Icons -->
                 <div class="flex items-center md:gap-4">
                     <!-- Wishlist -->
-                    <a href="{{ route('user.wishlist') }}"
+                    <a href="{{ route('wishlist') }}" wire:navigate
                         class="relative p-2 md:p-3 text-gray-700 hover:text-red-500 hover:bg-red-50 rounded-full transition"
                         title="Wishlist">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -124,7 +125,7 @@
                     </a>
 
                     <!-- Shopping Cart -->
-                    <a href="{{ route('cart') }}"
+                    <a href="{{ route('cart') }}" wire:navigate
                         class="relative p-2 md:p-3 text-gray-700 hover:text-[#0b7a93] hover:bg-indigo-50 rounded-full transition"
                         title="Cart">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -144,7 +145,7 @@
                                 class="flex items-center gap-2 p-2 md:p-3 text-gray-700 hover:text-[#24bad8] hover:bg-indigo-50 rounded-full transition">
                                 <div
                                     class="w-10 h-10 md:-mt-3 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full flex items-center justify-center text-white text-xs font-bold">
-                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                    {{ substr(Auth::user()->name, 0, 1) }} {{ Auth::user()->first_name[0] ?? 'U' }}
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -160,7 +161,7 @@
                                     <p class="text-indigo-100 text-sm">{{ Auth::user()->email ?? 'user@example.com' }}
                                     </p>
                                 </div>
-                                <a href="/dashboard"
+                                <a href="{{ route('user.dashboard') }}" wire:navigate
                                     class="px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -180,26 +181,8 @@
                                     </svg>
                                     My Orders
                                 </a>
-                                <a href="#"
-                                    class="px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="1"></circle>
-                                        <circle cx="19" cy="12" r="1"></circle>
-                                        <circle cx="5" cy="12" r="1"></circle>
-                                    </svg>
-                                    Wishlist
-                                </a>
-                                <a href="#"
-                                    class="px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="1"></circle>
-                                        <circle cx="19" cy="12" r="1"></circle>
-                                        <circle cx="5" cy="12" r="1"></circle>
-                                    </svg>
-                                    Settings
-                                </a>
+
+
                                 <hr class="my-1 border-gray-100">
                                 <form action="{{ route('logout') }}" method="post" class="block">
                                     @csrf
@@ -220,11 +203,11 @@
                         </div>
                     @else
                         <div class="hidden md:flex gap-2">
-                            <a href="/login"
+                            <a href="{{ route('login') }}" wire:navigate
                                 class="px-4 py-2 text-md font-medium text-[#0b7a93] hover:bg-indigo-50 rounded-lg transition">
                                 Login
                             </a>
-                            <a href="/register"
+                            <a href="{{ route('register') }}" wire:navigate
                                 class="px-4 py-2 bg-gradient-to-r from-[#24bad8] to-[#0b7a93] text-white text-md font-medium rounded-lg hover:shadow-lg transition">
                                 Register
                             </a>
@@ -348,11 +331,11 @@
                     </div>
                 @else
                     <div class="space-y-2">
-                        <a href="/login"
+                        <a href="{{ route('login') }}"
                             class="block px-4 py-3 text-sm text-[#0b7a93]  border-2 border-[#0b7a93] rounded-lg hover:bg-indigo-50 transition text-center font-medium">
                             Login
                         </a>
-                        <a href="/register"
+                        <a href="{{ route('register') }}"
                             class="block px-4 py-3 bg-gradient-to-r from-[#24bad8] to-[#0b7a93] text-white text-sm rounded-lg hover:shadow-lg transition text-center font-medium">
                             Register
                         </a>

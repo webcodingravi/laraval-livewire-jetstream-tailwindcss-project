@@ -19,7 +19,7 @@
             selectedSize: 'standard',
             quantity: 1,
             activeTab: 'description',
-            mainImage: '{{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }}'
+            mainImage: '@if (!empty($product->productImages->first()->image_name)) {{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }} @endif'
         }">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
 
@@ -96,10 +96,14 @@
                                     <input type="hidden" wire:model="old_price" value="{{ $old_price }}">
                                 @endif
 
-                                @if ($product->discount)
-                                    <span class="text-rose-500 font-medium">{{ $product->discount }}% OFF</span>
-                                    <input type="hidden" wire:model="discount" value="{{ $product->discount }}">
+                                @if ($product->old_price > $product->price)
+                                    <span class="ml-2 font-medium text-green-600">
+                                        Save
+                                        {{ round((($product->old_price - $product->price) / $product->old_price) * 100) }}%
+                                    </span>
                                 @endif
+
+
 
                             </div>
                         </div>
@@ -169,8 +173,7 @@
                         <!-- Action Buttons -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-4">
                             <!-- Add to Cart -->
-                            <button type="submit" wire:loading.attr="disabled"
-                                wire:loading.class="opacity-50 cursor-not-allowed" wire:target="addToCart"
+                            <button type="submit"
                                 class="col-span-2 py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -403,9 +406,11 @@
                             <!-- Product Image -->
                             <div class="aspect-square bg-gray-100 overflow-hidden relative">
                                 <a href="{{ route('product-detail', $product->slug) }}" wire:navigate>
-                                    <img src="{{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }}"
-                                        alt="{{ $product->title }}"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                                    @if (!empty($product->productImages->first()->image_name))
+                                        <img src="{{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }}"
+                                            alt="{{ $product->title }}"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                                    @endif
                                 </a>
 
                                 <!-- Wishlist Button -->
@@ -453,10 +458,14 @@
                                             {{ config('app.currency.symbol') }}{{ number_format($product->old_price, 2) }}
                                         </span>
                                     @endif
-                                    @if ($product->discount)
-                                        <span class="font-medium text-rose-500">{{ $product->discount }}%
-                                            OFF</span>
+
+                                    @if ($product->old_price > $product->price)
+                                        <span class="ml-2 font-medium text-green-600">
+                                            Save
+                                            {{ round((($product->old_price - $product->price) / $product->old_price) * 100) }}%
+                                        </span>
                                     @endif
+
                                 </div>
 
                                 @if ($product->quantity > 0)
@@ -476,7 +485,7 @@
                                         <i class="ri-shopping-cart-2-line"></i> Add to Cart
                                     </button>
                                 @else
-                                    <a href="{{ route('login') }}"
+                                    <a href="{{ route('login') }}" wire:navigate
                                         class="block text-center w-full py-2 bg-indigo-600 text-white font-bold rounded-lg">
                                         <i class="ri-shopping-cart-2-line"></i> Add to Cart
                                     </a>

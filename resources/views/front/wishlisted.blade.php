@@ -42,7 +42,7 @@
                             Home
                         </a>
                         <span class="text-gray-400">/</span>
-                        <span class="text-gray-900 font-semibold"><a href="{{ route('user.wishlist') }}"
+                        <span class="text-gray-900 font-semibold"><a href="{{ route('wishlist') }}"
                                 wire:navigate>Wishlist</a></span>
                     </nav>
                 </div>
@@ -51,135 +51,135 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
-                <div class="container mx-auto py-10">
 
-                    <h2 class="text-2xl font-bold mb-6">My Wishlist</h2>
+                @if (count($wishlists) > 0)
+                    @foreach ($wishlists as $wishlist)
+                        <div wire:key="{{ $wishlist->id }}"
+                            class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden">
 
-                    @if ($wishlists->isEmpty())
-                        <p>No products in wishlist.</p>
-                    @else
-                        @foreach ($wishlists as $wishlist)
-                            <div
-                                class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden">
-
-                                <!-- Product Image -->
-                                <div class="aspect-square bg-gray-100 overflow-hidden relative">
-                                    <a href="{{ route('product-detail', $wishlist->product->slug) }}" wire:navigate>
+                            <!-- Product Image -->
+                            <div class="aspect-square bg-gray-100 overflow-hidden relative">
+                                <a href="{{ route('product-detail', $wishlist->product->slug) }}" wire:navigate>
+                                    @if (!empty($wishlist->product->productImages->first()->image_name))
                                         <img src="{{ asset('storage/uploads/product/' . $wishlist->product->productImages->first()->image_name) }}"
                                             alt="{{ $wishlist->product->title }}"
                                             class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                                    @endif
+                                </a>
+
+
+                                <!-- Wishlist Button -->
+                                @if (Auth::check())
+                                    <button wire:click="add_wishlists({{ $wishlist->product->id }})"
+                                        class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center {{ [$wishlist->product->id]
+                                            ? 'bg-rose-100 text-rose-600 border-rose-300'
+                                            : 'bg-white text-gray-700 border-gray-300 hover:border-rose-300' }}">
+
+
+                                        <svg class="w-5 h-5 mx-auto"
+                                            fill="{{ $isWishlisted[$wishlist->product->id] ? 'currentColor' : 'none' }}"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                            </path>
+                                        </svg>
+
+
+
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}"
+                                        class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-700 border-gray-300 hover:border-rose-300">
+
+
+                                        <svg class="w-5 h-5 mx-auto"
+                                            fill="{{ $isWishlisted[$wishlist->product->id] ? 'currentColor' : 'none' }}"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                            </path>
+                                        </svg>
                                     </a>
-
-
-                                    <!-- Wishlist Button -->
-                                    @if (Auth::check())
-                                        <button wire:click="add_wishlists({{ $wishlist->product->id }})"
-                                            class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center {{ $isWishlisted
-                                                ? 'bg-rose-100 text-rose-600 border-rose-300'
-                                                : 'bg-white text-gray-700 border-gray-300 hover:border-rose-300' }}">
-
-
-                                            <svg class="w-5 h-5 mx-auto"
-                                                fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                                </path>
-                                            </svg>
+                                @endif
 
 
 
-                                        </button>
-                                    @else
-                                        <a href="{{ route('login') }}"
-                                            class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-700 border-gray-300 hover:border-rose-300">
-
-
-                                            <svg class="w-5 h-5 mx-auto"
-                                                fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                                </path>
-                                            </svg>
-
-
-
-                                        </a>
-                                    @endif
-
-
-
-                                    @if ($wishlist->product->is_hot)
-                                        <div
-                                            class="absolute top-3 right-3 bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                                            Hot
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <!-- Product Info -->
-                                <div class="p-4">
-
-                                    <p class="text-xs font-semibold text-indigo-600 mb-1 uppercase">
-                                        <a wire:navigate
-                                            href="{{ route('products', [$wishlist->product->category->slug, $wishlist->product->subCategory->slug]) }}">
-                                            {{ $wishlist->product->subCategory->name }}
-                                        </a>
-                                    </p>
-
-                                    <h3 class="font-bold text-gray-900 mb-2 line-clamp-2 h-14">
-                                        <a href="{{ route('product-detail', $wishlist->product->slug) }}"
-                                            wire:navigate>{{ $wishlist->product->title }}</a>
-
-                                    </h3>
-
-                                    <div class="flex items-center gap-2 mb-4">
-                                        <span class="text-xl font-bold text-indigo-600">
-                                            {{ config('app.currency.symbol') }}{{ number_format($wishlist->product->price, 2) }}
-                                        </span>
-
-                                        @if ($wishlist->product->old_price)
-                                            <span class="text-gray-400 line-through">
-                                                {{ config('app.currency.symbol') }}{{ number_format($wishlist->product->old_price, 2) }}
-                                            </span>
-                                        @endif
-                                        @if ($wishlist->product->discount)
-                                            <span class="font-medium text-rose-500">{{ $wishlist->product->discount }}%
-                                                OFF</span>
-                                        @endif
+                                @if ($wishlist->product->is_hot)
+                                    <div
+                                        class="absolute top-3 right-3 bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                        Hot
                                     </div>
-
-                                    @if ($wishlist->product->quantity > 0)
-                                        <span class="text-sm text-green-600 font-semibold block mb-3">
-                                            In Stock ({{ $wishlist->product->quantity }} left)
-                                        </span>
-                                    @else
-                                        <span class="text-sm text-red-600 font-semibold block mb-3">
-                                            Out of Stock
-                                        </span>
-                                    @endif
-
-                                    <!-- Add to Cart Button -->
-                                    @if (Auth::check())
-                                        <button
-                                            class="w-full py-2 bg-indigo-600 text-white font-bold rounded-lg hover:shadow-lg transition">
-                                            <i class="ri-shopping-cart-2-line"></i> Add to Cart
-                                        </button>
-                                    @else
-                                        <a href="{{ route('login') }}"
-                                            class="block text-center w-full py-2 bg-indigo-600 text-white font-bold rounded-lg">
-                                            <i class="ri-shopping-cart-2-line"></i> Add to Cart
-                                        </a>
-                                    @endif
-
-                                </div>
+                                @endif
                             </div>
-                        @endforeach
-                    @endif
+
+                            <!-- Product Info -->
+                            <div class="p-4">
+
+                                <p class="text-xs font-semibold text-indigo-600 mb-1 uppercase">
+                                    <a wire:navigate
+                                        href="{{ route('products', [$wishlist->product->category->slug, $wishlist->product->subCategory->slug]) }}">
+                                        {{ $wishlist->product->subCategory->name }}
+                                    </a>
+                                </p>
+
+                                <h3 class="font-bold text-gray-900 mb-2 line-clamp-2 h-14">
+                                    <a href="{{ route('product-detail', $wishlist->product->slug) }}"
+                                        wire:navigate>{{ $wishlist->product->title }}</a>
+
+                                </h3>
+
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="text-xl font-bold text-indigo-600">
+                                        {{ config('app.currency.symbol') }}{{ number_format($wishlist->product->price, 2) }}
+                                    </span>
+
+                                    @if ($wishlist->product->old_price)
+                                        <span class="text-gray-400 line-through">
+                                            {{ config('app.currency.symbol') }}{{ number_format($wishlist->product->old_price, 2) }}
+                                        </span>
+                                    @endif
+
+                                    @if ($wishlist->product->old_price > $wishlist->product->price)
+                                        <span class="ml-2 font-medium text-green-600">
+                                            Save
+                                            {{ round((($wishlist->product->old_price - $wishlist->product->price) / $wishlist->product->old_price) * 100) }}%
+                                        </span>
+                                    @endif
+                                </div>
+
+                                @if ($wishlist->product->quantity > 0)
+                                    <span class="text-sm text-green-600 font-semibold block mb-3">
+                                        In Stock ({{ $wishlist->product->quantity }} left)
+                                    </span>
+                                @else
+                                    <span class="text-sm text-red-600 font-semibold block mb-3">
+                                        Out of Stock
+                                    </span>
+                                @endif
+
+                                <!-- Add to Cart Button -->
+                                @if (Auth::check())
+                                    <button wire:click="addToCart({{ $wishlist->product->id }})"
+                                        class="w-full py-2 bg-indigo-600 text-white font-bold rounded-lg hover:shadow-lg transition">
+                                        <i class="ri-shopping-cart-2-line"></i> Add to Cart
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" wire:navigate
+                                        class="block text-center w-full py-2 bg-indigo-600 text-white font-bold rounded-lg">
+                                        <i class="ri-shopping-cart-2-line"></i> Add to Cart
+                                    </a>
+                                @endif
+
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p>No products in wishlist.</p>
+
+                @endif
 
 
-                </div>
+
             </div>
 
 
