@@ -22,13 +22,13 @@
                 @endsession
 
                 @session('error')
-                    <div class="mb-6 p-4 bg-rose-50 border-2 border-green-200 rounded-lg flex items-start gap-3">
+                    <div class="mb-6 p-4 bg-rose-50 border-2 border-rose-200 rounded-lg flex items-start gap-3">
                         <svg class="w-6 h-6 text-rose-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <p class="text-sm text-green-700 font-medium">{{ $value }}</p>
+                        <p class="text-sm text-rose-700 font-medium">{{ $value }}</p>
                     </div>
                 @endsession
 

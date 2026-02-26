@@ -4,6 +4,9 @@ namespace App\Livewire\Front;
 
 use Livewire\Component;
 use App\Models\CartItem;
+use App\Models\DiscountCode;
+use App\services\CartCalculatorService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class Checkout extends Component
@@ -11,14 +14,14 @@ class Checkout extends Component
     public $currentStep = 1;
     public $cartItems = [];
     public $subtotal = 0;
-    public $tax = 0;
     public $shipping = 10;
     public $discount = 0;
     public $total = 0;
+    public $PromoCode;
 
     // Shipping Form
-    public $firstName = '';
-    public $lastName = '';
+    public $first_name = '';
+    public $last_name = '';
     public $email = '';
     public $phone = '';
     public $address = '';
@@ -71,10 +74,49 @@ class Checkout extends Component
         ]
     ];
 
+
+
+    public function applyCoupon()
+{
+    $this->validate([
+        'PromoCode' => 'required|string'
+    ]);
+
+    try {
+        $discountCode = DiscountCode::where('name', $this->PromoCode)
+            ->whereDate('expiry_date', '>=', Carbon::today())
+            ->first();
+
+        if (!$discountCode) {
+            session()->flash('error', 'Invalid or expired code');
+            return;
+        }
+
+        // Promo discount calculate
+        if ($discountCode->type === 'percent') {
+            $this->discount = round(($this->subtotal * $discountCode->percent_amount) / 100, 2);
+        } else {
+            $this->discount = $discountCode->percent_amount;
+        }
+
+
+        // Recalculate totals (subtotal + shipping + discount)
+        $this->calculateTotals();
+
+        $this->PromoCode = '';
+
+        session()->flash('success', 'Discount applied successfully!');
+
+    } catch (\Exception $e) {
+        session()->flash('error', 'Something went wrong: '.$e->getMessage());
+    }
+}
+
+
     public function mount()
     {
         if (!Auth::check()) {
-            return redirect('/login');
+            return redirect()->route('login');
         }
 
         $this->loadCart();
@@ -91,7 +133,7 @@ class Checkout extends Component
     {
         $user = Auth::user();
         if ($user) {
-            $this->firstName = $user->name ?? '';
+            $this->first_name = $user->name ?? '';
             $this->email = $user->email ?? '';
         }
     }
@@ -101,18 +143,11 @@ class Checkout extends Component
         $this->subtotal = collect($this->cartItems)
             ->sum(fn($item) => $item['price'] * $item['quantity']);
 
-        $this->discount = collect($this->cartItems)
-            ->sum(fn($item) => (($item['old_price'] - $item['price']) * $item['quantity']));
+       // Shipping
+          $this->shipping = $this->subtotal > 50 ? 0 : 10;
 
-        // Determine shipping cost based on selected method
-        if ($this->subtotal > 50 && $this->shippingMethod === 'standard') {
-            $this->shipping = 0;
-        } else {
-            $this->shipping = $this->shippingOptions[$this->shippingMethod]['price'] ?? 10;
-        }
+       $this->total = round($this->subtotal + $this->shipping - $this->discount);
 
-        $this->tax = round(($this->subtotal * 0.08), 2);
-        $this->total = round($this->subtotal + $this->tax + $this->shipping - $this->discount, 2);
     }
 
     public function nextStep()
@@ -211,7 +246,6 @@ class Checkout extends Component
             'currentStep' => $this->currentStep,
             'cartItems' => $this->cartItems,
             'subtotal' => $this->subtotal,
-            'tax' => $this->tax,
             'shipping' => $this->shipping,
             'discount' => $this->discount,
             'total' => $this->total,

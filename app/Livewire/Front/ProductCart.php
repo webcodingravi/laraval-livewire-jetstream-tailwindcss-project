@@ -4,6 +4,8 @@ namespace App\Livewire\Front;
 
 use Livewire\Component;
 use App\Models\CartItem;
+use App\Models\DiscountCode;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class ProductCart extends Component
@@ -11,8 +13,24 @@ class ProductCart extends Component
     public $cartItems = [];
     public $subtotal = 0;
     public $shipping = 0;
-    public $discount = 0;
     public $total = 0;
+
+
+
+    public function processToCheckout()
+{
+    // Strong cart validation
+    if (
+        empty($this->cartItems) ||
+        collect($this->cartItems)->sum('quantity') <= 0
+    ) {
+        session()->flash('error', 'Your cart is empty.');
+        return; // Stop here
+    }
+
+    return redirect()->route('checkout');
+}
+
 
     public function mount()
     {
@@ -29,6 +47,29 @@ class ProductCart extends Component
 
         $this->cartItems = CartItem::where('user_id', Auth::id())->get()->toArray();
         $this->updateTotals();
+    }
+
+
+    public function applyCoupon() {
+         $this->validate([
+        'PromoCode' => 'required|string'
+    ]);
+     try {
+        $coupon = DiscountCode::where('name',$this->PromoCode)->whereDate('expiry_date', '>=',Carbon::today())->first();
+
+        if(!$coupon) {
+            session()->flash('error','Invalid or Expired coupon.');
+            return;
+        }
+
+        $this->appliedCoupon = $coupon;
+        $this->updateTotals();
+        $this->PromoCode = '';
+
+         } catch (\Exception $e) {
+       session()->flash('error', 'Something went wrong: '.$e->getMessage());
+    }
+
     }
 
     public function updateQuantity($cartItemId, $quantity)
@@ -63,18 +104,20 @@ class ProductCart extends Component
             $this->dispatch('cartUpdated', count: 0);
         }
     }
+public function updateTotals()
+{
 
-    public function updateTotals()
-    {
-        $this->subtotal = collect($this->cartItems)
-            ->sum(fn($item) => $item['price'] * $item['quantity']);
+    // // Calculate subtotal
+       $this->subtotal = collect($this->cartItems)
+        ->sum(fn($item) => $item['price'] * $item['quantity']);
 
-        $this->discount = collect($this->cartItems)
-            ->sum(fn($item) => (($item['old_price'] - $item['price']) * $item['quantity']));
+    // // Shipping
+      $this->shipping = 0;
 
-        $this->shipping = $this->subtotal > 50 ? 0 : 10;
-        $this->total = round($this->subtotal  + $this->shipping - $this->discount, 2);
-    }
+    // // Final total = subtotal + shipping - discount
+    $this->total = round($this->subtotal + $this->shipping);
+
+}
 
     public function render()
     {
@@ -82,7 +125,6 @@ class ProductCart extends Component
             'cartItems' => $this->cartItems,
             'subtotal' => $this->subtotal,
             'shipping' => $this->shipping,
-            'discount' => $this->discount,
             'total' => $this->total,
         ]);
     }

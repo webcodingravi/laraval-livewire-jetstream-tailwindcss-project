@@ -58,7 +58,7 @@ class AddToCartService
 
     }
 
-
+       //count product add to cart
     public static function count() {
         if(!Auth::check()) {
             return 0;
@@ -67,6 +67,10 @@ class AddToCartService
 
 
     }
+
+
+
+
 
 
 }

@@ -36,7 +36,12 @@
                     @else
                         <!-- Cart Items List -->
                         <div class="divide-y divide-gray-200">
+
                             @foreach ($cartItems as $item)
+                                @php
+                                    $product = \App\Models\Product::find($item['product_id']);
+                                @endphp
+
                                 <!-- Cart Item -->
                                 <div class="p-6 hover:bg-gray-50 transition-colors">
                                     <div class="flex gap-6">
@@ -44,16 +49,20 @@
                                         <div class="flex-shrink-0">
                                             <img src="{{ $item['image'] ? asset('storage/uploads/product/' . $item['image']) : 'https://via.placeholder.com/120' }}"
                                                 alt="{{ $item['title'] }}"
-                                                class="h-32 w-32 object-cover rounded-lg border border-gray-200">
+                                                class="h-32 w-32 object-cover rounded-lg border border-gray-200 cursor-pointer">
                                         </div>
 
                                         <!-- Product Details -->
+
                                         <div class="flex-grow">
                                             <div class="flex justify-between items-start mb-4">
                                                 <div>
-                                                    <h3 class="text-lg font-semibold text-gray-900">
-                                                        {{ $item['title'] }}
-                                                    </h3>
+                                                    <a href="{{ route('product-detail', $product->slug) }}">
+                                                        <h3
+                                                            class="text-lg font-semibold text-gray-900 hover:text-[#45AAC0]">
+                                                            {{ $item['title'] }}
+                                                        </h3>
+                                                    </a>
                                                     <p class="text-sm text-gray-600 mt-1">SKU: {{ $item['sku'] }}
                                                     </p>
                                                 </div>
@@ -132,7 +141,7 @@
                 <!-- Continue Shopping Link -->
                 <div class="mt-6">
                     <a href="{{ route('home') }}" wire:navigate
-                        class="flex items-center text-blue-600 hover:text-blue-700 font-medium">
+                        class="flex items-center text-[#45AAC0] hover:text-blue-700 font-medium">
                         <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -159,54 +168,34 @@
                             <div class="flex justify-between text-gray-700">
                                 <span>Shipping</span>
                                 <span class="{{ $shipping == 0 ? 'text-green-600 font-medium' : '' }}">
-                                    {{ $shipping == 0 ? 'Free' : '$' . number_format($shipping, 2) }}
+                                    {{ $shipping == 0 ? 'Free' : config('app.currency.symbol') . number_format($shipping, 2) }}
                                 </span>
                             </div>
 
-                            @if ($discount > 0)
-                                <div class="flex justify-between text-gray-700">
-                                    <span>Discount</span>
-                                    <span class="text-green-600">
-                                        -{{ config('app.currency.symbol') }}{{ number_format($discount, 2) }}</span>
+                            <!-- Total -->
+
+                            <div class="mt-6 mb-6">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-semibold text-gray-900">Total</span>
+                                    <span class="text-3xl font-bold text-gray-900">
+                                        {{ config('app.currency.symbol') }}{{ number_format($total, 2) }}</span>
                                 </div>
-                            @endif
-                        </div>
-
-                        <!-- Total -->
-                        <div class="mt-6 mb-6">
-                            <div class="flex justify-between items-center">
-                                <span class="text-lg font-semibold text-gray-900">Total</span>
-                                <span class="text-3xl font-bold text-gray-900">
-                                    {{ config('app.currency.symbol') }}{{ number_format($subtotal, 2) }}</span>
                             </div>
+
+                            <!-- Checkout Button -->
+                            <button wire:click="processToCheckout" wire:loading.attr="disabled"
+                                wire:loading.class="opacity-50 cursor-not-allowed" wire:target="processToCheckout"
+                                class="w-full block text-center bg-gradient-to-br from-[#24bad8] to-[#0b7a93] active:scale-95 duration-300 text-white font-semibold py-3 rounded-lg  mb-3 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                Proceed to Checkout
+                            </button>
+
+                            <!-- Continue Shopping Button -->
+                            <a href="{{ route('products') }}"
+                                class="block w-full  text-center border-2 border-gray-300 text-gray-700 font-semibold py-3 rounded-lg hover:border-gray-400 transition-colors">
+                                Continue Shopping
+                            </a>
+
                         </div>
-
-                        <!-- Checkout Button -->
-                        <a href="{{ route('checkout') }}" {{ !$cartItems ? 'disabled' : '' }} wire:navigate
-                            class="w-full block text-center bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors mb-3 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                            Proceed to Checkout
-                        </a>
-
-                        <!-- Continue Shopping Button -->
-                        <a href="/products"
-                            class="block w-full text-center border-2 border-gray-300 text-gray-700 font-semibold py-3 rounded-lg hover:border-gray-400 transition-colors">
-                            Continue Shopping
-                        </a>
-
-                        <!-- Promo Code Section -->
-                        <div class="mt-8 pt-6 border-t border-gray-200">
-                            <label class="block text-sm font-medium text-gray-900 mb-2">Promo Code</label>
-                            <div class="flex gap-2">
-                                <input type="text" placeholder="Enter code"
-                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                <button
-                                    class="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors">
-                                    Apply
-                                </button>
-                            </div>
-                        </div>
-
-
                     </div>
                 </div>
             </div>
@@ -225,7 +214,7 @@
                         </svg>
                     </div>
                     <h3 class="font-semibold text-gray-900">Free Shipping</h3>
-                    <p class="text-sm text-gray-600 mt-2">On orders over $50</p>
+                    <p class="text-sm text-gray-600 mt-2">On orders over {{ config('app.currency.symbol') }}50</p>
                 </div>
                 <div class="text-center">
                     <div class="flex justify-center mb-4">
@@ -250,4 +239,5 @@
             </div>
         </div>
     </div>
+
 </div>

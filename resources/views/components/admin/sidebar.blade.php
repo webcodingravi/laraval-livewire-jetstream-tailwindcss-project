@@ -1,7 +1,7 @@
 <div>
     <aside id="sidebar"
         class="fixed md:static left-0 top-0 h-full w-64 bg-gradient-to-b from-white via-indigo-50 to-gray-50 text-gray-900 shadow-lg transform -translate-x-full md:translate-x-0 transition-transform z-40">
-        <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition p-8"
+        <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition px-8 py-4"
             wire:navigate>
             <div
                 class="w-12 h-12 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-lg flex items-center justify-center">
@@ -19,7 +19,7 @@
                 <p class="text-xs text-gray-500">Online Store</p>
             </div>
         </a>
-
+        <hr>
 
 
 

@@ -1,4 +1,47 @@
 <div>
+
+    @php
+        $states = [
+            'Andhra Pradesh',
+            'Arunachal Pradesh',
+            'Assam',
+            'Bihar',
+            'Chhattisgarh',
+            'Goa',
+            'Gujarat',
+            'Haryana',
+            'Himachal Pradesh',
+            'Jharkhand',
+            'Karnataka',
+            'Kerala',
+            'Madhya Pradesh',
+            'Maharashtra',
+            'Manipur',
+            'Meghalaya',
+            'Mizoram',
+            'Nagaland',
+            'Odisha',
+            'Punjab',
+            'Rajasthan',
+            'Sikkim',
+            'Tamil Nadu',
+            'Telangana',
+            'Tripura',
+            'Uttar Pradesh',
+            'Uttarakhand',
+            'West Bengal',
+
+            // Union Territories
+            'Andaman and Nicobar Islands',
+            'Chandigarh',
+            'Dadra and Nagar Haveli and Daman and Diu',
+            'Delhi',
+            'Jammu and Kashmir',
+            'Ladakh',
+            'Lakshadweep',
+            'Puducherry',
+        ];
+    @endphp
     <!-- Header -->
     <div class="bg-white shadow-sm border-b">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -62,8 +105,8 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">First Name <span
                                             class="text-red-500">*</span></label>
-                                    <input type="text" wire:model.blur="firstName"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('firstName') border-red-500 @enderror"
+                                    <input type="text" wire:model.blur="first_name"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('first_name') border-red-500 @enderror"
                                         placeholder="John">
                                     @error('firstName')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -75,9 +118,9 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Last Name <span
                                             class="text-red-500">*</span></label>
                                     <input type="text" wire:model.blur="lastName"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('lastName') border-red-500 @enderror"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('last_name') border-red-500 @enderror"
                                         placeholder="Doe">
-                                    @error('lastName')
+                                    @error('last_name')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
@@ -134,9 +177,13 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">State <span
                                             class="text-red-500">*</span></label>
-                                    <input type="text" wire:model.blur="state"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('state') border-red-500 @enderror"
-                                        placeholder="NY">
+                                    <select wire:model="state"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <option value="">Select State</option>
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state }}">{{ $state }}</option>
+                                        @endforeach
+                                    </select>
                                     @error('state')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
@@ -158,18 +205,21 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Country <span
                                             class="text-red-500">*</span></label>
-                                    <input type="text" wire:model.blur="country"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('country') border-red-500 @enderror"
-                                        placeholder="United States">
+                                    <select wire:model.blur="country"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ">
+                                        <option value="india">India</option>
+                                    </select>
                                     @error('country')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
+
+
                                 </div>
                             </div>
 
                             <!-- Navigation Buttons -->
                             <div class="mt-8 flex justify-between">
-                                <a href="/products"
+                                <a href="{{ route('cart') }}"
                                     class="px-6 py-2 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:border-gray-400 transition-colors">
                                     Back to Cart
                                 </a>
@@ -498,8 +548,8 @@
                             @foreach ($cartItems as $item)
                                 <div class="flex justify-between text-sm">
                                     <span class="text-gray-600">{{ $item['title'] }} x {{ $item['quantity'] }}</span>
-                                    <span
-                                        class="text-gray-900 font-medium">${{ number_format($item['price'] * $item['quantity'], 2) }}</span>
+                                    <span class="text-gray-900 font-medium">
+                                        {{ config('app.currency.symbol') . number_format($item['price'] * $item['quantity'], 2) }}</span>
                                 </div>
                             @endforeach
                         </div>
@@ -508,22 +558,20 @@
                         <div class="space-y-3 mb-6 pb-6 border-b border-gray-200">
                             <div class="flex justify-between text-gray-700">
                                 <span>Subtotal</span>
-                                <span>${{ number_format($subtotal, 2) }}</span>
+                                <span>{{ config('app.currency.symbol') . number_format($subtotal, 2) }}</span>
                             </div>
                             <div class="flex justify-between text-gray-700">
                                 <span>Shipping</span>
                                 <span class="{{ $shipping == 0 ? 'text-green-600 font-medium' : '' }}">
-                                    {{ $shipping == 0 ? 'Free' : '$' . number_format($shipping, 2) }}
+                                    {{ $shipping == 0 ? 'Free' : config('app.currency.symbol') . number_format($shipping, 2) }}
                                 </span>
                             </div>
-                            <div class="flex justify-between text-gray-700">
-                                <span>Tax</span>
-                                <span>${{ number_format($tax, 2) }}</span>
-                            </div>
+
                             @if ($discount > 0)
                                 <div class="flex justify-between text-gray-700">
                                     <span>Discount</span>
-                                    <span class="text-green-600">-${{ number_format($discount, 2) }}</span>
+                                    <span
+                                        class="text-green-600">-{{ config('app.currency.symbol') . number_format($discount, 2) }}</span>
                                 </div>
                             @endif
                         </div>
@@ -531,28 +579,60 @@
                         <!-- Total Price -->
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-semibold text-gray-900">Total</span>
-                            <span class="text-3xl font-bold text-gray-900">${{ number_format($total, 2) }}</span>
+                            <span
+                                class="text-3xl font-bold text-gray-900">{{ config('app.currency.symbol') . number_format($total, 2) }}</span>
                         </div>
 
-                        <!-- Security Badges -->
-                        <div class="mt-8 pt-6 border-t border-gray-200 space-y-3 text-center">
-                            <div class="flex items-center justify-center gap-2 text-xs text-gray-600">
-                                <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 111.414 1.414L7.414 9l3.293 3.293a1 1 0 01-1.414 1.414l-4-4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                SSL Secured
+
+                        <!-- Promo Code Section -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <label class="block text-sm font-medium text-gray-900 mb-2">Promo Code</label>
+                            <div class="flex gap-2 mb-4">
+                                <input type="text" placeholder="Enter code" wire:model="PromoCode"
+                                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <button wire:click="applyCoupon" wire:loading.attr="disabled"
+                                    wire:loading.class="opacity-50 cursor-not-allowed" wire:target="applyDiscount"
+                                    class="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition-colors">
+                                    Apply
+                                </button>
                             </div>
-                            <div class="flex items-center justify-center gap-2 text-xs text-gray-600">
-                                <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 111.414 1.414L7.414 9l3.293 3.293a1 1 0 01-1.414 1.414l-4-4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                PCI Compliant
+                            <div>
+
+                                @error('PromoCode')
+                                    <span class="text-rose-500 font-medium">{{ $message }}</span>
+                                @enderror
+
                             </div>
+
+                            @session('success')
+                                <div
+                                    class="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" fill="currentColor"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <p class="text-sm text-green-700 font-medium">{{ $value }}</p>
+                                </div>
+                            @endsession
+
+                            @session('error')
+                                <div
+                                    class="mb-6 p-4 bg-rose-50 border-2 border-rose-200 rounded-lg flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-rose-600 mt-0.5 flex-shrink-0" fill="currentColor"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <p class="text-sm text-rose-700 font-medium">{{ $value }}</p>
+                                </div>
+                            @endsession
                         </div>
+
+
+
                     </div>
                 </div>
             </div>
