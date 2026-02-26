@@ -25,14 +25,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['guest'])->group(function () {
 Route::get('/register',Register::class)->name('register');
 Route::get('/login',Login::class)->name('login');
+// google se register
+Route::get('/auth/google',[SocialAuthController::class,'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback',[SocialAuthController::class,'callback']);
 
 
 
 });
 
-// google se register
-Route::get('/auth/google',[SocialAuthController::class,'redirect'])->name('google.redirect');
-Route::get('/auth/google/callback',[SocialAuthController::class,'callback']);
 
 
 

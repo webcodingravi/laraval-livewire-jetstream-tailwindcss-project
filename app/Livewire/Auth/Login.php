@@ -43,6 +43,6 @@ class Login extends Component
     }
     public function render()
     {
-        return view('auth.login');
+        return view('auth.login')->layoutData(['metaTitle' => 'Sign-in - ShopHub','metaDescription'=>'SingIn']);
     }
 }

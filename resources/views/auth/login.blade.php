@@ -133,6 +133,16 @@
                 </form>
 
 
+                <div class="mt-6">
+                    <a href="{{ route('google.redirect') }}"
+                        class="w-full flex items-center justify-center px-6 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <img class="h-5 w-5 mr-3" src="https://www.svgrepo.com/show/506498/google.svg"
+                            alt="Google icon">
+                        Sign In with Google
+                    </a>
+                </div>
+
+
                 <!-- Security Message -->
                 <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200 flex items-start gap-3">
                     <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">

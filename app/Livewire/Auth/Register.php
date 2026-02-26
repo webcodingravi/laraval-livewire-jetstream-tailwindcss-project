@@ -4,6 +4,7 @@ namespace App\Livewire\Auth;
 
 use App\Models\User;
 use DirectoryTree\Authorization\Role;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -68,6 +69,8 @@ public function register() {
     $user->roles()->save($userRole);
 
 
+
+
     DB::commit();
     session()->flash('success','Registration successfully You can now log in');
 
@@ -83,6 +86,6 @@ public function register() {
 
     public function render()
     {
-        return view('auth.register');
+        return view('auth.register')->layoutData(['metaTitle' => 'Signup - ShopHub','metaDescription'=>'Singup']);
     }
 }

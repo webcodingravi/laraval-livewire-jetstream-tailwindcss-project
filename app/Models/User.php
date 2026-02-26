@@ -10,6 +10,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use DirectoryTree\Authorization\Traits\Authorizable;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 
 class User extends Authenticatable
 {
@@ -36,8 +38,10 @@ class User extends Authenticatable
         'phone_code',
         'phone_number',
         'bio',
+        'google_id',
         'profile_photo_path',
-        'role'
+        'role',
+        'email_verified_at'
     ];
 
     /**
