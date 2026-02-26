@@ -111,7 +111,7 @@ class ColorCreateOrUpdate extends Component
        $data = $this->only(['name','code','category_id','sub_category_id','status']);
        $color->fill($data);
        if(!$color->isDirty()) {
-         $this->dispatch('alert',type:'error',title:'Error!',text:'You did not update anything');
+         $this->dispatch('alert',type:'info',title:'Not Updated',text:'You did not update anything');
          return;
        }
         $color->save();

@@ -8,7 +8,7 @@
             </div>
 
             <button wire:click="openModal"
-                class="w-full sm:w-auto px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center justify-center gap-2 ">
+                class="w-full sm:w-auto px-6 py-2 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded active:scale-95 duration-300 text-white transition-all flex items-center justify-center gap-2 ">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -29,7 +29,7 @@
 
                 <div>
                     <button wire:click="$toggle('showTrashed')"
-                        class="bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition px-6 py-2">
+                        class="bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded active:scale-95 duration-300 text-white transition-all px-6 py-2">
                         {{ $showTrashed ? 'Show Active' : 'Show Trash' }}
                     </button>
                 </div>
@@ -263,7 +263,7 @@
 
                             <button wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed"
                                 wire:target={{ $isEdit ? 'update' : 'save' }}
-                                class="bg-indigo-500 px-4 py-2 active:scale-90 duration-300 transition-all text-white rounded w-fit flex items-center justify-center gap-2">
+                                class="px-4 py-2 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] active:scale-95 duration-300 text-white transition-all  rounded w-fit flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7" />

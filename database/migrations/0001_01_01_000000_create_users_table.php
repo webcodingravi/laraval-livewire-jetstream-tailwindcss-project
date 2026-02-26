@@ -26,6 +26,8 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->text('bio')->nullable();
+            $table->string('google_id')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 

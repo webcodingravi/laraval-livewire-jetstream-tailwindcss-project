@@ -28,8 +28,8 @@ class ProductCreateOrUpdate extends Component
     public $category_id;
     public $sub_category_id;
     public $old_price;
-     public $discount;
-     public $price;
+    public $discount;
+    public $price;
     public $brand_id;
     public $short_description;
     public $description;
@@ -62,6 +62,7 @@ class ProductCreateOrUpdate extends Component
 
     //product Images
     public $images = [];
+
 
 
 

@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Livewire\Admin\AccountSetting;
 use App\Livewire\Admin\BrandCreateOrUpdate;
 use App\Livewire\Admin\CategoryCreateOrUpdate;
 use App\Livewire\Admin\ColorCreateOrUpdate;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
+use App\Livewire\Admin\DiscountCodeCreateOrUpdate;
 use App\Livewire\Admin\ProductCreateOrUpdate;
 use App\Livewire\Admin\SubCategoryCreateOrUpdate;
 use App\Livewire\Auth\Login;
@@ -24,7 +26,15 @@ Route::middleware(['guest'])->group(function () {
 Route::get('/register',Register::class)->name('register');
 Route::get('/login',Login::class)->name('login');
 
+
+
 });
+
+// google se register
+Route::get('/auth/google',[SocialAuthController::class,'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback',[SocialAuthController::class,'callback']);
+
+
 
 
 Route::get('/',Home::class)->name('home');
@@ -52,5 +62,6 @@ Route::get('/sub-category',SubCategoryCreateOrUpdate::class)->name('sub-category
 Route::get('/brand',BrandCreateOrUpdate::class)->name('brand');
 Route::get('/color',ColorCreateOrUpdate::class)->name('color');
 Route::get('/product',ProductCreateOrUpdate::class)->name('product');
+Route::get('/discount-code',DiscountCodeCreateOrUpdate::class)->name('discountCode');
 Route::get('/account-setting',AccountSetting::class)->name('account-setting');
 });

@@ -24,8 +24,8 @@ class Products extends Component
     public $minPrice = null;
     public $maxPrice = null;
     public $isWishlisted = [];
-    public $meta_title;
-    public $meta_description;
+    public $metaTitle;
+    public $metaDescription;
 
 
 
@@ -183,6 +183,8 @@ public function addToCart($productId) {
 
 
         ->orderBy('name','asc')->get();
+
+
 
         return view('front.products',compact('products','subCategories','brands','colors'));
     }

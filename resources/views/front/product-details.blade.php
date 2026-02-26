@@ -173,14 +173,28 @@
                         <!-- Action Buttons -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-4">
                             <!-- Add to Cart -->
-                            <button type="submit"
-                                class="col-span-2 py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 8m10 0l2 8m-12 0h12"></path>
-                                </svg>
-                                Add to Cart
-                            </button>
+
+                            @if (Auth::check())
+                                <button type="submit"
+                                    class="col-span-2 py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 8m10 0l2 8m-12 0h12">
+                                        </path>
+                                    </svg>
+                                    Add to Cart
+                                </button>
+                            @else
+                                <a href="{{ route('login') }}" wire:navigate
+                                    class="col-span-2 py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 8m10 0l2 8m-12 0h12">
+                                        </path>
+                                    </svg>
+                                    Add to Cart
+                                </a>
+                            @endif
                     </form>
 
 
@@ -213,10 +227,6 @@
                         </a>
                     @endif
                 </div>
-
-
-
-
             </div>
         </div>
 

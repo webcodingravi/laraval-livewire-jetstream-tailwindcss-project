@@ -1,16 +1,27 @@
 <div>
     <aside id="sidebar"
         class="fixed md:static left-0 top-0 h-full w-64 bg-gradient-to-b from-white via-indigo-50 to-gray-50 text-gray-900 shadow-lg transform -translate-x-full md:translate-x-0 transition-transform z-40">
-        <div class="p-6 border-b border-gray-200">
-            <h1 class="text-2xl font-bold flex items-center gap-2 text-indigo-600">
-                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                        d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM15.657 14.243a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM11 17a1 1 0 102 0v-1a1 1 0 10-2 0v1zM5.757 15.657a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM2 10a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.757 4.343a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707z" />
+        <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition p-8"
+            wire:navigate>
+            <div
+                class="w-12 h-12 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-lg flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"
+                    stroke="white" stroke-width="1.5">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                 </svg>
-                Admin
-            </h1>
-            <p class="text-indigo-500 text-sm mt-1">Dashboard</p>
-        </div>
+            </div>
+            <div class="sm:block">
+                <h1
+                    class="text-xl font-bold bg-gradient-to-r from-[#24bad8] to-[#0b7a93] bg-clip-text text-transparent">
+                    ShopHub</h1>
+                <p class="text-xs text-gray-500">Online Store</p>
+            </div>
+        </a>
+
+
+
 
         <nav class="flex-1 p-4 space-y-2" x-data="{ productsOpen: true, ordersOpen: true }">
             <a href="{{ route('admin.dashboard') }}"
@@ -37,7 +48,7 @@
                 <!-- Products Submenu -->
                 <div x-show="productsOpen" x-transition
                     class="ml-4 mt-2 space-y-1 border-l-4 border-indigo-400 pl-3 py-2">
-                    <a href="{{ route('admin.product') }}"
+                    <a href="{{ route('admin.product') }}" wire:navigate
                         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium {{ Request::segment(2) === 'product' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-600 shadow-sm' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 hover:shadow-sm' }} transition transform hover:translate-x-1">
                         <div
                             class="w-2 h-2 rounded-full {{ Request::segment(2) === 'product' ? 'bg-indigo-600' : 'bg-indigo-400' }}">
@@ -45,7 +56,7 @@
                         <span>All Products</span>
                     </a>
 
-                    <a href="{{ route('admin.category') }}"
+                    <a href="{{ route('admin.category') }}" wire:navigate
                         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium {{ Request::segment(2) === 'category' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-600 shadow-sm border-l-2 border-indigo-600' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 hover:shadow-sm' }} transition transform hover:translate-x-1">
                         <svg class="w-4 h-4 {{ Request::segment(2) === 'category' ? 'text-indigo-600' : 'text-indigo-500' }}"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,7 +65,7 @@
                         </svg>
                         <span>Category</span>
                     </a>
-                    <a href="{{ route('admin.sub-category') }}"
+                    <a href="{{ route('admin.sub-category') }}" wire:navigate
                         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium {{ Request::segment(2) === 'sub-category' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-600 shadow-sm border-l-2 border-indigo-600' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 hover:shadow-sm' }} transition transform hover:translate-x-1">
                         <svg class="w-4 h-4 {{ Request::segment(2) === 'sub-category' ? 'text-indigo-600' : 'text-indigo-500' }}"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,7 +74,7 @@
                         </svg>
                         <span>Sub Category</span>
                     </a>
-                    <a href="{{ route('admin.brand') }}"
+                    <a href="{{ route('admin.brand') }}" wire:navigate
                         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium {{ Request::segment(2) === 'brand' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-600 shadow-sm border-l-2 border-indigo-600' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 hover:shadow-sm' }} transition transform hover:translate-x-1">
                         <svg class="w-4 h-4 {{ Request::segment(2) === 'brand' ? 'text-indigo-600' : 'text-indigo-500' }}"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,13 +84,24 @@
                         <span>Brands</span>
                     </a>
 
-                    <a href="{{ route('admin.color') }}"
+                    <a href="{{ route('admin.color') }}" wire:navigate
                         class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium {{ Request::segment(2) === 'color' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-600 shadow-sm border-l-2 border-indigo-600' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 hover:shadow-sm' }} transition transform hover:translate-x-1">
                         <div
                             class="w-4 h-4 rounded-full {{ Request::segment(2) === 'color' ? 'bg-gradient-to-br from-indigo-600 to-purple-600' : 'bg-gradient-to-br from-indigo-400 to-purple-500' }}">
                         </div>
                         <span>Colors</span>
                     </a>
+
+                    <a href="{{ route('admin.discountCode') }}" wire:navigate
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium {{ Request::segment(2) === 'discount-code' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-600 shadow-sm border-l-2 border-indigo-600' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 hover:shadow-sm' }} transition transform hover:translate-x-1">
+                        <div
+                            class="w-4 h-4 rounded-full {{ Request::segment(2) === 'discount-code' ? 'bg-gradient-to-br from-indigo-600 to-purple-600' : 'bg-gradient-to-br from-indigo-400 to-purple-500' }}">
+                        </div>
+                        <span>Discount Code</span>
+                    </a>
+
+
+
                 </div>
 
                 <!-- Orders Dropdown -->
@@ -117,7 +139,8 @@
                         </a>
                         <a href="#"
                             class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-600 hover:shadow-sm transition transform hover:translate-x-1">
-                            <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>

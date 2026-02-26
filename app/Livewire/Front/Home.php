@@ -4,10 +4,8 @@ namespace App\Livewire\Front;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductWishlist;
 use App\Services\AddToCartService;
 use App\Services\WishlistService;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Home extends Component
@@ -61,6 +59,6 @@ public function addToCart($productId) {
 
     public function render()
     {
-        return view('front.home')->layout('layouts.app');
+        return view('front.home')->layoutData(['metaTitle'=>'Home - ShopHub','metaDescription'=>'Home']);
     }
 }

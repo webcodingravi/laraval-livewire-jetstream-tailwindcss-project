@@ -12,7 +12,8 @@
             <section id="profile" class="bg-white rounded-lg shadow">
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex items-center">
-                        <i class="ri-user-line text-2xl text-blue-500 mr-3"></i>
+
+                        <i class="ri-user-line text-2xl text-[#1DA7C4] mr-3"></i>
                         <div>
                             <h2 class="text-xl font-bold text-gray-900">Profile Information</h2>
                             <p class="text-sm text-gray-600">Update your personal details</p>
@@ -30,7 +31,7 @@
 
 
                             <div
-                                class="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition shadow-lg">
+                                class="absolute bottom-0 right-0 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] text-white p-2 rounded-full transition shadow-lg">
                                 <input type="file" wire:model="profile_photo"
                                     class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
                                 <span>
@@ -163,7 +164,7 @@
                         <div class="pt-4 border-t border-gray-200 flex justify-end gap-3">
                             <button type="submit" wire:loading.attr="disabled" wire:target="updateProfile"
                                 wire:loading.class="cursor-not-allowed opacity-50"
-                                class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium flex items-center">
+                                class="px-6 py-2 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded active:scale-95 duration-300 text-white transition-all font-medium flex items-center">
                                 <i class="ri-save-line mr-2"></i>
                                 Save Changes
                             </button>

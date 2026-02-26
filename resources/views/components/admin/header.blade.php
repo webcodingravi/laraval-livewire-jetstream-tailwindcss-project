@@ -39,8 +39,9 @@
                         </p>
                         <p class="text-xs text-gray-500">Administrator</p>
                     </div>
+
                     <button
-                        class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold hover:shadow-lg transition">
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-[#24bad8] to-[#0b7a93] active:scale-95 duration-300 flex items-center justify-center text-white font-bold hover:shadow-lg transition">
                         @if (!empty(Auth::user()->profile_photo_path))
                             <img src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" alt="Profile"
                                 class="w-full h-full rounded-full object-cover">

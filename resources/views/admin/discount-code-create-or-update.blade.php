@@ -3,8 +3,8 @@
         <!-- Page Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Product Colors</h2>
-                <p class="text-gray-600 mt-1">Manage your Product Color</p>
+                <h2 class="text-3xl font-bold text-gray-900">Discount Code</h2>
+                <p class="text-gray-600 mt-1">Manage your Discount Code</p>
             </div>
 
             <button wire:click="openModal"
@@ -12,20 +12,14 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Add Color
+                Add Discount Code
             </button>
         </div>
 
         <!-- Search and Filter -->
         <div class="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-6">
             <div class="flex md:flex-row flex-col md:justify-end items-center gap-4">
-                <div>
-                    <button wire:click="export">
-                        <i class="ri-file-excel-2-fill text-4xl text-green-600 hover:text-green-800"></i>
 
-                    </button>
-
-                </div>
 
                 <div>
                     <button wire:click="$toggle('showTrashed')"
@@ -35,7 +29,7 @@
                 </div>
 
                 <div>
-                    <select wire:model.live.debounce.500ms="filtterStatus"
+                    <select wire:model.live.debounce.500ms="filterStatus"
                         class="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All</option>
                         <option value="active">Active</option>
@@ -44,7 +38,7 @@
                 </div>
 
                 <div>
-                    <input type="text" wire:model.live.debounce.500ms="search" placeholder="Search categories..."
+                    <input type="text" wire:model.live.debounce.500ms="search" placeholder="Search Discount Code..."
                         class="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
 
@@ -58,58 +52,64 @@
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">S.No.</th>
-                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Color Name</th>
-                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Color Code</th>
-                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Category</th>
-                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Sub Category</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Discount Code</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Type</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">
+                                Amount({{ config('app.currency.symbol') }}) / Percent (%)</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Expiry Date</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Status</th>
-                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Created Date</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($colors->isNotEmpty())
-                            @foreach ($colors as $color)
+                        @if ($discountCodes->isNotEmpty())
+                            @foreach ($discountCodes as $discountCode)
                                 <tr class=" border-b border-gray-200 hover:bg-gray-50 transition">
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
-                                            {{ ($colors->currentPage() - 1) * $colors->perPage() + $loop->iteration }}
+                                            {{ ($discountCodes->currentPage() - 1) * $discountCodes->perPage() + $loop->iteration }}
+                                        </p>
+
+                                    </td>
+
+                                    <td>
+                                        <p class="font-semibold text-gray-900">
+                                            {{ $discountCode->name }}</p>
+                                    </td>
+
+                                    <td>
+                                        <p class="font-semibold text-gray-900">
+                                            {{ ucfirst($discountCode->type) }}</p>
+                                    </td>
+
+
+
+                                    <td class="py-4 px-4">
+
+                                        <p class="font-semibold text-gray-900">
+                                            @if ($discountCode->type === 'amount')
+                                                {{ config('app.currency.symbol') }}{{ number_format($discountCode->percent_amount, 2) }}
+                                            @else
+                                                {{ round($discountCode->percent_amount) }}%
+                                            @endif
                                         </p>
 
 
                                     </td>
 
+
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
-                                            {{ $color->name }}</p>
+                                            {{ \Carbon\Carbon::parse($discountCode->expiry_date)->format('d-m-Y') }}
+                                        </p>
 
 
                                     </td>
 
 
-                                    <td class="py-4 px-4">
-                                        <p class="font-semibold text-gray-900">
-                                            {{ $color->code }}</p>
-
-
-                                    </td>
 
                                     <td class="py-4 px-4">
-                                        <p class="font-semibold text-gray-900">
-                                            {{ $color->category->name }}</p>
-
-
-                                    </td>
-
-                                    <td class="py-4 px-4">
-                                        <p class="font-semibold text-gray-900">
-                                            {{ $color->subCategory->name }}</p>
-
-
-                                    </td>
-
-                                    <td class="py-4 px-4">
-                                        @if ($color->status === 'active')
+                                        @if ($discountCode->status === 'active')
                                             <span
                                                 class='px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold'>Active</span>
                                         @else
@@ -119,13 +119,10 @@
 
 
                                     </td>
-                                    <td class="py-4 px-4 text-gray-600">
-                                        {{ \Carbon\Carbon::parse($color->created_at)->format('d M Y') }}
 
-                                    </td>
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-2">
-                                            <button wire:click="edit({{ $color->id }})"
+                                            <button wire:click="edit({{ $discountCode->id }})"
                                                 class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
@@ -135,7 +132,7 @@
                                                 </svg>
                                             </button>
                                             @if (!$showTrashed)
-                                                <button wire:click="delete({{ $color->id }})"
+                                                <button wire:click="delete({{ $discountCode->id }})"
                                                     class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
@@ -145,12 +142,12 @@
                                                     </svg>
                                                 </button>
                                             @else
-                                                <button wire:click="restore({{ $color->id }})"
+                                                <button wire:click="restore({{ $discountCode->id }})"
                                                     class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition">
                                                     <i class="ri-reset-right-fill text-xl"></i>
                                                 </button>
 
-                                                <button wire:click="forceDelete({{ $color->id }})"
+                                                <button wire:click="forceDelete({{ $discountCode->id }})"
                                                     class="p-2 text-rose-600 hover:bg-indigo-50 rounded-lg transition">
                                                     <i class="ri-delete-bin-2-line text-xl"></i>
                                                     force delete
@@ -164,7 +161,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="8" class="text-center p-4">Not Found Colors</td>
+                                <td colspan="6" class="text-center p-4">Empty Discount Code</td>
                             </tr>
                         @endif
 
@@ -175,7 +172,7 @@
 
             <!-- Pagination -->
             <div class="p-4">
-                {{ $colors->links() }}
+                {{ $discountCodes->links() }}
             </div>
         </div>
 
@@ -184,83 +181,77 @@
         {{-- open modal --}}
         @if ($isOpen)
             <div class="bg-black/50 flex fixed justify-center inset-0 items-center animate__animated animate__fadeIn">
-                <div class="bg-white rounded md:w-6/12 w-full p-4 shadow-md animate__animated animate__zoomIn">
+                <div
+                    class="bg-white rounded md:w-6/12 w-full p-4 shadow-md animate__animated animate__zoomIn overflow-y-auto max-h-screen">
                     <div class="flex justify-between items-center">
-                        <h1 class="text-2xl font-semibold">{{ $isEdit ? 'Edit Brand' : 'Add Brand' }}
-                        </h1>
+                        <h1 class="text-2xl font-semibold">
+                            {{ $isEdit ? 'Edit Discount Code' : 'Add New Discount Code' }}</h1>
                         <button class="text-xl cursor-pointer" wire:click="closeModal">X</button>
 
                     </div>
                     <hr class="text-slate-200 my-4">
 
                     <form wire:submit.prevent="{{ $isEdit ? 'update' : 'save' }}" class="flex flex-col gap-8">
-                        <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Color Name<span
-                                    class="text-rose-500">*</span></label>
-                            <input type="text" wire:model.live.debounce.500ms="name"
-                                class="border rounded-md border-slate-200 p-4 focus:outline-none"
-                                placeholder="Enter Color Name...">
-                            @error('name')
-                                <span class="text-rose-500">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        <div class="grid md:grid-cols-2 grid-cols-1 gap-4 w-full">
+                            <div class="flex gap-1 flex-col">
+                                <label class="font-medium text-md text-slate-800">Discount Code<span
+                                        class="text-rose-500">*</span></label>
+                                <input type="text" wire:model="name"
+                                    class="border rounded-md border-slate-200 p-4 focus:outline-none"
+                                    placeholder="Enter Discount...">
+                                @error('name')
+                                    <span class="text-rose-500">{{ $message }}</span>
+                                @enderror
+                            </div>
 
-                        <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Color Code<span
-                                    class="text-rose-500">*</span></label>
-                            <input type="color" wire:model="code" class="w-full">
-                        </div>
-
-                        <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Category<span
-                                    class="text-rose-500">*</span></label>
-                            <select wire:model="category_id"
-                                class="border rounded-md border-slate-200 p-4 focus:outline-none"
-                                placeholder="Enter Category Name...">
-                                <option value="">---Select Category---</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-
-                            </select>
-
-                            @error('category_id')
-                                <span class="text-rose-500">{{ $message }}</span>
-                            @enderror
+                            <div class="flex gap-1 flex-col">
+                                <label class="font-medium text-md text-slate-800">Type<span
+                                        class="text-rose-500">*</span></label>
+                                <select wire:model="type"
+                                    class="border  border-slate-200 p-4 rounded focus:outline-none cursor-pointer">
+                                    <option value="amount">Amount</option>
+                                    <option value="percent">Percent</option>
+                                </select>
+                            </div>
                         </div>
 
 
-                        <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Sub Category<span
-                                    class="text-rose-500">*</span></label>
-                            <select wire:model="sub_category_id"
-                                class="border rounded-md border-slate-200 p-4 focus:outline-none"
-                                placeholder="Enter Category Name...">
-                                <option value="">---Select Sub Category---</option>
-                                @foreach ($subCategories as $subCategory)
-                                    <option value="{{ $subCategory->id }}">{{ $subCategory->name }}</option>
-                                @endforeach
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex gap-1 flex-col">
+                                <label
+                                    class="font-medium text-md text-slate-800">Amount({{ config('app.currency.symbol') }})
+                                    / Percent(%)<span class="text-rose-500">*</span></label>
+                                <input type="number" step="0.01" wire:model="percent_amount"
+                                    class="border rounded-md border-slate-200 p-4 focus:outline-none"
+                                    placeholder="0.0">
+                                @error('percent_amount')
+                                    <span class="text-rose-500">{{ $message }}</span>
+                                @enderror
+                            </div>
 
-                            </select>
 
-                            @error('sub_category_id')
-                                <span class="text-rose-500">{{ $message }}</span>
-                            @enderror
+                            <div class="flex gap-1 flex-col">
+                                <label class="font-medium text-md text-slate-800">Expiry
+                                    Date
+                                    <span class="text-rose-500">*</span></label>
+                                <input type="date" wire:model="expiry_date" min="{{ now()->format('Y-m-d') }}"
+                                    class="border rounded-md border-slate-200 p-4 focus:outline-none">
+                                @error('expiry_date')
+                                    <span class="text-rose-500">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                         </div>
 
-
-
-                        <div class="flex gap-1 flex-col">
+                        <div class="flex gap-1 flex-col w-fit">
                             <label class="font-medium text-md text-slate-800">Status<span
                                     class="text-rose-500">*</span></label>
                             <select wire:model="status"
-                                class="border rounded-md border-slate-200 p-4 focus:outline-none">
+                                class="border rounded  border-slate-200 px-4 py-3 focus:outline-none cursor-pointer">
                                 <option value="active">Active</option>
                                 <option value="deactive">Deactive</option>
                             </select>
-                            @error('status')
-                                <span class="text-rose-500">{{ $message }}</span>
-                            @enderror
+
                         </div>
 
                         <div class="flex gap-1 flex-col">
@@ -272,7 +263,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7" />
                                 </svg>
-                                {{ $isEdit ? 'Update Color' : 'Add Color' }}</button>
+                                {{ $isEdit ? 'Update Discount' : 'Add Discount' }}</button>
 
 
                         </div>
