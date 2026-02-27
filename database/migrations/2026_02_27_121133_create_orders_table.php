@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('order_number')->nullable();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('shipping_address_id')->references('id')->on('user_addresses')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('billing_address_id')->references('id')->on('user_addresses')->cascadeOnDelete()->cascadeOnUpdate();
+
             $table->decimal('subtotal',10,2)->nullable();
             $table->decimal('discount',10,2)->nullable()->default(0);
             $table->string('discount_code')->nullable();

@@ -5,9 +5,13 @@ namespace App\Livewire\Front;
 use Livewire\Component;
 use App\Models\CartItem;
 use App\Models\DiscountCode;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\UserAddress;
 use App\services\CartCalculatorService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Checkout extends Component
 {
@@ -100,6 +104,11 @@ class Checkout extends Component
             $this->discount = $discountCode->percent_amount;
         }
 
+        session()->put('coupon',[
+            'code' => $discountCode->name,
+            'value' => $discountCode->percent_amount,
+            'type' => $discountCode->type,
+        ]);
 
         // Recalculate totals (subtotal + shipping + discount)
         $this->calculateTotals();
@@ -123,12 +132,18 @@ class Checkout extends Component
         }
 
         $this->loadCart();
+
         $this->populateUserData();
     }
 
     public function loadCart()
     {
         $this->cartItems = CartItem::where('user_id', Auth::id())->get()->toArray();
+        if (count($this->cartItems) == 0) {
+         return redirect()->route('cart')
+        ->with('error', 'Your cart is empty');
+        }
+
         $this->calculateTotals();
     }
 
@@ -148,7 +163,7 @@ class Checkout extends Component
             ->sum(fn($item) => $item['price'] * $item['quantity']);
 
        // Shipping
-          $this->shipping = $this->subtotal > 50 ? 0 : 10;
+          $this->shipping = $this->subtotal > 50 ? 0 : 0;
 
        $this->total = round($this->subtotal + $this->shipping - $this->discount);
 
@@ -278,10 +293,118 @@ class Checkout extends Component
         $this->validateStep2();
         $this->validateStep3();
 
-        // Create order in database and process payment
+        $coupon = session('coupon');
+
+         DB::beginTransaction();
+
+        try{
+
+           $cartItems = CartItem::where('user_id', auth()->id())->get();
+
+            if ($cartItems->isEmpty()) {
+                return redirect()->route('cart')
+                    ->with('error', 'Your cart is empty');
+            }
+
+
+
+        //Save Shipping Address
+        $shippingAddress = UserAddress::create([
+            'user_id' => auth()->id(),
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'fullname' => $this->first_name.' '.$this->last_name,
+            'phone' => $this->phone,
+            'address' => $this->address,
+            'city' => $this->city,
+            'state' => $this->state,
+            'zip_code' => $this->zip_code,
+            'country' => $this->country,
+            'type' => 'shipping'
+        ]);
+
+        //Save Billing address
+        $billingAddress = UserAddress::create([
+               'user_id' => auth()->id(),
+               'first_name' => $this->billingFirstName,
+               'last_name' => $this->billingLastName,
+               'fullname' => $this->billingFirstName.' '.$this->billingLastName,
+               'address' => $this->billingAddress,
+               'city' => $this->billingCity,
+               'state' => $this->billingState,
+               'zip_code' => $this->billingZipCode,
+               'country' => $this->billingCountry,
+               'type' => 'billing'
+
+        ]);
+
+
+
+        //Create Order
+        $order = Order::create([
+              'user_id' => auth()->id(),
+              'shipping_address_id' => $shippingAddress->id,
+              'billing_address_id' => $billingAddress->id,
+              'discount' => $this->discount,
+              'discount_code' => $coupon['code'] ?? null,
+              'subtotal' => $this->subtotal,
+              'total' => $this->total,
+              'payment_method' => $this->paymentMethod,
+              'total' => $this->total,
+              'shipping_first_name' => $shippingAddress->first_name,
+              'shipping_last_name' => $shippingAddress->last_name,
+              'shipping_phone' => $shippingAddress->phone,
+              'shipping_email' => auth()->user()->email,
+              'shipping_address' => $shippingAddress->address,
+              'shipping_city' => $shippingAddress->city,
+              'shipping_state' => $shippingAddress->state,
+              'shipping_zip' => $shippingAddress->zip_code,
+              'shipping_country' => $shippingAddress->country
+        ]);
+
+         $orderNumber = 'ORD-'.date('Ymd').'-'.str_pad($order->id,4,'0',STR_PAD_LEFT);
+
+         $order->update([
+           'order_number' => $orderNumber
+        ]);
+
+
+        //Order Item
+        foreach($this->cartItems as $item) {
+               OrderItem::create([
+              'order_id' => $order->id,
+              'product_id' => $item['product_id'],
+              'product_name' => $item['title'],
+              'price' => $item['price'],
+              'quantity' => $item['quantity'],
+              'color' => $item['color'],
+              'size' => $item['size'],
+              'total_price'=> $item['price'] * $item['quantity']
+
+        ]);
+
+        }
+
+        DB::commit();
+
+        // Cart clear
+        CartItem::where('user_id',auth()->id())->delete();
+
+
+        session()->forget('coupon');
         // For now just redirect to success
-        session()->flash('success', 'Order placed successfully!');
-        return redirect('/order-confirmation');
+        $this->dispatch('alert',type:'success',title:'Success!',text:"Order Successfully Placed Thank You!");
+        return redirect()->route('cart');
+
+        }
+
+        catch(\Exception $e) {
+            DB::rollBack();
+            $this->dispatch('alert',type:'error',title:'Error!', text:$e->getMessage());
+        }
+
+
+
     }
 
     public function render()

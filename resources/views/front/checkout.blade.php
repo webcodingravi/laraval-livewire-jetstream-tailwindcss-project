@@ -365,39 +365,46 @@
                         <form wire:submit="nextStep">
                             <!-- Payment Method Selection -->
                             <div class="space-y-4 mb-8">
-                                <!-- Credit Card -->
+                                <!-- COD -->
                                 <label
-                                    class="flex items-center p-4 border-2 {{ $paymentMethod === 'credit_card' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
-                                    <input type="radio" wire:model="paymentMethod" value="credit_card"
+                                    class="flex items-center p-4 border-2 {{ $paymentMethod === 'cod' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
+                                    <input type="radio" wire:model="paymentMethod" value="cod"
                                         class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
                                     <div class="ml-3">
-                                        <p class="font-semibold text-gray-900">Credit or Debit Card</p>
-                                        <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
-                                    </div>
-                                </label>
-
-                                <!-- PayPal -->
-                                <label
-                                    class="flex items-center p-4 border-2 {{ $paymentMethod === 'paypal' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
-                                    <input type="radio" wire:model="paymentMethod" value="paypal"
-                                        class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
-                                    <div class="ml-3">
-                                        <p class="font-semibold text-gray-900">PayPal</p>
-                                        <p class="text-sm text-gray-600">Fast and secure payment</p>
-                                    </div>
-                                </label>
-
-                                <!-- Apple Pay -->
-                                <label
-                                    class="flex items-center p-4 border-2 {{ $paymentMethod === 'apple_pay' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
-                                    <input type="radio" wire:model="paymentMethod" value="apple_pay"
-                                        class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
-                                    <div class="ml-3">
-                                        <p class="font-semibold text-gray-900">Apple Pay</p>
+                                        <p class="font-semibold text-gray-900">COD</p>
                                         <p class="text-sm text-gray-600">Quick and easy checkout</p>
                                     </div>
                                 </label>
                             </div>
+
+                            <!-- UPI -->
+                            <div class="space-y-4 mb-8">
+                                <label
+                                    class="flex items-center p-4 border-2 {{ $paymentMethod === 'upi' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
+                                    <input type="radio" wire:model="paymentMethod" value="upi"
+                                        class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
+                                    <div class="ml-3">
+                                        <p class="font-semibold text-gray-900">UPI</p>
+                                        <p class="text-sm text-gray-600">Fast and secure payment</p>
+                                    </div>
+                                </label>
+                            </div>
+
+
+
+                            <!-- Credit Card -->
+                            <label
+                                class="flex items-center p-4 border-2 {{ $paymentMethod === 'credit_card' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
+                                <input type="radio" wire:model="paymentMethod" value="credit_card"
+                                    class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
+                                <div class="ml-3">
+                                    <p class="font-semibold text-gray-900">Credit or Debit Card</p>
+                                    <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
+                                </div>
+                            </label>
+
+
+
 
                             <!-- Credit Card Details -->
                             @if ($paymentMethod === 'credit_card')
@@ -416,8 +423,8 @@
 
                                     <!-- Card Number -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Card Number <span
-                                                class="text-red-500">*</span></label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Card Number
+                                            <span class="text-red-500">*</span></label>
                                         <input type="text" wire:model.blur="cardNumber"
                                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('cardNumber') border-red-500 @enderror"
                                             placeholder="1234 5678 9012 3456" maxlength="16">
@@ -606,10 +613,10 @@
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 @if ($paymentMethod === 'credit_card')
                                     <p class="text-gray-900">Credit Card ending in {{ substr($cardNumber, -4) }}</p>
-                                @elseif ($paymentMethod === 'paypal')
-                                    <p class="text-gray-900">PayPal</p>
+                                @elseif ($paymentMethod === 'upi')
+                                    <p class="text-gray-900">UPI</p>
                                 @else
-                                    <p class="text-gray-900">Apple Pay</p>
+                                    <p class="text-gray-900">COD</p>
                                 @endif
                             </div>
                         </div>
@@ -626,7 +633,8 @@
                                 class="px-6 py-2 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:border-gray-400 transition-colors">
                                 Back
                             </button>
-                            <button wire:click="placeOrder"
+                            <button wire:click="placeOrder" wire:loading.attr="disabled"
+                                wire:loading.class="opacity-50 cursor-not-allowed" wire:target="placeOrder"
                                 class="px-8 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors">
                                 Place Order
                             </button>

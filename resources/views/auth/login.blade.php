@@ -117,7 +117,8 @@
                     </div>
 
                     <!-- Sign In Button -->
-                    <button type="submit"
+                    <button type="submit" wire:loading.attr="disabled"
+                        wire:loading.class="opacity-50 cursor-not-allowed" wire:target="login"
                         class="w-full py-3 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105 active:scale-95">
                         Sign In
                     </button>
