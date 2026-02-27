@@ -22,8 +22,9 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->integer('zip_code')->nullable();
             $table->string('country')->nullable();
+            $table->enum('type',['shipping','billing'])->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
-            $table->boolean('is_default')->default(true);
+            $table->boolean('is_default')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

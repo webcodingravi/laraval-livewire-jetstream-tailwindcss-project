@@ -77,4 +77,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function addresss() {
+        return $this->hasMany(UserAddress::class);
+    }
 }

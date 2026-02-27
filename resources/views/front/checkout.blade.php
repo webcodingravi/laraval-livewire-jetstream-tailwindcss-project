@@ -98,7 +98,6 @@
                 @if ($currentStep === 1)
                     <div class="bg-white rounded-lg shadow p-6">
                         <h2 class="text-2xl font-bold text-gray-900 mb-6">Shipping Information</h2>
-
                         <form wire:submit="nextStep">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- First Name -->
@@ -117,7 +116,7 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Last Name <span
                                             class="text-red-500">*</span></label>
-                                    <input type="text" wire:model.blur="lastName"
+                                    <input type="text" wire:model.blur="last_name"
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('last_name') border-red-500 @enderror"
                                         placeholder="Doe">
                                     @error('last_name')
@@ -167,7 +166,7 @@
                                             class="text-red-500">*</span></label>
                                     <input type="text" wire:model.blur="city"
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('city') border-red-500 @enderror"
-                                        placeholder="New York">
+                                        placeholder="Enter City">
                                     @error('city')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
@@ -193,10 +192,10 @@
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">ZIP Code <span
                                             class="text-red-500">*</span></label>
-                                    <input type="text" wire:model.blur="zipCode"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('zipCode') border-red-500 @enderror"
+                                    <input type="number" wire:model.blur="zip_code" placeholder="Zip Code"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('zip_code') border-red-500 @enderror"
                                         placeholder="10001">
-                                    @error('zipCode')
+                                    @error('zip_code')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
@@ -255,6 +254,7 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">First Name <span
                                                 class="text-red-500">*</span></label>
                                         <input type="text" wire:model.blur="billingFirstName"
+                                            placeholder="Enter First Name..."
                                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingFirstName') border-red-500 @enderror">
                                         @error('billingFirstName')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -266,6 +266,7 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Last Name <span
                                                 class="text-red-500">*</span></label>
                                         <input type="text" wire:model.blur="billingLastName"
+                                            placeholder="Enter Last Name..."
                                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingLastName') border-red-500 @enderror">
                                         @error('billingLastName')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -277,6 +278,7 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Street Address
                                             <span class="text-red-500">*</span></label>
                                         <input type="text" wire:model.blur="billingAddress"
+                                            placeholder="Address..."
                                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingAddress') border-red-500 @enderror">
                                         @error('billingAddress')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -287,44 +289,55 @@
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">City <span
                                                 class="text-red-500">*</span></label>
-                                        <input type="text" wire:model.blur="billingCity"
+                                        <input type="text" wire:model.blur="billingCity" placeholder="City Name.."
                                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingCity') border-red-500 @enderror">
                                         @error('billingCity')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                         @enderror
                                     </div>
 
-                                    <!-- State -->
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">State <span
                                                 class="text-red-500">*</span></label>
-                                        <input type="text" wire:model.blur="billingState"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingState') border-red-500 @enderror">
+                                        <select wire:model="billingState"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                            <option value="">Select State</option>
+                                            @foreach ($states as $state)
+                                                <option value="{{ $state }}">{{ $state }}</option>
+                                            @endforeach
+                                        </select>
                                         @error('billingState')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                         @enderror
                                     </div>
 
+
                                     <!-- Zip Code -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">ZIP Code <span
                                                 class="text-red-500">*</span></label>
-                                        <input type="text" wire:model.blur="billingZipCode"
+                                        <input type="number" wire:model.blur="billingZipCode" placeholder="Zip Code"
                                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingZipCode') border-red-500 @enderror">
                                         @error('billingZipCode')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                         @enderror
                                     </div>
 
+
                                     <!-- Country -->
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Country <span
                                                 class="text-red-500">*</span></label>
-                                        <input type="text" wire:model.blur="billingCountry"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingCountry') border-red-500 @enderror">
+                                        <select wire:model.blur="billingCountry"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ">
+                                            <option value="india">India</option>
+                                        </select>
                                         @error('billingCountry')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                         @enderror
+
+
                                     </div>
                                 </div>
                             @endif
@@ -475,32 +488,117 @@
                         <div class="mb-8 pb-8 border-b border-gray-200">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Shipping Address</h3>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                <p class="text-gray-900">{{ $firstName }} {{ $lastName }}</p>
+                                <p class="text-gray-900">{{ $first_name . ' ' . $last_name }}</p>
                                 <p class="text-gray-600">{{ $address }}</p>
                                 <p class="text-gray-600">{{ $city }}, {{ $state }}
-                                    {{ $zipCode }}</p>
+                                    {{ $zip_code }}</p>
                                 <p class="text-gray-600">{{ $country }}</p>
                                 <p class="text-gray-600 mt-2">{{ $email }}</p>
                                 <p class="text-gray-600">{{ $phone }}</p>
                             </div>
+
+
                         </div>
+
+
+                        <div class="mb-8 pb-8 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Billing Address</h3>
+
+                            @if ($sameAsShipping)
+                                <h3 class="text-lg font-semibold text-gray-900">Same as shipping address</h3>
+                            @else
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <p class="text-gray-900">{{ $billingFirstName . ' ' . $billingLastName }}</p>
+                                    <p class="text-gray-600">{{ $billingAddress }}</p>
+                                    <p class="text-gray-600">{{ $billingCity }}, {{ $billingState }}
+                                        {{ $billingZipCode }}</p>
+                                    <p class="text-gray-600">{{ $billingCountry }}</p>
+                                </div>
+                            @endif
+                        </div>
+
+
 
                         <!-- Order Items -->
                         <div class="mb-8 pb-8 border-b border-gray-200">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Order Items</h3>
-                            <div class="space-y-4">
+                            <div class="space-y-4 w-full">
                                 @foreach ($cartItems as $item)
-                                    <div class="flex justify-between items-start p-4 bg-gray-50 rounded-lg">
+                                    <div class="p-4 bg-gray-50 rounded-lg flex gap-4">
+                                        <div class="flex-shrink-0">
+                                            <img src="{{ $item['image'] ? asset('storage/uploads/product/' . $item['image']) : 'https://via.placeholder.com/120' }}"
+                                                alt="{{ $item['title'] }}"
+                                                class="h-32 w-32 object-cover rounded-lg border border-gray-200 cursor-pointer">
+
+                                        </div>
+
                                         <div>
                                             <p class="font-semibold text-gray-900">{{ $item['title'] }}</p>
+                                            <p class="text-sm text-gray-600 mt-1">SKU: {{ $item['sku'] }}
+                                            </p>
                                             <p class="text-sm text-gray-600">Quantity: {{ $item['quantity'] }}</p>
+                                            <p class="font-semibold text-gray-900">Price:
+                                                <span class="text-gray-900 font-medium">
+                                                    {{ config('app.currency.symbol') . number_format($item['price'] * $item['quantity'], 2) }}</span>
+                                            </p>
+                                            <div class="space-y-2 mb-4">
+                                                <div class="flex items-center gap-4 text-sm flex-wrap">
+                                                    @if ($item['color'])
+                                                        <span class="text-gray-600">
+                                                            <span class="font-medium">Color:</span>
+                                                            <span
+                                                                class="ml-2 text-gray-900">{{ $item['color'] }}</span>
+                                                        </span>
+                                                    @endif
+                                                    @if ($item['size'])
+                                                        <span class="text-gray-600">
+                                                            <span class="font-medium">Size:</span>
+                                                            <span
+                                                                class="ml-2 text-gray-900">{{ $item['size'] }}</span>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        <p class="font-semibold text-gray-900">
-                                            ${{ number_format($item['price'] * $item['quantity'], 2) }}</p>
                                     </div>
                                 @endforeach
+
+
+                                <div class="mt-4 bg-gray-50 rounded-lg p-4">
+                                    <div class="flex justify-between text-gray-700 mb-4">
+                                        <span>Subtotal</span>
+                                        <span>{{ config('app.currency.symbol') . number_format($subtotal, 2) }}</span>
+                                    </div>
+
+                                    <div class="flex justify-between text-gray-700 mb-4">
+                                        <span>Shipping</span>
+                                        <span class="{{ $shipping == 0 ? 'text-green-600 font-medium' : '' }}">
+                                            {{ $shipping == 0 ? 'Free' : config('app.currency.symbol') . number_format($shipping, 2) }}
+                                        </span>
+
+                                    </div>
+
+
+                                    @if ($discount > 0)
+                                        <div class="flex justify-between text-gray-700 mb-4">
+                                            <span>Discount</span>
+                                            <span
+                                                class="text-green-600">-{{ config('app.currency.symbol') . number_format($discount, 2) }}</span>
+
+                                        </div>
+                                    @endif
+
+
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-lg font-semibold text-gray-900">Total</span>
+                                        <span
+                                            class="text-lg font-bold text-gray-900">{{ config('app.currency.symbol') . number_format($total, 2) }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
 
                         <!-- Payment Method -->
                         <div class="mb-8">
@@ -580,7 +678,7 @@
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-semibold text-gray-900">Total</span>
                             <span
-                                class="text-3xl font-bold text-gray-900">{{ config('app.currency.symbol') . number_format($total, 2) }}</span>
+                                class="text-xl font-bold text-gray-900">{{ config('app.currency.symbol') . number_format($total, 2) }}</span>
                         </div>
 
 

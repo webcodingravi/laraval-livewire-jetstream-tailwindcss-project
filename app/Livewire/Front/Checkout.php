@@ -27,8 +27,9 @@ class Checkout extends Component
     public $address = '';
     public $city = '';
     public $state = '';
-    public $zipCode = '';
-    public $country = '';
+    public $zip_code = '';
+    public $country = 'india';
+    public $type = 'shipping';
 
     // Billing Form
     public $sameAsShipping = true;
@@ -38,7 +39,7 @@ class Checkout extends Component
     public $billingCity = '';
     public $billingState = '';
     public $billingZipCode = '';
-    public $billingCountry = '';
+    public $billingCountry = 'india';
 
     public $paymentMethod = 'credit_card';
     public $cardNumber = '';
@@ -113,6 +114,8 @@ class Checkout extends Component
 }
 
 
+
+
     public function mount()
     {
         if (!Auth::check()) {
@@ -133,7 +136,8 @@ class Checkout extends Component
     {
         $user = Auth::user();
         if ($user) {
-            $this->first_name = $user->name ?? '';
+            $this->first_name = $user->first_name ?? '';
+            $this->last_name = $user->last_name ?? '';
             $this->email = $user->email ?? '';
         }
     }
@@ -165,6 +169,7 @@ class Checkout extends Component
         }
     }
 
+
     public function previousStep()
     {
         if ($this->currentStep > 1) {
@@ -172,18 +177,20 @@ class Checkout extends Component
         }
     }
 
+
     public function validateStep1()
     {
         $this->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email',
-            'phone' => 'required|string',
+            'phone' => 'required|numeric|digits:10',
             'address' => 'required|string',
             'city' => 'required|string',
             'state' => 'required|string',
-            'zipCode' => 'required|string',
+            'zip_code' => 'required|numeric',
             'country' => 'required|string',
+            'type' => 'required|in:shipping,billing'
         ]);
     }
 
@@ -196,7 +203,7 @@ class Checkout extends Component
                 'billingAddress' => 'required|string',
                 'billingCity' => 'required|string',
                 'billingState' => 'required|string',
-                'billingZipCode' => 'required|string',
+                'billingZipCode' => 'required|string|numeric',
                 'billingCountry' => 'required|string',
             ]);
         }
@@ -217,6 +224,43 @@ class Checkout extends Component
     public function toggleSameAsShipping()
     {
         $this->sameAsShipping = !$this->sameAsShipping;
+    }
+
+    public function updatedSameAsShipping($value) {
+        if($value){
+           $this->billingFirstName = $this->first_name;
+           $this->billingLastName = $this->last_name;
+           $this->billingAddress = $this->address;
+           $this->billingCity = $this->city;
+           $this->billingState = $this->state;
+           $this->billingZipCode = $this->zip_code;
+           $this->billingCountry = $this->country;
+
+
+
+        }
+    }
+
+    public function updated($propertyName){
+        if($this->sameAsShipping) {
+         if(in_array($propertyName,[
+             'first_name',
+             'last_name',
+             'address',
+             'city',
+             'state',
+             'zip_code',
+             'country',
+         ])) {
+           $this->billingFirstName = $this->first_name;
+           $this->billingLastName = $this->last_name;
+           $this->billingAddress = $this->address;
+           $this->billingCity = $this->city;
+           $this->billingState = $this->state;
+           $this->billingZipCode = $this->zip_code;
+           $this->billingCountry = $this->country;
+         }
+        }
     }
 
     public function updateShippingMethod($method)
