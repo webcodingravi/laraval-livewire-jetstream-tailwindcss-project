@@ -365,36 +365,31 @@ class Checkout extends Component
 
     public function placeOrder()
     {
-        // Validate all steps
         $this->validateStep1();
         $this->validateStep2();
 
         try {
-            if ($this->paymentMethod === 'cod') {
-                $order = $this->saveOrder();
-                if (! $order) {
-                    return;
-                }
+            $order = $this->saveOrder();
+            if (! $order) {
+                return;
+            }
 
-                $this->orderId = $order->order_number;
+            // Save order access in session (one-time)
+            session()->put('order_access_'.$order->order_number, true);
+
+            // Clear cart & coupon for COD
+            if ($this->paymentMethod === 'cod') {
                 CartItem::where('user_id', auth()->id())->delete();
                 session()->forget('coupon');
 
-                return redirect()->route('order.confirmed', $this->orderId);
-
+                return redirect()->route('order.confirmed', $order->order_number);
             }
 
+            // Stripe flow
             if ($this->paymentMethod === 'stripe') {
-
-                $order = $this->saveOrder();
-                if (! $order) {
-                    return;
-                }
-
                 $this->orderId = $order->order_number;
 
                 Stripe::setApiKey(env('STRIPE_SECRET'));
-
                 $paymentStripe = PaymentIntent::create([
                     'amount' => $this->total * 100,
                     'currency' => 'inr',
@@ -404,22 +399,13 @@ class Checkout extends Component
                     ],
                 ]);
 
-                $this->dispatch(
-                    'confirm-stripe-payment',
-                    client_secret: $paymentStripe->client_secret
-                );
-
-                return;
+                $this->dispatch('confirm-stripe-payment', client_secret: $paymentStripe->client_secret);
             }
 
         } catch (\Exception $e) {
 
             $this->dispatch('alert', type: 'error', title: 'Error!', text: $e->getMessage());
-
-            return null;
-
         }
-
     }
 
     public function updatedPaymentMethod($value)

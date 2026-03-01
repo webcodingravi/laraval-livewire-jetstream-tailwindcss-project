@@ -12,6 +12,11 @@ class OrderConfirmed extends Component
 
     public function mount($orderId)
     {
+        // One-time session check
+        if (! session()->pull('order_access_'.$orderId)) {
+            abort(403, 'This order page is no longer accessible');
+        }
+
         $this->order = Order::where('order_number', $orderId)
             ->where('user_id', Auth::id())
             ->firstOrFail();
