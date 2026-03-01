@@ -273,6 +273,31 @@
                                         @enderror
                                     </div>
 
+                                    <!-- Email -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Email <span
+                                                class="text-red-500">*</span></label>
+                                        <input type="email" wire:model.blur="billingEmail"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingEmail') border-red-500 @enderror"
+                                            placeholder="john@example.com">
+                                        @error('billingEmail')
+                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Phone -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone <span
+                                                class="text-red-500">*</span></label>
+                                        <input type="tel" wire:model.blur="billingPhone"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingPhone') border-red-500 @enderror"
+                                            placeholder="(555) 000-0000">
+                                        @error('billingPhone')
+                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+
                                     <!-- Address (Full Width) -->
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Street Address
@@ -371,21 +396,8 @@
                                     <input type="radio" wire:model="paymentMethod" value="cod"
                                         class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
                                     <div class="ml-3">
-                                        <p class="font-semibold text-gray-900">COD</p>
+                                        <p class="font-semibold text-gray-900">Cash On Delivery</p>
                                         <p class="text-sm text-gray-600">Quick and easy checkout</p>
-                                    </div>
-                                </label>
-                            </div>
-
-                            <!-- UPI -->
-                            <div class="space-y-4 mb-8">
-                                <label
-                                    class="flex items-center p-4 border-2 {{ $paymentMethod === 'upi' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
-                                    <input type="radio" wire:model="paymentMethod" value="upi"
-                                        class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
-                                    <div class="ml-3">
-                                        <p class="font-semibold text-gray-900">UPI</p>
-                                        <p class="text-sm text-gray-600">Fast and secure payment</p>
                                     </div>
                                 </label>
                             </div>
@@ -393,83 +405,25 @@
 
 
                             <!-- Credit Card -->
-                            <label
-                                class="flex items-center p-4 border-2 {{ $paymentMethod === 'credit_card' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
-                                <input type="radio" wire:model="paymentMethod" value="credit_card"
+                            {{-- <label
+                                class="flex items-center p-4 border-2 {{ $paymentMethod == 'credit_card' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
+
+                                <input type="radio" wire:model.live="paymentMethod" value="credit_card"
                                     class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
+
                                 <div class="ml-3">
                                     <p class="font-semibold text-gray-900">Credit or Debit Card</p>
                                     <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
                                 </div>
-                            </label>
+                            </label> --}}
 
-
-
-
-                            <!-- Credit Card Details -->
-                            @if ($paymentMethod === 'credit_card')
-                                <div class="space-y-6 bg-gray-50 p-6 rounded-lg">
-                                    <!-- Cardholder Name -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Cardholder Name
-                                            <span class="text-red-500">*</span></label>
-                                        <input type="text" wire:model.blur="cardName"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('cardName') border-red-500 @enderror"
-                                            placeholder="John Doe">
-                                        @error('cardName')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Card Number -->
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Card Number
-                                            <span class="text-red-500">*</span></label>
-                                        <input type="text" wire:model.blur="cardNumber"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('cardNumber') border-red-500 @enderror"
-                                            placeholder="1234 5678 9012 3456" maxlength="16">
-                                        @error('cardNumber')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Expiry and CVC -->
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Expiry Date
-                                                <span class="text-red-500">*</span></label>
-                                            <input type="text" wire:model.blur="cardExpiry"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('cardExpiry') border-red-500 @enderror"
-                                                placeholder="MM/YY" maxlength="5">
-                                            @error('cardExpiry')
-                                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">CVC <span
-                                                    class="text-red-500">*</span></label>
-                                            <input type="text" wire:model.blur="cardCvc"
-                                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('cardCvc') border-red-500 @enderror"
-                                                placeholder="123" maxlength="4">
-                                            @error('cardCvc')
-                                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <!-- Security Info -->
-                                    <div
-                                        class="flex items-start gap-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                        <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                        </svg>
-                                        <p class="text-sm text-blue-800">Your payment information is secure and
-                                            encrypted.</p>
-                                    </div>
+                            {{-- @if ($paymentMethod == 'credit_card')
+                                <div id="stripe-wrapper" class="mt-4">
+                                    <div id="card-element" class="border p-3 rounded"></div>
+                                    <div id="card-errors" class="text-red-500 mt-2"></div>
                                 </div>
-                            @endif
+                            @endif --}}
+
 
                             <!-- Navigation Buttons -->
                             <div class="mt-8 flex justify-between">
@@ -501,7 +455,7 @@
                                     {{ $zip_code }}</p>
                                 <p class="text-gray-600">{{ $country }}</p>
                                 <p class="text-gray-600 mt-2">{{ $email }}</p>
-                                <p class="text-gray-600">{{ $phone }}</p>
+                                <p class="text-gray-600">+91-{{ $phone }}</p>
                             </div>
 
 
@@ -520,6 +474,8 @@
                                     <p class="text-gray-600">{{ $billingCity }}, {{ $billingState }}
                                         {{ $billingZipCode }}</p>
                                     <p class="text-gray-600">{{ $billingCountry }}</p>
+                                    <p class="text-gray-600">{{ $billingEmail }}</p>
+                                    <p class="text-gray-600">+91-{{ $billingPhone }}</p>
                                 </div>
                             @endif
                         </div>
@@ -613,8 +569,6 @@
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 @if ($paymentMethod === 'credit_card')
                                     <p class="text-gray-900">Credit Card ending in {{ substr($cardNumber, -4) }}</p>
-                                @elseif ($paymentMethod === 'upi')
-                                    <p class="text-gray-900">UPI</p>
                                 @else
                                     <p class="text-gray-900">COD</p>
                                 @endif

@@ -2,132 +2,139 @@
 
 namespace App\Livewire\Front;
 
-use Livewire\Component;
 use App\Models\CartItem;
 use App\Models\DiscountCode;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\ShippingMethod;
 use App\Models\UserAddress;
-use App\services\CartCalculatorService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+
+// use Stripe\PaymentIntent;
+// use Stripe\Stripe;
 
 class Checkout extends Component
 {
     public $currentStep = 1;
+
     public $cartItems = [];
+
     public $subtotal = 0;
-    public $shipping = 10;
+
+    public $shipping = 0;
+
     public $discount = 0;
+
     public $total = 0;
+
     public $PromoCode;
 
     // Shipping Form
     public $first_name = '';
+
     public $last_name = '';
+
     public $email = '';
+
     public $phone = '';
+
     public $address = '';
+
     public $city = '';
+
     public $state = '';
+
     public $zip_code = '';
+
     public $country = 'india';
+
     public $type = 'shipping';
 
     // Billing Form
     public $sameAsShipping = true;
+
     public $billingFirstName = '';
+
     public $billingLastName = '';
+
+    public $billingEmail = '';
+
+    public $billingPhone = '';
+
     public $billingAddress = '';
+
     public $billingCity = '';
+
     public $billingState = '';
+
     public $billingZipCode = '';
+
     public $billingCountry = 'india';
 
-    public $paymentMethod = 'credit_card';
+    public $paymentMethod = 'cod';
+
     public $cardNumber = '';
+
     public $cardExpiry = '';
+
     public $cardCvc = '';
+
     public $cardName = '';
-    public $shippingMethod = 'standard';
 
-    public $shippingOptions = [
-        'standard' => [
-            'name' => 'Standard Shipping',
-            'price' => 10,
-            'delivery' => '5-7 business days',
-            'description' => 'Regular delivery'
-        ],
-        'express' => [
-            'name' => 'Express Shipping',
-            'price' => 25,
-            'delivery' => '2-3 business days',
-            'description' => 'Faster delivery'
-        ],
-        'overnight' => [
-            'name' => 'Overnight Shipping',
-            'price' => 50,
-            'delivery' => 'Next business day',
-            'description' => 'Fastest delivery'
-        ],
-        'free' => [
-            'name' => 'Free Shipping',
-            'price' => 0,
-            'delivery' => '7-10 business days',
-            'description' => 'Available on orders over $50'
-        ]
-    ];
+    public $shippingMethods = [];
 
+    public $selectedShipping = null;
 
+    public $clientSecret;
 
     public function applyCoupon()
-{
-    $this->validate([
-        'PromoCode' => 'required|string'
-    ]);
-
-    try {
-        $discountCode = DiscountCode::where('name', $this->PromoCode)
-            ->whereDate('expiry_date', '>=', Carbon::today())
-            ->first();
-
-        if (!$discountCode) {
-            session()->flash('error', 'Invalid or expired code');
-            return;
-        }
-
-        // Promo discount calculate
-        if ($discountCode->type === 'percent') {
-            $this->discount = round(($this->subtotal * $discountCode->percent_amount) / 100, 2);
-        } else {
-            $this->discount = $discountCode->percent_amount;
-        }
-
-        session()->put('coupon',[
-            'code' => $discountCode->name,
-            'value' => $discountCode->percent_amount,
-            'type' => $discountCode->type,
+    {
+        $this->validate([
+            'PromoCode' => 'required|string',
         ]);
 
-        // Recalculate totals (subtotal + shipping + discount)
-        $this->calculateTotals();
+        try {
+            $discountCode = DiscountCode::where('name', $this->PromoCode)
+                ->whereDate('expiry_date', '>=', Carbon::today())
+                ->first();
 
-        $this->PromoCode = '';
+            if (! $discountCode) {
+                session()->flash('error', 'Invalid or expired code');
 
-        session()->flash('success', 'Discount applied successfully!');
+                return;
+            }
 
-    } catch (\Exception $e) {
-        session()->flash('error', 'Something went wrong: '.$e->getMessage());
+            // Promo discount calculate
+            if ($discountCode->type === 'percent') {
+                $this->discount = round(($this->subtotal * $discountCode->percent_amount) / 100, 2);
+            } else {
+                $this->discount = $discountCode->percent_amount;
+            }
+
+            session()->put('coupon', [
+                'code' => $discountCode->name,
+                'value' => $discountCode->percent_amount,
+                'type' => $discountCode->type,
+            ]);
+
+            // Recalculate totals (subtotal + shipping + discount)
+            $this->calculateTotals();
+
+            $this->PromoCode = '';
+
+            session()->flash('success', 'Discount applied successfully!');
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Something went wrong: '.$e->getMessage());
+        }
     }
-}
-
-
-
 
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -140,8 +147,27 @@ class Checkout extends Component
     {
         $this->cartItems = CartItem::where('user_id', Auth::id())->get()->toArray();
         if (count($this->cartItems) == 0) {
-         return redirect()->route('cart')
-        ->with('error', 'Your cart is empty');
+            return redirect()->route('cart')
+                ->with('error', 'Your cart is empty');
+        }
+
+        // Load all active shipping methods
+        $this->shippingMethods = ShippingMethod::where('status', 1)->get();
+
+        // Auto select shipping
+        $this->autoSelectShipping();
+
+        // fetch address
+        $savedAddress = UserAddress::where('user_id', auth()->id())->first();
+        if ($savedAddress) {
+            $this->first_name = $savedAddress->first_name;
+            $this->last_name = $savedAddress->last_name;
+            $this->address = $savedAddress->address;
+            $this->city = $savedAddress->city;
+            $this->state = $savedAddress->state;
+            $this->zip_code = $savedAddress->zip_code;
+            $this->country = $savedAddress->country;
+            $this->type = $savedAddress->type;
         }
 
         $this->calculateTotals();
@@ -154,19 +180,64 @@ class Checkout extends Component
             $this->first_name = $user->first_name ?? '';
             $this->last_name = $user->last_name ?? '';
             $this->email = $user->email ?? '';
+            $this->phone = $user->phone_number ?? '';
+        }
+    }
+
+    // Automatically select shipping based on subtotal
+    public function autoSelectShipping()
+    {
+        // Try to find free shipping eligible
+        $freeShipping = $this->shippingMethods
+            ->where('price', 0)
+            ->where('min_order_amount', '<=', $this->subtotal)
+            ->first();
+
+        if ($freeShipping) {
+            $this->selectedShipping = $freeShipping->id;
+            $this->shipping = 0;
+        } else {
+            // Default to first available shipping method
+            $default = $this->shippingMethods->first();
+            if ($default) {
+                $this->selectedShipping = $default->id;
+                $this->shipping = $default->price;
+            } else {
+                $this->shipping = 0;
+            }
         }
     }
 
     public function calculateTotals()
     {
         $this->subtotal = collect($this->cartItems)
-            ->sum(fn($item) => $item['price'] * $item['quantity']);
+            ->sum(fn ($item) => $item['price'] * $item['quantity']);
 
-       // Shipping
-          $this->shipping = $this->subtotal > 50 ? 0 : 0;
+        if (count($this->cartItems) === 0) {
+            $this->shipping = 0;
+        } elseif ($this->selectedShipping) {
+            $method = ShippingMethod::find($this->selectedShipping);
+            if ($method) {
+                $this->shipping = ($method->min_order_amount && $this->subtotal >= $method->min_order_amount)
+                    ? 0
+                    : $method->price;
+            } else {
+                $this->shipping = 0;
+            }
+        } else {
+            $this->shipping = 0;
+        }
 
-       $this->total = round($this->subtotal + $this->shipping - $this->discount);
+        $this->total = round($this->subtotal + $this->shipping - $this->discount);
 
+    }
+
+    /**
+     * When user selects a different shipping method
+     */
+    public function updatedSelectedShipping($value)
+    {
+        $this->calculateTotals();
     }
 
     public function nextStep()
@@ -175,7 +246,7 @@ class Checkout extends Component
             $this->validateStep1();
         } elseif ($this->currentStep === 2) {
             $this->validateStep2();
-        } elseif ($this->currentStep === 3) {
+
             $this->validateStep3();
         }
 
@@ -184,14 +255,12 @@ class Checkout extends Component
         }
     }
 
-
     public function previousStep()
     {
         if ($this->currentStep > 1) {
             $this->currentStep--;
         }
     }
-
 
     public function validateStep1()
     {
@@ -205,13 +274,13 @@ class Checkout extends Component
             'state' => 'required|string',
             'zip_code' => 'required|numeric',
             'country' => 'required|string',
-            'type' => 'required|in:shipping,billing'
+            'type' => 'required|in:shipping,billing',
         ]);
     }
 
     public function validateStep2()
     {
-        if (!$this->sameAsShipping) {
+        if (! $this->sameAsShipping) {
             $this->validate([
                 'billingFirstName' => 'required|string',
                 'billingLastName' => 'required|string',
@@ -224,57 +293,51 @@ class Checkout extends Component
         }
     }
 
-    public function validateStep3()
-    {
-        if ($this->paymentMethod === 'credit_card') {
-            $this->validate([
-                'cardNumber' => 'required|regex:/^\d{16}$/',
-                'cardExpiry' => 'required|regex:/^\d{2}\/\d{2}$/',
-                'cardCvc' => 'required|regex:/^\d{3,4}$/',
-                'cardName' => 'required|string',
-            ]);
-        }
-    }
-
     public function toggleSameAsShipping()
     {
-        $this->sameAsShipping = !$this->sameAsShipping;
+        $this->sameAsShipping = ! $this->sameAsShipping;
     }
 
-    public function updatedSameAsShipping($value) {
-        if($value){
-           $this->billingFirstName = $this->first_name;
-           $this->billingLastName = $this->last_name;
-           $this->billingAddress = $this->address;
-           $this->billingCity = $this->city;
-           $this->billingState = $this->state;
-           $this->billingZipCode = $this->zip_code;
-           $this->billingCountry = $this->country;
-
-
+    public function updatedSameAsShipping($value)
+    {
+        if ($value) {
+            $this->billingFirstName = $this->first_name;
+            $this->billingLastName = $this->last_name;
+            $this->billingEmail = $this->email;
+            $this->billingPhone = $this->phone;
+            $this->billingAddress = $this->address;
+            $this->billingCity = $this->city;
+            $this->billingState = $this->state;
+            $this->billingZipCode = $this->zip_code;
+            $this->billingCountry = $this->country;
 
         }
     }
 
-    public function updated($propertyName){
-        if($this->sameAsShipping) {
-         if(in_array($propertyName,[
-             'first_name',
-             'last_name',
-             'address',
-             'city',
-             'state',
-             'zip_code',
-             'country',
-         ])) {
-           $this->billingFirstName = $this->first_name;
-           $this->billingLastName = $this->last_name;
-           $this->billingAddress = $this->address;
-           $this->billingCity = $this->city;
-           $this->billingState = $this->state;
-           $this->billingZipCode = $this->zip_code;
-           $this->billingCountry = $this->country;
-         }
+    public function updated($propertyName)
+    {
+        if ($this->sameAsShipping) {
+            if (in_array($propertyName, [
+                'first_name',
+                'last_name',
+                'phone',
+                'email',
+                'address',
+                'city',
+                'state',
+                'zip_code',
+                'country',
+            ])) {
+                $this->billingFirstName = $this->first_name;
+                $this->billingLastName = $this->last_name;
+                $this->billingEmail = $this->email;
+                $this->billingPhone = $this->phone;
+                $this->billingAddress = $this->address;
+                $this->billingCity = $this->city;
+                $this->billingState = $this->state;
+                $this->billingZipCode = $this->zip_code;
+                $this->billingCountry = $this->country;
+            }
         }
     }
 
@@ -291,121 +354,136 @@ class Checkout extends Component
         // Validate all steps
         $this->validateStep1();
         $this->validateStep2();
-        $this->validateStep3();
 
         $coupon = session('coupon');
 
-         DB::beginTransaction();
+        DB::beginTransaction();
 
-        try{
+        try {
 
-           $cartItems = CartItem::where('user_id', auth()->id())->get();
+            $cartItems = CartItem::where('user_id', auth()->id())->get();
 
             if ($cartItems->isEmpty()) {
                 return redirect()->route('cart')
                     ->with('error', 'Your cart is empty');
             }
 
+            // Save Shipping Address
+            $shippingAddress = UserAddress::updateOrCreate(
+                ['user_id' => auth()->id(), 'type' => 'shipping'],
+                [
+                    'user_id' => auth()->id(),
+                    'first_name' => $this->first_name,
+                    'last_name' => $this->last_name,
+                    'fullname' => $this->first_name.' '.$this->last_name,
+                    'phone' => $this->phone,
+                    'email' => $this->email,
+                    'address' => $this->address,
+                    'city' => $this->city,
+                    'state' => $this->state,
+                    'zip_code' => $this->zip_code,
+                    'country' => $this->country,
+                    'type' => 'shipping',
+                ]
+            );
 
+            // Save Billing address
+            $billingAddress = UserAddress::UpdateOrCreate(
+                [
+                    'user_id' => auth()->id(),
 
-        //Save Shipping Address
-        $shippingAddress = UserAddress::create([
-            'user_id' => auth()->id(),
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'fullname' => $this->first_name.' '.$this->last_name,
-            'phone' => $this->phone,
-            'address' => $this->address,
-            'city' => $this->city,
-            'state' => $this->state,
-            'zip_code' => $this->zip_code,
-            'country' => $this->country,
-            'type' => 'shipping'
-        ]);
+                ],
+                [
+                    'user_id' => auth()->id(),
+                    'first_name' => $this->billingFirstName,
+                    'last_name' => $this->billingLastName,
+                    'email' => $this->billingEmail,
+                    'phone' => $this->billingPhone,
+                    'fullname' => $this->billingFirstName.' '.$this->billingLastName,
+                    'address' => $this->billingAddress,
+                    'city' => $this->billingCity,
+                    'state' => $this->billingState,
+                    'zip_code' => $this->billingZipCode,
+                    'country' => $this->billingCountry,
+                    'type' => 'billing',
 
-        //Save Billing address
-        $billingAddress = UserAddress::create([
-               'user_id' => auth()->id(),
-               'first_name' => $this->billingFirstName,
-               'last_name' => $this->billingLastName,
-               'fullname' => $this->billingFirstName.' '.$this->billingLastName,
-               'address' => $this->billingAddress,
-               'city' => $this->billingCity,
-               'state' => $this->billingState,
-               'zip_code' => $this->billingZipCode,
-               'country' => $this->billingCountry,
-               'type' => 'billing'
+                ]
+            );
 
-        ]);
+            // Create Order
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'shipping_address_id' => $shippingAddress->id,
+                'billing_address_id' => $billingAddress->id,
+                'discount' => $this->discount,
+                'discount_code' => $coupon['code'] ?? null,
+                'shipping_amount' => $this->shipping,
+                'subtotal' => $this->subtotal,
+                'total' => $this->total,
+                'payment_method' => $this->paymentMethod,
+                'total' => $this->total,
+                'shipping_first_name' => $shippingAddress->first_name,
+                'shipping_last_name' => $shippingAddress->last_name,
+                'shipping_phone' => $shippingAddress->phone,
+                'shipping_email' => auth()->user()->email,
+                'shipping_address' => $shippingAddress->address,
+                'shipping_city' => $shippingAddress->city,
+                'shipping_state' => $shippingAddress->state,
+                'shipping_zip' => $shippingAddress->zip_code,
+                'shipping_country' => $shippingAddress->country,
+            ]);
 
+            $orderNumber = 'ORD-'.date('Ymd').'-'.str_pad($order->id, 4, '0', STR_PAD_LEFT);
 
+            $order->update([
+                'order_number' => $orderNumber,
+            ]);
 
-        //Create Order
-        $order = Order::create([
-              'user_id' => auth()->id(),
-              'shipping_address_id' => $shippingAddress->id,
-              'billing_address_id' => $billingAddress->id,
-              'discount' => $this->discount,
-              'discount_code' => $coupon['code'] ?? null,
-              'subtotal' => $this->subtotal,
-              'total' => $this->total,
-              'payment_method' => $this->paymentMethod,
-              'total' => $this->total,
-              'shipping_first_name' => $shippingAddress->first_name,
-              'shipping_last_name' => $shippingAddress->last_name,
-              'shipping_phone' => $shippingAddress->phone,
-              'shipping_email' => auth()->user()->email,
-              'shipping_address' => $shippingAddress->address,
-              'shipping_city' => $shippingAddress->city,
-              'shipping_state' => $shippingAddress->state,
-              'shipping_zip' => $shippingAddress->zip_code,
-              'shipping_country' => $shippingAddress->country
-        ]);
+            // Order Item
+            foreach ($this->cartItems as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'],
+                    'product_name' => $item['title'],
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity'],
+                    'color' => $item['color'],
+                    'size' => $item['size'],
+                    'total_price' => $item['price'] * $item['quantity'],
 
-         $orderNumber = 'ORD-'.date('Ymd').'-'.str_pad($order->id,4,'0',STR_PAD_LEFT);
+                ]);
 
-         $order->update([
-           'order_number' => $orderNumber
-        ]);
+            }
 
+            DB::commit();
 
-        //Order Item
-        foreach($this->cartItems as $item) {
-               OrderItem::create([
-              'order_id' => $order->id,
-              'product_id' => $item['product_id'],
-              'product_name' => $item['title'],
-              'price' => $item['price'],
-              'quantity' => $item['quantity'],
-              'color' => $item['color'],
-              'size' => $item['size'],
-              'total_price'=> $item['price'] * $item['quantity']
+            // Cart clear
+            CartItem::where('user_id', auth()->id())->delete();
 
-        ]);
+            session()->forget('coupon');
+            // For now just redirect to success
+            $this->dispatch('alert',
+                type : 'success',
+                title : 'Success!',
+                text : 'Order Successfully Placed Thank You!'
+            );
 
-        }
+            return redirect()->route('cart');
 
-        DB::commit();
-
-        // Cart clear
-        CartItem::where('user_id',auth()->id())->delete();
-
-
-        session()->forget('coupon');
-        // For now just redirect to success
-        $this->dispatch('alert',type:'success',title:'Success!',text:"Order Successfully Placed Thank You!");
-        return redirect()->route('cart');
-
-        }
-
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
-            $this->dispatch('alert',type:'error',title:'Error!', text:$e->getMessage());
+            $this->dispatch('alert', type: 'error', title: 'Error!', text: $e->getMessage());
+
         }
-
-
 
     }
+
+    // public function updatedPaymentMethod($value)
+    // {
+    //     if ($value == 'credit_card') {
+    //         $this->dispatch('initStripe');
+    //     }
+    // }
 
     public function render()
     {
@@ -416,8 +494,7 @@ class Checkout extends Component
             'shipping' => $this->shipping,
             'discount' => $this->discount,
             'total' => $this->total,
-            'shippingMethod' => $this->shippingMethod,
-            'shippingOptions' => $this->shippingOptions,
+
         ]);
     }
 }

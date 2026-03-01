@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="{{ $metaDescription ?? '' }}">
+
+    <title>{{ $metaTitle ?? 'ShopHub' }}</title>
+    <link rel="icon" href="{{ asset('assets/img/favicon.jpeg') }}" type="image/x-icon">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+</head>
+
+<body>
+
+
+    <main class=" bg-gradient-to-b from-[#def3f8] to-white  min-h-screen relative">
+        {{ $slot }}
+    </main>
+    @livewireScripts
+
+    @stack('script')
+</body>
+
+</html>

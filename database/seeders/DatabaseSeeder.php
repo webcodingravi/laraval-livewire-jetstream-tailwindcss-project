@@ -44,5 +44,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
 
 
+       // ShippingMethod Seeder
+       $this->call(ShippingMethodSeeder::class);
+
+
     }
 }

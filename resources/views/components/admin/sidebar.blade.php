@@ -101,6 +101,15 @@
                     </a>
 
 
+                    <a href="{{ route('admin.shipping-method') }}" wire:navigate
+                        class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium {{ Request::segment(2) === 'shipping-method' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-600 shadow-sm border-l-2 border-indigo-600' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-600 hover:shadow-sm' }} transition transform hover:translate-x-1">
+                        <div
+                            class="w-4 h-4 rounded-full {{ Request::segment(2) === 'shipping-method' ? 'bg-gradient-to-br from-indigo-600 to-purple-600' : 'bg-gradient-to-br from-indigo-400 to-purple-500' }}">
+                        </div>
+                        <span>Shipping Method</span>
+                    </a>
+
+
 
                 </div>
 

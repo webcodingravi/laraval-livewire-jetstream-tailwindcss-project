@@ -5,6 +5,7 @@ namespace App\Livewire\Front;
 use Livewire\Component;
 use App\Models\CartItem;
 use App\Models\DiscountCode;
+use App\Models\ShippingMethod;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,6 +15,8 @@ class ProductCart extends Component
     public $subtotal = 0;
     public $shipping = 0;
     public $total = 0;
+    public $shippingMethods = [];
+    public $selectedShipping = null;
 
 
 
@@ -37,6 +40,7 @@ class ProductCart extends Component
         $this->loadCart();
     }
 
+
     public function loadCart()
     {
         if (!Auth::check()) {
@@ -46,8 +50,18 @@ class ProductCart extends Component
         }
 
         $this->cartItems = CartItem::where('user_id', Auth::id())->get()->toArray();
+
+        // Load all active shipping methods
+        $this->shippingMethods = ShippingMethod::where('status', 1)->get();
+
+        // Auto select shipping
+        $this->autoSelectShipping();
         $this->updateTotals();
     }
+
+
+    
+
 
 
     public function applyCoupon() {
@@ -104,19 +118,69 @@ class ProductCart extends Component
             $this->dispatch('cartUpdated', count: 0);
         }
     }
+
+
+/**
+ * Automatically select shipping based on subtotal
+ */
+public function autoSelectShipping()
+{
+    // Try to find free shipping eligible
+    $freeShipping = $this->shippingMethods
+        ->where('price', 0)
+        ->where('min_order_amount', '<=', $this->subtotal)
+        ->first();
+
+    if ($freeShipping) {
+        $this->selectedShipping = $freeShipping->id;
+        $this->shipping = 0;
+    } else {
+        // Default to first available shipping method
+        $default = $this->shippingMethods->first();
+        if ($default) {
+            $this->selectedShipping = $default->id;
+            $this->shipping = $default->price;
+        } else {
+            $this->shipping = 0;
+        }
+    }
+}
+
+
+
+
+/**
+ * Update totals when cart changes or shipping selection changes
+ */
 public function updateTotals()
 {
-
-    // // Calculate subtotal
-       $this->subtotal = collect($this->cartItems)
+    $this->subtotal = collect($this->cartItems)
         ->sum(fn($item) => $item['price'] * $item['quantity']);
 
-    // // Shipping
-      $this->shipping = 0;
+    if(count($this->cartItems) === 0){
+        $this->shipping = 0;
+    } elseif ($this->selectedShipping) {
+        $method = ShippingMethod::find($this->selectedShipping);
+        if ($method) {
+            $this->shipping = ($method->min_order_amount && $this->subtotal >= $method->min_order_amount)
+                ? 0
+                : $method->price;
+        } else {
+            $this->shipping = 0;
+        }
+    } else {
+        $this->shipping = 0;
+    }
 
-    // // Final total = subtotal + shipping - discount
-    $this->total = round($this->subtotal + $this->shipping);
+    $this->total = round($this->subtotal + $this->shipping, 2);
+}
 
+/**
+ * When user selects a different shipping method
+ */
+public function updatedSelectedShipping($value)
+{
+    $this->updateTotals();
 }
 
     public function render()

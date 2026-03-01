@@ -409,6 +409,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Product Card 1 -->
+
                     @foreach ($relatedProducts as $product)
                         <div
                             class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden">

@@ -368,7 +368,7 @@ catch(\Exception $e) {
             try{
                 $product = Product::findOrFail($id);
                 $product->delete();
-                $this->dispatch('alert',type:'success',title:'Success!',text:'Product Successfully Deleted');
+                $this->dispatch('alert',type:'success',title:'Success!',text:'Product move to trash');
             }
             catch(\Exception $e) {
                 $this->dispatch('alert',type:'error',title:'Error!',text:$e->getMessage());

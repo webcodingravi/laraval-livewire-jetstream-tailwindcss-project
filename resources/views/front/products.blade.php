@@ -73,12 +73,21 @@
                 <x-front.products.sidebar :subCategories="$subCategories" :brands="$brands" :colors="$colors" :colors="$colors"
                     :selectedColors="$selectedColors" />
 
+                <!-- Pagination -->
+
+
+
 
                 <!-- Products Grid Section -->
 
                 <div class="lg:col-span-3">
                     <!-- Products Grid -->
                     <x-front.products.product-list :products="$products" :isWishlisted="$isWishlisted" />
+
+                    <div class="mt-6">
+                        {{ $products->links() }}
+                    </div>
+
                 </div>
             </div>
 

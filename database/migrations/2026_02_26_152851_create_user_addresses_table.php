@@ -16,11 +16,12 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('fullname')->nullable();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
-            $table->integer('zip_code')->nullable();
+            $table->string('zip_code')->nullable();
             $table->string('country')->nullable();
             $table->enum('type',['shipping','billing'])->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
