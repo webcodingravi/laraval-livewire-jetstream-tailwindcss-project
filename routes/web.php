@@ -14,6 +14,7 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Front\Checkout;
 use App\Livewire\Front\Home;
+use App\Livewire\Front\OrderConfirmed;
 use App\Livewire\Front\ProductCart;
 use App\Livewire\Front\ProductDetails;
 use App\Livewire\Front\Products;
@@ -27,6 +28,7 @@ Route::get('/product/{slug}', ProductDetails::class)->name('product-detail');
 Route::get('/cart', ProductCart::class)->name('cart');
 Route::get('/checkout', Checkout::class)->name('checkout');
 Route::get('/my-wishlist', Wishlisted::class)->name('wishlist');
+Route::get('/order-confirmed/{orderId}', OrderConfirmed::class)->name('order.confirmed');
 
 // gust route
 Route::middleware(['guest'])->group(function () {
@@ -35,6 +37,7 @@ Route::middleware(['guest'])->group(function () {
     // google se register
     Route::get('/auth/google', [SocialAuthController::class, 'redirect'])->name('google.redirect');
     Route::get('/auth/google/callback', [SocialAuthController::class, 'callback']);
+
 });
 
 // user route

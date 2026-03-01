@@ -11,7 +11,10 @@ use App\Models\UserAddress;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 // use Stripe\PaymentIntent;
 // use Stripe\Stripe;
@@ -90,6 +93,12 @@ class Checkout extends Component
 
     public $clientSecret;
 
+    public $orderId;
+
+    public $orderNumber;
+
+    protected $listeners = ['paymentSuccess'];
+
     public function applyCoupon()
     {
         $this->validate([
@@ -158,16 +167,22 @@ class Checkout extends Component
         $this->autoSelectShipping();
 
         // fetch address
-        $savedAddress = UserAddress::where('user_id', auth()->id())->first();
+        $savedAddress = UserAddress::where('user_id', auth()->id())->where('type', 'shipping')
+            ->latest() // ensure latest
+            ->first();
+
         if ($savedAddress) {
             $this->first_name = $savedAddress->first_name;
             $this->last_name = $savedAddress->last_name;
+            $this->email = $savedAddress->email;
+            $this->phone = $savedAddress->phone;
             $this->address = $savedAddress->address;
             $this->city = $savedAddress->city;
             $this->state = $savedAddress->state;
             $this->zip_code = $savedAddress->zip_code;
             $this->country = $savedAddress->country;
             $this->type = $savedAddress->type;
+
         }
 
         $this->calculateTotals();
@@ -247,7 +262,6 @@ class Checkout extends Component
         } elseif ($this->currentStep === 2) {
             $this->validateStep2();
 
-            $this->validateStep3();
         }
 
         if ($this->currentStep < 4) {
@@ -355,8 +369,93 @@ class Checkout extends Component
         $this->validateStep1();
         $this->validateStep2();
 
-        $coupon = session('coupon');
+        try {
+            if ($this->paymentMethod === 'cod') {
+                $order = $this->saveOrder();
+                if (! $order) {
+                    return;
+                }
 
+                $this->orderId = $order->order_number;
+                CartItem::where('user_id', auth()->id())->delete();
+                session()->forget('coupon');
+
+                return redirect()->route('order.confirmed', $this->orderId);
+
+            }
+
+            if ($this->paymentMethod === 'stripe') {
+
+                $order = $this->saveOrder();
+                if (! $order) {
+                    return;
+                }
+
+                $this->orderId = $order->order_number;
+
+                Stripe::setApiKey(env('STRIPE_SECRET'));
+
+                $paymentStripe = PaymentIntent::create([
+                    'amount' => $this->total * 100,
+                    'currency' => 'inr',
+                    'metadata' => [
+                        'order_id' => $order->order_number,
+                        'user_id' => auth()->id(),
+                    ],
+                ]);
+
+                $this->dispatch(
+                    'confirm-stripe-payment',
+                    client_secret: $paymentStripe->client_secret
+                );
+
+                return;
+            }
+
+        } catch (\Exception $e) {
+
+            $this->dispatch('alert', type: 'error', title: 'Error!', text: $e->getMessage());
+
+            return null;
+
+        }
+
+    }
+
+    public function updatedPaymentMethod($value)
+    {
+        if ($value == 'stripe') {
+            $this->dispatch('stripe-client-secret');
+        }
+    }
+
+    #[On('paymentSuccess')]
+    public function paymentSuccess($paymentIntent = null)
+    {
+        if (! $paymentIntent) {
+            return;
+        }
+        $order = Order::where('order_number', $this->orderId)->first();
+        if (! $order) {
+            return;
+        }
+
+        $order->update([
+            'payment_status' => 'paid',
+            'transaction_id' => $paymentIntent['id'],
+            'payment_data' => json_encode($paymentIntent),
+            'is_payment' => true,
+        ]);
+
+        CartItem::where('user_id', auth()->id())->delete();
+        session()->forget('coupon');
+
+        return redirect()->route('order.confirmed', $this->orderId);
+
+    }
+
+    private function saveOrder()
+    {
         DB::beginTransaction();
 
         try {
@@ -386,31 +485,26 @@ class Checkout extends Component
                     'type' => 'shipping',
                 ]
             );
-
-            // Save Billing address
-            $billingAddress = UserAddress::UpdateOrCreate(
+            // Billing
+            $billingAddress = UserAddress::updateOrCreate(
+                ['user_id' => auth()->id(), 'type' => 'billing'],
                 [
-                    'user_id' => auth()->id(),
-
-                ],
-                [
-                    'user_id' => auth()->id(),
-                    'first_name' => $this->billingFirstName,
-                    'last_name' => $this->billingLastName,
-                    'email' => $this->billingEmail,
-                    'phone' => $this->billingPhone,
-                    'fullname' => $this->billingFirstName.' '.$this->billingLastName,
-                    'address' => $this->billingAddress,
-                    'city' => $this->billingCity,
-                    'state' => $this->billingState,
-                    'zip_code' => $this->billingZipCode,
-                    'country' => $this->billingCountry,
+                    'first_name' => $this->sameAsShipping ? $this->first_name : $this->billingFirstName,
+                    'last_name' => $this->sameAsShipping ? $this->last_name : $this->billingLastName,
+                    'fullname' => $this->sameAsShipping ? $this->first_name.' '.$this->last_name : $this->billingFirstName.' '.$this->billingLastName,
+                    'phone' => $this->sameAsShipping ? $this->phone : $this->billingPhone,
+                    'email' => $this->sameAsShipping ? $this->email : $this->billingEmail,
+                    'address' => $this->sameAsShipping ? $this->address : $this->billingAddress,
+                    'city' => $this->sameAsShipping ? $this->city : $this->billingCity,
+                    'state' => $this->sameAsShipping ? $this->state : $this->billingState,
+                    'zip_code' => $this->sameAsShipping ? $this->zip_code : $this->billingZipCode,
+                    'country' => $this->sameAsShipping ? $this->country : $this->billingCountry,
                     'type' => 'billing',
-
                 ]
             );
 
             // Create Order
+            $coupon = session('coupon');
             $order = Order::create([
                 'user_id' => auth()->id(),
                 'shipping_address_id' => $shippingAddress->id,
@@ -431,6 +525,7 @@ class Checkout extends Component
                 'shipping_state' => $shippingAddress->state,
                 'shipping_zip' => $shippingAddress->zip_code,
                 'shipping_country' => $shippingAddress->country,
+
             ]);
 
             $orderNumber = 'ORD-'.date('Ymd').'-'.str_pad($order->id, 4, '0', STR_PAD_LEFT);
@@ -457,33 +552,16 @@ class Checkout extends Component
 
             DB::commit();
 
-            // Cart clear
-            CartItem::where('user_id', auth()->id())->delete();
-
-            session()->forget('coupon');
-            // For now just redirect to success
-            $this->dispatch('alert',
-                type : 'success',
-                title : 'Success!',
-                text : 'Order Successfully Placed Thank You!'
-            );
-
-            return redirect()->route('cart');
+            return $order;
 
         } catch (\Exception $e) {
             DB::rollBack();
             $this->dispatch('alert', type: 'error', title: 'Error!', text: $e->getMessage());
 
+            return null;
+
         }
-
     }
-
-    // public function updatedPaymentMethod($value)
-    // {
-    //     if ($value == 'credit_card') {
-    //         $this->dispatch('initStripe');
-    //     }
-    // }
 
     public function render()
     {

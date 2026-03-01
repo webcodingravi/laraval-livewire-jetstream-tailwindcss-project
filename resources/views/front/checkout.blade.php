@@ -383,62 +383,60 @@
                 @endif
 
                 <!-- Step 3: Payment Method -->
-                @if ($currentStep === 3)
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Payment Method</h2>
 
-                        <form wire:submit="nextStep">
-                            <!-- Payment Method Selection -->
-                            <div class="space-y-4 mb-8">
-                                <!-- COD -->
-                                <label
-                                    class="flex items-center p-4 border-2 {{ $paymentMethod === 'cod' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
-                                    <input type="radio" wire:model="paymentMethod" value="cod"
-                                        class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
-                                    <div class="ml-3">
-                                        <p class="font-semibold text-gray-900">Cash On Delivery</p>
-                                        <p class="text-sm text-gray-600">Quick and easy checkout</p>
-                                    </div>
-                                </label>
-                            </div>
+                <div class="bg-white rounded-lg shadow p-6 {{ $currentStep === 3 ? '' : 'hidden' }}">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Payment Method</h2>
 
-
-
-                            <!-- Credit Card -->
-                            {{-- <label
-                                class="flex items-center p-4 border-2 {{ $paymentMethod == 'credit_card' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
-
-                                <input type="radio" wire:model.live="paymentMethod" value="credit_card"
+                    <form wire:submit="nextStep">
+                        <!-- Payment Method Selection -->
+                        <div class="space-y-4 mb-8">
+                            <!-- COD -->
+                            <label
+                                class="flex items-center p-4 border-2 {{ $paymentMethod === 'cod' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
+                                <input type="radio" wire:model="paymentMethod" value="cod"
                                     class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
-
                                 <div class="ml-3">
-                                    <p class="font-semibold text-gray-900">Credit or Debit Card</p>
-                                    <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
+                                    <p class="font-semibold text-gray-900">Cash On Delivery</p>
+                                    <p class="text-sm text-gray-600">Quick and easy checkout</p>
                                 </div>
-                            </label> --}}
-
-                            {{-- @if ($paymentMethod == 'credit_card')
-                                <div id="stripe-wrapper" class="mt-4">
-                                    <div id="card-element" class="border p-3 rounded"></div>
-                                    <div id="card-errors" class="text-red-500 mt-2"></div>
-                                </div>
-                            @endif --}}
+                            </label>
+                        </div>
 
 
-                            <!-- Navigation Buttons -->
-                            <div class="mt-8 flex justify-between">
-                                <button type="button" wire:click="previousStep"
-                                    class="px-6 py-2 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:border-gray-400 transition-colors">
-                                    Back
-                                </button>
-                                <button type="submit"
-                                    class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                                    Review Order
-                                </button>
+
+                        <!-- Credit Card -->
+                        <label
+                            class="flex items-center p-4 border-2 {{ $paymentMethod == 'stripe' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
+
+                            <input type="radio" wire:model.live="paymentMethod" value="stripe"
+                                class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
+
+                            <div class="ml-3">
+                                <p class="font-semibold text-gray-900">Credit or Debit Card</p>
+                                <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
                             </div>
-                        </form>
-                    </div>
-                @endif
+                        </label>
+
+                        <div class="mt-4 {{ $paymentMethod == 'stripe' ? '' : 'hidden' }}">
+                            <div wire:ignore>
+                                <div id="card-element" class="border p-3 rounded"></div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="mt-8 flex justify-between">
+                            <button type="button" wire:click="previousStep"
+                                class="px-6 py-2 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:border-gray-400 transition-colors">
+                                Back
+                            </button>
+                            <button type="submit"
+                                class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                Review Order
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
 
                 <!-- Step 4: Order Review -->
                 @if ($currentStep === 4)
@@ -567,8 +565,8 @@
                         <div class="mb-8">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Payment Method</h3>
                             <div class="bg-gray-50 p-4 rounded-lg">
-                                @if ($paymentMethod === 'credit_card')
-                                    <p class="text-gray-900">Credit Card ending in {{ substr($cardNumber, -4) }}</p>
+                                @if ($paymentMethod === 'stripe')
+                                    <p class="text-gray-900">Stripe Card ending in {{ substr($cardNumber, -4) }}</p>
                                 @else
                                     <p class="text-gray-900">COD</p>
                                 @endif
@@ -699,3 +697,82 @@
         </div>
     </div>
 </div>
+
+@push('script')
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        document.addEventListener('livewire:init', function() {
+
+            const stripe = Stripe("{{ env('STRIPE_KEY') }}");
+            const elements = stripe.elements();
+
+            let card = null;
+
+            // Function to mount card safely
+            function mountCard() {
+
+                const cardElement = document.getElementById('card-element');
+
+                // If element exists and card not already mounted
+                if (cardElement && !card) {
+
+                    card = elements.create('card');
+
+                    card.mount('#card-element');
+
+                    console.log('Stripe card mounted');
+                }
+            }
+
+            // Auto mount when DOM updates (important for step changes)
+            Livewire.hook('morph.updated', () => {
+                mountCard();
+            });
+
+            // Also mount when stripe selected
+            Livewire.on('stripe-client-secret', () => {
+                setTimeout(() => {
+                    mountCard();
+                }, 100);
+            });
+
+
+            // Confirm payment listener
+            Livewire.on('confirm-stripe-payment', async ({
+                client_secret
+            }) => {
+
+                if (!card) {
+                    alert('Card not ready');
+                    return;
+                }
+
+                const {
+                    paymentIntent,
+                    error
+                } = await stripe.confirmCardPayment(
+                    client_secret, {
+                        payment_method: {
+                            card: card,
+                        }
+                    }
+                );
+
+                if (error) {
+                    alert(error.message);
+                    return;
+                }
+
+                if (paymentIntent.status === 'succeeded') {
+
+                    // IMPORTANT: send paymentIntent directly (not wrapped in object)
+                    Livewire.dispatch('paymentSuccess', {
+                        paymentIntent: paymentIntent
+                    });
+                }
+
+            });
+
+        });
+    </script>
+@endpush
