@@ -79,19 +79,13 @@ class Checkout extends Component
 
     public $paymentMethod = 'cod';
 
-    public $cardNumber = '';
-
-    public $cardExpiry = '';
-
-    public $cardCvc = '';
-
-    public $cardName = '';
-
     public $shippingMethods = [];
 
     public $selectedShipping = null;
 
     public $clientSecret;
+
+    public $cardValid = false;
 
     public $orderId;
 
@@ -246,7 +240,7 @@ class Checkout extends Component
     /**
      * When user selects a different shipping method
      */
-    public function updatedSelectedShipping($value)
+    public function updatedSelectedShipping()
     {
         $this->calculateTotals();
     }
@@ -258,6 +252,16 @@ class Checkout extends Component
         } elseif ($this->currentStep === 2) {
             $this->validateStep2();
 
+        } elseif ($this->currentStep === 3) {
+
+            if ($this->paymentMethod === 'stripe') {
+
+                if (! $this->cardValid) {
+                    $this->addError('card', 'Please enter valid card details.');
+
+                    return;
+                }
+            }
         }
 
         if ($this->currentStep < 4) {
@@ -300,6 +304,15 @@ class Checkout extends Component
                 'billingZipCode' => 'required|string|numeric',
                 'billingCountry' => 'required|string',
             ]);
+        }
+    }
+
+    #[On('cardStatusUpdated')]
+    public function cardStatusUpdated($valid = null)
+    {
+        $this->cardValid = (bool) $valid;
+        if ($this->cardValid) {
+            $this->resetErrorBag('card');
         }
     }
 
@@ -351,13 +364,13 @@ class Checkout extends Component
         }
     }
 
-    public function updateShippingMethod($method)
-    {
-        if (array_key_exists($method, $this->shippingOptions)) {
-            $this->shippingMethod = $method;
-            $this->calculateTotals();
-        }
-    }
+    // public function updateShippingMethod($method)
+    // {
+    //     if (array_key_exists($method, $this->shippingMethod)) {
+    //         $this->shippingMethod = $method;
+    //         $this->calculateTotals();
+    //     }
+    // }
 
     public function placeOrder()
     {
@@ -394,7 +407,6 @@ class Checkout extends Component
                         'user_id' => auth()->id(),
                     ],
                 ]);
-
                 $this->dispatch('confirm-stripe-payment', client_secret: $paymentStripe->client_secret);
             }
 
@@ -414,17 +426,21 @@ class Checkout extends Component
     #[On('paymentSuccess')]
     public function paymentSuccess($paymentIntent = null)
     {
+
         if (! $paymentIntent) {
+
             return;
         }
         $order = Order::where('order_number', $this->orderId)->first();
         if (! $order) {
+
             return;
         }
 
         $order->update([
             'status' => 'pending',
             'transaction_id' => $paymentIntent['id'],
+            'stripe_session_id' => $paymentIntent['id'],
             'payment_data' => json_encode($paymentIntent),
             'is_payment' => true,
         ]);

@@ -387,7 +387,7 @@
                 <div class="bg-white rounded-lg shadow p-6 {{ $currentStep === 3 ? '' : 'hidden' }}">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Payment Method</h2>
 
-                    <form wire:submit="nextStep">
+                    <form wire:submit="nextStep" @disabled(!$cardValid && $currentStep === 3)>
                         <!-- Payment Method Selection -->
                         <div class="space-y-4 mb-8">
                             <!-- COD -->
@@ -400,28 +400,92 @@
                                     <p class="text-sm text-gray-600">Quick and easy checkout</p>
                                 </div>
                             </label>
+
+
+                            <!-- Credit Card -->
+                            <label
+                                class="flex items-center p-4 border-2 {{ $paymentMethod == 'stripe' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
+
+                                <input type="radio" wire:model.live="paymentMethod" value="stripe"
+                                    class="w-5 h-5 text-[#0b7a93] focus:ring-2 focus:ring-[#0b7a93]">
+
+                                <div class="ml-3">
+                                    <p class="font-semibold text-gray-900">Credit or Debit Card</p>
+                                    <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
+                                </div>
+                            </label>
+
+                            <div class="mt-4 {{ $paymentMethod == 'stripe' ? '' : 'hidden' }}">
+
+                                <div wire:ignore class=" bg-white border border-1 rounded-xl p-6 space-y-6">
+                                    <h2 class="text-xl font-semibold text-gray-800">
+                                        Card Details
+                                    </h2>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-600 mb-2">
+                                            Cardholder Name
+                                        </label>
+                                        <input type="text" id="card-holder-name"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-xl
+                                                focus:ring-0
+                                                outline-none transition"
+                                            placeholder="Card Holder Name...">
+
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-600 mb-2">
+                                            Card Number
+                                        </label>
+                                        <div id="card-number"
+                                            class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white
+                                   focus-within:ring-2 focus-within:ring-indigo-500
+                                 focus-within:border-indigo-500 transition">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                                                Expiry
+                                            </label>
+                                            <div id="card-expiry"
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white
+                                            focus-within:ring-2 focus-within:ring-indigo-500
+                                         focus-within:border-indigo-500 transition">
+                                            </div>
+
+                                        </div>
+
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                                                CVC
+                                            </label>
+                                            <div id="card-cvc"
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white
+                                             focus-within:ring-2 focus-within:ring-indigo-500
+                                            focus-within:border-indigo-500 transition">
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+
+                                  @error('card')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror
+                            </div>
+
                         </div>
 
-
-
-                        <!-- Credit Card -->
-                        <label
-                            class="flex items-center p-4 border-2 {{ $paymentMethod == 'stripe' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
-
-                            <input type="radio" wire:model.live="paymentMethod" value="stripe"
-                                class="w-5 h-5 text-[#0b7a93] focus:ring-2 focus:ring-[#0b7a93]">
-
-                            <div class="ml-3">
-                                <p class="font-semibold text-gray-900">Credit or Debit Card</p>
-                                <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
-                            </div>
-                        </label>
-
-                        <div class="mt-4 {{ $paymentMethod == 'stripe' ? '' : 'hidden' }}">
-                            <div wire:ignore>
-                                <div id="card-element" class="border p-3 rounded"></div>
-                            </div>
-                        </div>
 
                         <!-- Navigation Buttons -->
                         <div class="mt-8 flex justify-between">
@@ -566,7 +630,7 @@
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Payment Method</h3>
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 @if ($paymentMethod === 'stripe')
-                                    <p class="text-gray-900">Stripe Card ending in {{ substr($cardNumber, -4) }}</p>
+                                    <p class="text-gray-900">Online Payment </p>
                                 @else
                                     <p class="text-gray-900">COD</p>
                                 @endif
@@ -581,7 +645,7 @@
                                 Back
                             </button>
 
-                            <button wire:click="placeOrder" wire:loading.attr="disabled"
+                            <button wire:click="placeOrder" wire:loading.attr="disabled" id="placeOrder"
                                 wire:loading.class="opacity-50 cursor-not-allowed" wire:target="placeOrder"
                                 class=" text-center bg-[#0b7a93] px-8 py-2  text-white font-medium rounded-lg hover:bg-green-700 transition-colors">
                                 <span wire:loading.remove wire:target="placeOrder">Proceed to Checkout</span>
@@ -715,23 +779,63 @@
             const stripe = Stripe("{{ env('STRIPE_KEY') }}");
             const elements = stripe.elements();
 
-            let card = null;
 
+            let cardNumber, cardExpiry, cardCvc;
+
+            let cardComplete = {
+                number: false,
+                expiry: false,
+                cvc: false
+            };
+
+
+            function isCardValid() {
+                return cardComplete.number && cardComplete.expiry && cardComplete.cvc;
+            }
+
+            function updateCardStatus() {
+                Livewire.dispatch('cardStatusUpdated', [isCardValid() ? 1 : 0]);
+            }
             // Function to mount card safely
             function mountCard() {
 
-                const cardElement = document.getElementById('card-element');
+                // const cardElement = document.getElementById('card-element');
+                const cardNumberDiv = document.getElementById('card-number');
+                const cardExpiryDiv = document.getElementById('card-expiry');
+                const cardCvcDiv = document.getElementById('card-cvc');
+
 
                 // If element exists and card not already mounted
-                if (cardElement && !card) {
+                if (cardNumberDiv && cardExpiryDiv && cardCvcDiv && !cardNumber) {
+                    cardNumber = elements.create("cardNumber");
+                    cardExpiry = elements.create("cardExpiry");
+                    cardCvc = elements.create("cardCvc");
 
-                    card = elements.create('card');
+                    cardNumber.mount("#card-number");
+                    cardExpiry.mount("#card-expiry");
+                    cardCvc.mount("#card-cvc");
 
-                    card.mount('#card-element');
 
-                    console.log('Stripe card mounted');
+                    cardNumber.on('change', function(event) {
+                        cardComplete.number = event.complete;
+                        updateCardStatus();
+                    });
+
+                    cardExpiry.on('change', function(event) {
+                        cardComplete.expiry = event.complete;
+                        updateCardStatus();
+                    });
+
+                    cardCvc.on('change', function(event) {
+                        cardComplete.cvc = event.complete;
+                        updateCardStatus();
+                    });
+
                 }
+
             }
+
+
 
             // Auto mount when DOM updates (important for step changes)
             Livewire.hook('morph.updated', () => {
@@ -747,14 +851,31 @@
 
 
             // Confirm payment listener
-            Livewire.on('confirm-stripe-payment', async ({
-                client_secret
-            }) => {
+            Livewire.on('confirm-stripe-payment', async (data) => {
+                const client_secret = data.client_secret;
+                if (!client_secret) {
+                    alert('Client secret missing');
+                    return;
+                }
 
-                if (!card) {
+                const cardHolderName = document.getElementById('card-holder-name').value;
+
+
+                if (!cardNumber) {
                     alert('Card not ready');
                     return;
                 }
+
+                if (!cardHolderName) {
+                    alert('Please enter cardholder name');
+                    return;
+                }
+
+                if (!isCardValid()) {
+                    alert('Please fill complete card details');
+                    return;
+                }
+
 
                 const {
                     paymentIntent,
@@ -762,7 +883,10 @@
                 } = await stripe.confirmCardPayment(
                     client_secret, {
                         payment_method: {
-                            card: card,
+                            card: cardNumber,
+                            billing_details: {
+                                name: cardHolderName
+                            }
                         }
                     }
                 );
@@ -778,6 +902,7 @@
                     Livewire.dispatch('paymentSuccess', {
                         paymentIntent: paymentIntent
                     });
+
                 }
 
             });
