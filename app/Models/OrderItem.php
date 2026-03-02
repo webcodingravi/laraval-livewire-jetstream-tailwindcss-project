@@ -7,4 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItem extends Model
 {
     protected $guarded = [];
+
+    public function Orders()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function Product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

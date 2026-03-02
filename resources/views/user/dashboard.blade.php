@@ -1,17 +1,16 @@
 <div>
     <div class="mt-[100px]">
-
         <!-- Main Content -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="md:w-11/12 mx-auto  py-12">
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                 <!-- Total Orders Card -->
                 <div
                     class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border-l-4 border-blue-500">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-slate-600 text-sm font-medium">Total Orders</p>
-                            <p class="text-3xl font-bold text-slate-900 mt-2">0</p>
+                            <p class="text-3xl font-bold text-slate-900 mt-2">{{ $totalOrdersCount }}</p>
                         </div>
                         <div class="bg-blue-100 p-3 rounded-lg">
                             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -23,13 +22,33 @@
                     <p class="text-slate-500 text-xs mt-4">View your complete order history</p>
                 </div>
 
+                <div
+                    class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border-l-4 border-amber-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-slate-600 text-sm font-medium">Pending Orders</p>
+                            <p class="text-3xl font-bold text-slate-900 mt-2">{{ $pendingOrderCount }}</p>
+                        </div>
+                        <div class="bg-amber-100 p-3 rounded-lg">
+                            <svg class="w-6 h-6 text-amber-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-slate-500 text-xs mt-4">View your Pending order</p>
+                </div>
+
                 <!-- Total Spent Card -->
                 <div
                     class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border-l-4 border-green-500">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-slate-600 text-sm font-medium">Total Spent</p>
-                            <p class="text-3xl font-bold text-slate-900 mt-2">$0.00</p>
+                            <p class="text-3xl font-bold text-slate-900 mt-2">
+                                {{ config('app.currency.symbol') . number_format($totalSpent, 2) }}
+                            </p>
                         </div>
                         <div class="bg-green-100 p-3 rounded-lg">
                             <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor"
@@ -49,7 +68,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-slate-600 text-sm font-medium">Wishlist Items</p>
-                            <p class="text-3xl font-bold text-slate-900 mt-2">0</p>
+                            <p class="text-3xl font-bold text-slate-900 mt-2">{{ $wishlistCount }}</p>
                         </div>
                         <div class="bg-red-100 p-3 rounded-lg">
                             <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
@@ -62,35 +81,21 @@
                     <p class="text-slate-500 text-xs mt-4">Items saved for later</p>
                 </div>
 
-                <!-- Reward Points Card -->
-                <div
-                    class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border-l-4 border-amber-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-slate-600 text-sm font-medium">Reward Points</p>
-                            <p class="text-3xl font-bold text-slate-900 mt-2">0</p>
-                        </div>
-                        <div class="bg-amber-100 p-3 rounded-lg">
-                            <svg class="w-6 h-6 text-amber-600" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
-                                </path>
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-slate-500 text-xs mt-4">Earn on every purchase</p>
-                </div>
+
             </div>
 
             <!-- Main Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
                 <!-- Left Column: Recent Orders & Wishlist -->
-                <div class="lg:col-span-2 space-y-8">
+                <div class="lg:col-span-3 space-y-8">
                     <!-- Recent Orders Section -->
+
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-bold text-slate-900">Recent Orders</h2>
-                            <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">View All</a>
+                            <button wire:click="openModal"
+                                class="text-blue-600 hover:text-blue-700 text-sm font-medium">View
+                                All</button>
                         </div>
 
                         <!-- Orders Table -->
@@ -99,45 +104,101 @@
                                 <thead>
                                     <tr class="border-b border-slate-200">
                                         <th class="text-left py-3 px-4 font-semibold text-slate-700">Order ID</th>
+                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Order Product</th>
                                         <th class="text-left py-3 px-4 font-semibold text-slate-700">Date</th>
                                         <th class="text-left py-3 px-4 font-semibold text-slate-700">Total</th>
-                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Status</th>
+                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Payment Status
+                                        </th>
+                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Delivery Status
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="border-b border-slate-100 hover:bg-slate-50">
-                                        <td class="py-4 px-4 text-slate-900 font-medium">#ORD-001</td>
-                                        <td class="py-4 px-4 text-slate-600">Feb 20, 2026</td>
-                                        <td class="py-4 px-4 text-slate-900 font-medium">$129.99</td>
-                                        <td class="py-4 px-4">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Delivered
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr class="border-b border-slate-100 hover:bg-slate-50">
-                                        <td class="py-4 px-4 text-slate-900 font-medium">#ORD-002</td>
-                                        <td class="py-4 px-4 text-slate-600">Feb 15, 2026</td>
-                                        <td class="py-4 px-4 text-slate-900 font-medium">$89.50</td>
-                                        <td class="py-4 px-4">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                In Transit
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-slate-50">
-                                        <td class="py-4 px-4 text-slate-900 font-medium">#ORD-003</td>
-                                        <td class="py-4 px-4 text-slate-600">Feb 10, 2026</td>
-                                        <td class="py-4 px-4 text-slate-900 font-medium">$249.99</td>
-                                        <td class="py-4 px-4">
-                                            <span
-                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Delivered
-                                            </span>
-                                        </td>
-                                    </tr>
+                                    @if (count($recentOrders) > 0)
+                                        @foreach ($recentOrders as $order)
+                                            @php
+                                                $firstItem = $order->orderItems->first(); // pehla item ya null
+                                                $product = $firstItem?->product; // product ya null
+                                                $image = $product?->productImages->first()?->image_name ?? '';
+                                            @endphp
+
+
+                                            <tr class="border-b border-slate-100 hover:bg-slate-50">
+                                                <td class="py-4 px-4 text-slate-900 font-medium">
+                                                    #{{ $order->order_number }}
+                                                </td>
+
+                                                <td class="py-4 px-4 text-slate-900 font-medium">
+                                                    <div class="flex items-center gap-3">
+                                                        <div
+                                                            class="w-20 h-20 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                                            <img src="{{ asset('storage/uploads/product/' . $image) }}"
+                                                                class="object-cover w-full h-full rounded-lg"
+                                                                alt="{{ $firstItem?->product_name ?? '' }}">
+                                                        </div>
+
+                                                        <div>
+                                                            <p class="font-semibold text-gray-900">
+                                                                {{ $firstItem?->product_name ?? 'No product' }}
+                                                            </p>
+                                                            @if ($firstItem?->color)
+                                                                <p class="text-sm text-gray-600">Color:
+                                                                    {{ $firstItem->color }}</p>
+                                                            @endif
+                                                            @if ($firstItem?->size)
+                                                                <p class="text-sm text-gray-600">Size:
+                                                                    {{ $firstItem->size }}</p>
+                                                            @endif
+                                                            <p class="text-sm text-gray-600">Qty:
+                                                                {{ $firstItem?->quantity ?? 1 }}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <td class="py-4 px-4 text-slate-600">
+                                                    {{ \Carbon\Carbon::parse($order->created_at)->format('M d, Y') }}
+                                                </td>
+
+                                                <td class="py-4 px-4 text-slate-900 font-medium">
+                                                    {{ config('app.currency.symbol') . number_format($order->total, 2) }}
+                                                </td>
+
+                                                <td class="py-4 px-4">
+                                                    @if ($order->is_payment)
+                                                        <span
+                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                            Paid
+                                                        </span>
+                                                    @else
+                                                        <span
+                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                            Pending
+                                                        </span>
+                                                    @endif
+                                                </td>
+
+                                                <td class="py-4 px-4">
+                                                    @if ($order->status === 'completed')
+                                                        <span
+                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                            Completed
+                                                        </span>
+                                                    @elseif($order->status === 'pending')
+                                                        <span
+                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                            Pending
+                                                        </span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr class="text-center p-4">
+                                            <td colspan="8">No Record Found !</td>
+                                        </tr>
+                                    @endif
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -155,41 +216,148 @@
                         </div>
                     </div>
 
+
+
                     <!-- Wishlist Section -->
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-bold text-slate-900">Your Wishlist</h2>
-                            <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">View
+                            <a href="{{ route('wishlist') }}" wire:navigate
+                                class="text-blue-600 hover:text-blue-700 text-sm font-medium">View
                                 All</a>
                         </div>
 
                         <!-- Wishlist Grid -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                             <!-- Wishlist Item -->
-                            <div
-                                class="border border-slate-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow group">
-                                <div class="bg-slate-200 h-32 relative overflow-hidden">
-                                    <img src="https://via.placeholder.com/200x150?text=Product" alt="Product"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform">
-                                    <button
-                                        class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full">
-                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="p-4">
-                                    <p class="text-slate-600 text-xs mb-1">Electronics</p>
-                                    <h3 class="font-semibold text-slate-900 text-sm mb-2">Wireless Headphones</h3>
-                                    <p class="text-lg font-bold text-slate-900">$59.99</p>
-                                    <button
-                                        class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition">
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </div>
+                            @if (count($wishlists) > 0)
+                                @foreach ($wishlists as $wishlist)
+                                    <div wire:key="{{ $wishlist->id }}"
+                                        class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden">
+
+                                        <!-- Product Image -->
+                                        <div class="aspect-square bg-gray-100 overflow-hidden relative">
+                                            <a href="{{ route('product-detail', $wishlist->product->slug) }}"
+                                                wire:navigate>
+                                                @if (!empty($wishlist->product->productImages->first()->image_name))
+                                                    <img src="{{ asset('storage/uploads/product/' . $wishlist->product->productImages->first()->image_name) }}"
+                                                        alt="{{ $wishlist->product->title }}"
+                                                        class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                                                @endif
+                                            </a>
+
+
+                                            <!-- Wishlist Button -->
+                                            @if (Auth::check())
+                                                <button wire:click="add_wishlists({{ $wishlist->product->id }})"
+                                                    class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center {{ [$wishlist->product->id]
+                                                        ? 'bg-rose-100 text-rose-600 border-rose-300'
+                                                        : 'bg-white text-gray-700 border-gray-300 hover:border-rose-300' }}">
+
+
+                                                    <svg class="w-5 h-5 mx-auto"
+                                                        fill="{{ $isWishlisted[$wishlist->product->id] ? 'currentColor' : 'none' }}"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                                        </path>
+                                                    </svg>
+
+
+
+                                                </button>
+                                            @else
+                                                <a href="{{ route('login') }}"
+                                                    class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-700 border-gray-300 hover:border-rose-300">
+
+
+                                                    <svg class="w-5 h-5 mx-auto"
+                                                        fill="{{ $isWishlisted[$wishlist->product->id] ? 'currentColor' : 'none' }}"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            @endif
+
+
+
+                                            @if ($wishlist->product->is_hot)
+                                                <div
+                                                    class="absolute top-3 right-3 bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                                    Hot
+                                                </div>
+                                            @endif
+                                        </div>
+
+                                        <!-- Product Info -->
+                                        <div class="p-4">
+
+                                            <p class="text-xs font-semibold text-indigo-600 mb-1 uppercase">
+                                                <a wire:navigate
+                                                    href="{{ route('products', [$wishlist->product->category->slug, $wishlist->product->subCategory->slug]) }}">
+                                                    {{ $wishlist->product->subCategory->name }}
+                                                </a>
+                                            </p>
+
+                                            <h3 class="font-bold text-gray-900 mb-2 line-clamp-2 h-14">
+                                                <a href="{{ route('product-detail', $wishlist->product->slug) }}"
+                                                    wire:navigate>{{ $wishlist->product->title }}</a>
+
+                                            </h3>
+
+                                            <div class="flex items-center gap-2 mb-4">
+                                                <span class="text-xl font-bold text-indigo-600">
+                                                    {{ config('app.currency.symbol') }}{{ number_format($wishlist->product->price, 2) }}
+                                                </span>
+
+                                                @if ($wishlist->product->old_price)
+                                                    <span class="text-gray-400 line-through">
+                                                        {{ config('app.currency.symbol') }}{{ number_format($wishlist->product->old_price, 2) }}
+                                                    </span>
+                                                @endif
+
+                                                @if ($wishlist->product->old_price > $wishlist->product->price)
+                                                    <span class="ml-2 font-medium text-green-600">
+                                                        Save
+                                                        {{ round((($wishlist->product->old_price - $wishlist->product->price) / $wishlist->product->old_price) * 100) }}%
+                                                    </span>
+                                                @endif
+                                            </div>
+
+                                            @if ($wishlist->product->quantity > 0)
+                                                <span class="text-sm text-green-600 font-semibold block mb-3">
+                                                    In Stock ({{ $wishlist->product->quantity }} left)
+                                                </span>
+                                            @else
+                                                <span class="text-sm text-red-600 font-semibold block mb-3">
+                                                    Out of Stock
+                                                </span>
+                                            @endif
+
+                                            <!-- Add to Cart Button -->
+                                            @if (Auth::check())
+                                                <button wire:click="addToCart({{ $wishlist->product->id }})"
+                                                    class="w-full py-2 bg-indigo-600 text-white font-bold rounded-lg hover:shadow-lg transition">
+                                                    <i class="ri-shopping-cart-2-line"></i> Add to Cart
+                                                </button>
+                                            @else
+                                                <a href="{{ route('login') }}" wire:navigate
+                                                    class="block text-center w-full py-2 bg-indigo-600 text-white font-bold rounded-lg">
+                                                    <i class="ri-shopping-cart-2-line"></i> Add to Cart
+                                                </a>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <p>No products in wishlist.</p>
+
+                            @endif
 
                             <!-- Empty Wishlist State -->
                         </div>
@@ -202,7 +370,8 @@
                                 </path>
                             </svg>
                             <p class="mt-4 text-slate-600">Your wishlist is empty</p>
-                            <a href="#" class="text-blue-600 hover:text-blue-700 mt-2 inline-block">Browse
+                            <a href="{{ route('wishlist') }}" wire:navigate
+                                class="text-blue-600 hover:text-blue-700 mt-2 inline-block">Browse
                                 Products</a>
                         </div>
                     </div>
@@ -225,11 +394,12 @@
                             </div>
                             <div>
                                 <p class="text-xs text-slate-600 uppercase tracking-wide">Phone</p>
-                                <p class="text-slate-900 font-medium">{{ Auth::user()->phone_number ?? 'Not set' }}</p>
+                                <p class="text-slate-900 font-medium">{{ Auth::user()->phone_number ?? 'Not set' }}
+                                </p>
                             </div>
                             <div class="pt-2 border-t border-slate-200">
-                                <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-medium">Edit
-                                    Profile</a>
+                                <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">Edit
+                                    Profile</button>
                             </div>
                         </div>
                     </div>
@@ -335,4 +505,126 @@
 
         </div>
     </div>
+
+
+    {{-- Modal --}}
+    @if ($isOpen)
+        <div
+            class="bg-black/50 flex fixed justify-center inset-0 items-center animate__animated animate__fadeIn z-[9999]">
+            <div
+                class="bg-white rounded md:w-9/12 w-full  shadow-md animate__animated animate__zoomIn overflow-y-auto max-h-screen">
+                <div class="flex justify-between items-center sticky top-0 bg-white shadow p-4">
+                    <h1 class="text-2xl font-semibold">All Orders
+                    </h1>
+                    <button class="text-xl cursor-pointer" wire:click="closeModal">X</button>
+                </div>
+                <hr class="text-slate-200 my-4">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-200">
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">Order ID</th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">Order Product</th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">Date</th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">Total</th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">Payment Status
+                                </th>
+                                <th class="text-left py-3 px-4 font-semibold text-slate-700">Delivery Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (count($allOrders) > 0)
+                                @foreach ($allOrders as $order)
+                                    @php
+                                        $firstItem = $order->orderItems->first(); // pehla item ya null
+                                        $product = $firstItem?->product; // product ya null
+                                        $image = $product?->productImages->first()?->image_name ?? '';
+                                    @endphp
+
+
+                                    <tr class="border-b border-slate-100 hover:bg-slate-50">
+                                        <td class="py-4 px-4 text-slate-900 font-medium">
+                                            #{{ $order->order_number }}
+                                        </td>
+
+                                        <td class="py-4 px-4 text-slate-900 font-medium">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-20 h-20 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                                    <img src="{{ asset('storage/uploads/product/' . $image) }}"
+                                                        class="object-cover w-full h-full rounded-lg"
+                                                        alt="{{ $firstItem?->product_name ?? '' }}">
+                                                </div>
+
+                                                <div>
+                                                    <p class="font-semibold text-gray-900">
+                                                        {{ $firstItem?->product_name ?? 'No product' }}
+                                                    </p>
+                                                    @if ($firstItem?->color)
+                                                        <p class="text-sm text-gray-600">Color:
+                                                            {{ $firstItem->color }}</p>
+                                                    @endif
+                                                    @if ($firstItem?->size)
+                                                        <p class="text-sm text-gray-600">Size:
+                                                            {{ $firstItem->size }}</p>
+                                                    @endif
+                                                    <p class="text-sm text-gray-600">Qty:
+                                                        {{ $firstItem?->quantity ?? 1 }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="py-4 px-4 text-slate-600">
+                                            {{ \Carbon\Carbon::parse($order->created_at)->format('M d, Y') }}
+                                        </td>
+
+                                        <td class="py-4 px-4 text-slate-900 font-medium">
+                                            {{ config('app.currency.symbol') . number_format($order->total, 2) }}
+                                        </td>
+
+                                        <td class="py-4 px-4">
+                                            @if ($order->is_payment)
+                                                <span
+                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Paid
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                    Pending
+                                                </span>
+                                            @endif
+                                        </td>
+
+                                        <td class="py-4 px-4">
+                                            @if ($order->status === 'completed')
+                                                <span
+                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Completed
+                                                </span>
+                                            @elseif($order->status === 'pending')
+                                                <span
+                                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                    Pending
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr class="text-center p-4">
+                                    <td colspan="8">No Record Found !</td>
+                                </tr>
+                            @endif
+
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    @endif
+
 </div>

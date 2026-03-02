@@ -28,11 +28,11 @@
                     <!-- Action Buttons -->
                     <div class="flex flex-col sm:flex-row gap-4">
                         <a href="{{ route('home') }}" wire:navigate
-                            class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-lg hover:shadow-lg transition transform hover:scale-105 active:scale-95">
+                            class="px-8 py-3 bg-[#0b7a93] text-white font-bold rounded-lg hover:shadow-lg transition transform hover:scale-105 active:scale-95">
                             <i class="ri-home-line mr-2"></i>Back to Home
                         </a>
-                        <a href="{{ route('products', ['all', 'all']) }}" wire:navigate
-                            class="px-8 py-3 border-2 border-indigo-600 text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 transition">
+                        <a href="{{ route('products') }}" wire:navigate
+                            class="px-8 py-3 border-2 border-[#0b7a93] text-[#0b7a93] font-bold rounded-lg hover:bg-indigo-50 transition">
                             <i class="ri-shopping-bag-line mr-2"></i>Browse All Products
                         </a>
                     </div>
@@ -92,10 +92,10 @@
                             </a>
                         @endif
 
-                        @if ($product->is_hot)
+                        @if ($product->is_featured)
                             <div
-                                class="absolute top-3 right-3 bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                                Hot
+                                class="absolute top-3 right-3 bg-[#0b7a93] text-white px-3 py-1 rounded-full text-xs font-bold">
+                                Featured
                             </div>
                         @endif
                     </div>
@@ -103,7 +103,7 @@
                     <!-- Product Info -->
                     <div class="p-4">
 
-                        <p class="text-xs font-semibold text-indigo-600 mb-1 uppercase">
+                        <p class="text-xs font-semibold text-[#0b7a93] mb-1 uppercase">
                             <a wire:navigate
                                 href="{{ route('products', [$product->category->slug, $product->subCategory->slug]) }}">
                                 {{ $product->subCategory->name }}
@@ -117,7 +117,7 @@
                         </h3>
 
                         <div class="flex items-center gap-2 mb-4">
-                            <span class="text-xl font-bold text-indigo-600">
+                            <span class="text-xl font-bold text-[#0b7a93]">
                                 {{ config('app.currency.symbol') }}{{ number_format($product->price, 2) }}
                             </span>
 
@@ -148,12 +148,12 @@
                         <!-- Add to Cart Button -->
                         @if (Auth::check())
                             <button wire:click="addToCart({{ $product->id }})"
-                                class="w-full py-2 bg-indigo-600 text-white font-bold rounded-lg hover:shadow-lg transition">
+                                class="w-full py-2 bg-[#0b7a93] text-white font-bold rounded-lg hover:shadow-lg transition">
                                 <i class="ri-shopping-cart-2-line"></i> Add to Cart
                             </button>
                         @else
                             <a href="{{ route('login') }}" wire:navigate
-                                class="block text-center w-full py-2 bg-indigo-600 text-white font-bold rounded-lg">
+                                class="block text-center w-full py-2 bg-[#0b7a93] text-white font-bold rounded-lg">
                                 <i class="ri-shopping-cart-2-line"></i> Add to Cart
                             </a>
                         @endif

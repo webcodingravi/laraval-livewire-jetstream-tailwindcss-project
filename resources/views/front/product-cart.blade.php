@@ -25,7 +25,7 @@
                             <h3 class="mt-4 text-lg font-medium text-gray-900">Your cart is empty</h3>
                             <p class="mt-2 text-sm text-gray-600">Start adding some products!</p>
                             <a href="/products"
-                                class="mt-6 inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                class="mt-6 inline-flex items-center px-6 py-3 bg-[#0b7a93] text-white font-medium rounded-lg transition-colors">
                                 <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -141,7 +141,7 @@
                 <!-- Continue Shopping Link -->
                 <div class="mt-6">
                     <a href="{{ route('home') }}" wire:navigate
-                        class="flex items-center text-[#45AAC0] hover:text-blue-700 font-medium">
+                        class="flex items-center text-[#45AAC0] hover:text-[#0b7a93] font-medium">
                         <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -184,18 +184,35 @@
                                 </div>
                             </div>
 
-                            <!-- Checkout Button -->
+                            <!-- Process Checkout Button -->
                             <button wire:click="processToCheckout" wire:loading.attr="disabled"
                                 wire:loading.class="opacity-50 cursor-not-allowed" wire:target="processToCheckout"
-                                class="w-full block text-center bg-gradient-to-br from-[#24bad8] to-[#0b7a93] active:scale-95 duration-300 text-white font-semibold py-3 rounded-lg  mb-3 disabled:bg-gray-400 disabled:cursor-not-allowed">
-                                Proceed to Checkout
+                                class="w-full block text-center bg-[#0b7a93] active:scale-95 duration-300 text-white font-semibold py-3 rounded-lg  mb-3 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                <span wire:loading.remove wire:target="processToCheckout">Proceed to Checkout</span>
+
+
+                                <span wire:loading wire:target="processToCheckout" class="flex gap-4">
+                                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z">
+                                        </path>
+                                    </svg>
+
+                                </span>
+
                             </button>
 
                             <!-- Continue Shopping Button -->
-                            <a href="{{ route('products') }}"
+                            <a href="{{ route('products') }}" wire:navigate
                                 class="block w-full  text-center border-2 border-gray-300 text-gray-700 font-semibold py-3 rounded-lg hover:border-gray-400 transition-colors">
                                 Continue Shopping
                             </a>
+
+
+
+
 
                         </div>
                     </div>

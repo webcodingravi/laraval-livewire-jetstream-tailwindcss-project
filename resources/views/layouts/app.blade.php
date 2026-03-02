@@ -11,7 +11,7 @@
     <title>{{ $metaTitle ?? 'ShopHub' }}</title>
     <link rel="icon" href="{{ asset('assets/img/favicon.jpeg') }}" type="image/x-icon">
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

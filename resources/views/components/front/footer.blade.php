@@ -8,19 +8,26 @@
             <!-- Brand Section -->
             <div class="lg:col-span-1 md:col-span-1">
                 <div class="flex items-center gap-3 mb-6">
-                    <div
-                        class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                            fill="white">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-black text-white">ShopHub</h3>
-                        <p class="text-xs text-indigo-400 font-semibold">Premium Store</p>
-                    </div>
+                    <a href="{{ route('home') }}"
+                        class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition" wire:navigate>
+                        <div
+                            class="w-12 h-12 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="white" stroke="white" stroke-width="1.5">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                        </div>
+                        <div class="sm:block">
+                            <h1
+                                class="text-xl font-bold bg-gradient-to-r from-[#24bad8] to-[#0b7a93] bg-clip-text text-transparent">
+                                ShopHub</h1>
+                            <p class="text-xs text-gray-500">Online Store</p>
+                        </div>
+                    </a>
+
+
                 </div>
                 <p class="text-sm text-gray-400 mb-6 leading-relaxed">
                     Your trusted destination for quality products and exceptional service. Shop with confidence and
@@ -65,10 +72,12 @@
                 </div>
             </div>
 
+
+
             <!-- Shop Section -->
             <div>
                 <h4 class="text-sm font-bold text-white mb-6 flex items-center gap-2">
-                    <span class="w-1 h-5 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full"></span>
+                    <span class="w-1 h-5 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full"></span>
                     Shop
                 </h4>
                 <ul class="space-y-3">
@@ -90,7 +99,7 @@
             <!-- Customer Service Section -->
             <div>
                 <h4 class="text-sm font-bold text-white mb-6 flex items-center gap-2">
-                    <span class="w-1 h-5 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full"></span>
+                    <span class="w-1 h-5 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full"></span>
                     Support
                 </h4>
                 <ul class="space-y-3">
@@ -112,7 +121,7 @@
             <!-- Company Section -->
             <div>
                 <h4 class="text-sm font-bold text-white mb-6 flex items-center gap-2">
-                    <span class="w-1 h-5 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full"></span>
+                    <span class="w-1 h-5 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full"></span>
                     Company
                 </h4>
                 <ul class="space-y-3">
@@ -125,7 +134,8 @@
                     <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Press</a>
                     </li>
                     <li><a href="#"
-                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Sustainability</a></li>
+                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Sustainability</a>
+                    </li>
                     <li><a href="#"
                             class="text-sm hover:text-indigo-400 transition-colors duration-300">Partners</a></li>
                 </ul>
@@ -134,7 +144,7 @@
             <!-- Newsletter Section -->
             <div>
                 <h4 class="text-sm font-bold text-white mb-6 flex items-center gap-2">
-                    <span class="w-1 h-5 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full"></span>
+                    <span class="w-1 h-5 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full"></span>
                     Newsletter
                 </h4>
                 <p class="text-sm text-gray-400 mb-4">Get exclusive offers and updates delivered to your inbox.</p>
@@ -142,7 +152,7 @@
                     <input type="email" placeholder="Enter your email"
                         class="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
                     <button type="submit"
-                        class="w-full px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-semibold rounded-lg transition-all duration-300 transform hover:scale-105">
+                        class="w-full px-4 py-2.5 bg-[#0b7a93] text-white text-sm font-semibold rounded-lg transition-all duration-300 transform hover:scale-105">
                         Subscribe
                     </button>
                 </form>

@@ -18,13 +18,13 @@ return new class extends Migration
             $table->foreignId('shipping_address_id')->references('id')->on('user_addresses')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('billing_address_id')->references('id')->on('user_addresses')->cascadeOnDelete()->cascadeOnUpdate();
 
-            $table->decimal('subtotal',10,2)->nullable();
-            $table->decimal('discount',10,2)->nullable()->default(0);
+            $table->decimal('subtotal', 10, 2)->nullable();
+            $table->decimal('discount', 10, 2)->nullable()->default(0);
             $table->string('discount_code')->nullable();
-            $table->decimal('shipping_amount',10,2)->nullable()->default(0);
-            $table->decimal('total',10,2)->nullable();
+            $table->decimal('shipping_amount', 10, 2)->nullable()->default(0);
+            $table->decimal('total', 10, 2)->nullable();
             $table->string('payment_method')->nullable();
-            $table->string('payment_status')->default('pending');
+            $table->string('status')->default('pending');
             $table->tinyInteger('is_payment')->default(0);
             $table->string('transaction_id')->nullable();
             $table->text('payment_data')->nullable();

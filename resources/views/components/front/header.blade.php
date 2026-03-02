@@ -31,7 +31,7 @@
                         class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Home</a>
 
                     <a href="#"
-                        class="px-4 py-2 text-gray-700 hover:text-indigo-600  transition font-medium text-md flex items-center gap-1">
+                        class="px-4 py-2 text-gray-700 hover:text-[#0b7a93]  transition font-medium text-md flex items-center gap-1">
                         About Us
                     </a>
 
@@ -40,7 +40,7 @@
 
                     <div class="relative group">
                         <button
-                            class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition font-medium text-md flex items-center gap-1">
+                            class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md flex items-center gap-1">
                             Shop
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
@@ -51,7 +51,7 @@
                         </button>
                         <!-- Mega Menu Dropdown -->
                         @if (!empty($categories) && $categories->count())
-                            <div class="absolute left-0 mt-0 w-screen max-w-3xl bg-white border-t-4 border-indigo-600 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50"
+                            <div class="absolute left-0 mt-0 w-screen max-w-3xl bg-white border-t-4 border-[#0b7a93] rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50"
                                 style="left: 50%; transform: translateX(-50%);">
                                 <div class="grid grid-cols-4 gap-6 p-6">
                                     <!-- Column 1 -->
@@ -88,16 +88,16 @@
 
 
                     <a href="#"
-                        class="px-4 py-2 text-gray-700 hover:text-indigo-600 transition font-medium text-md">Contact</a>
+                        class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Contact</a>
                 </div>
 
                 <!-- Search Bar - Hidden on Mobile -->
                 <div class="hidden lg:flex items-center justify-center w-full max-w-md">
                     <form class="w-full relative ">
                         <input type="text" placeholder="Search for products, brands, and more..."
-                            class="w-full px-5 py-4 rounded-full border-2 border-gray-200 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm transition">
+                            class="w-full px-5 py-4 rounded-full border-2 border-gray-200 focus:border-[#0b7a93] focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm transition">
                         <button type="submit"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-indigo-600 hover:text-indigo-700 transition">
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-[#0b7a93] hover:text-[#0b7a93] transition">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="11" cy="11" r="8"></circle>
@@ -157,8 +157,8 @@
                                 class="absolute right-0 mt-2 w-56 bg-white border-2 border-gray-100 rounded-xl shadow-xl overflow-hidden z-50"
                                 style="display:none;">
                                 <div class="bg-gradient-to-r from-[#24bad8] to-[#0b7a93] px-4 py-3">
-                                    <p class="text-white font-semibold">{{ Auth::user()->name }}</p>
-                                    <p class="text-indigo-100 text-sm">{{ Auth::user()->email ?? 'user@example.com' }}
+                                    <p class="text-white font-semibold">{{ Auth::user()->fullname }}</p>
+                                    <p class="text-indigo-100 text-sm">{{ Auth::user()->email }}
                                     </p>
                                 </div>
                                 <a href="{{ route('user.dashboard') }}" wire:navigate
@@ -169,17 +169,6 @@
                                         <polyline points="9 22 9 12 15 12 15 22"></polyline>
                                     </svg>
                                     Dashboard
-                                </a>
-                                <a href="#"
-                                    class="px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 transition flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="9" cy="21" r="1"></circle>
-                                        <circle cx="20" cy="21" r="1"></circle>
-                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                                        </path>
-                                    </svg>
-                                    My Orders
                                 </a>
 
 

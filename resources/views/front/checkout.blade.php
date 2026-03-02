@@ -61,7 +61,7 @@
                             <div class="flex flex-col items-center flex-1">
                                 <div class="flex items-center w-full">
                                     <div
-                                        class="flex items-center justify-center w-10 h-10 rounded-full {{ $currentStep >= $i ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600' }} font-semibold">
+                                        class="flex items-center justify-center w-10 h-10 rounded-full {{ $currentStep >= $i ? 'bg-[#0b7a93] text-white' : 'bg-gray-200 text-gray-600' }} font-semibold">
                                         @if ($currentStep > $i)
                                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
@@ -74,7 +74,7 @@
                                     </div>
                                     @if ($i < 4)
                                         <div
-                                            class="flex-1 h-1 {{ $currentStep > $i ? 'bg-blue-600' : 'bg-gray-200' }} mx-2">
+                                            class="flex-1 h-1 {{ $currentStep > $i ? 'bg-[#0b7a93]' : 'bg-gray-200' }} mx-2">
                                         </div>
                                     @endif
                                 </div>
@@ -105,7 +105,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">First Name <span
                                             class="text-red-500">*</span></label>
                                     <input type="text" wire:model.blur="first_name"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('first_name') border-red-500 @enderror"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('first_name') border-red-500 @enderror"
                                         placeholder="John">
                                     @error('firstName')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -117,7 +117,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Last Name <span
                                             class="text-red-500">*</span></label>
                                     <input type="text" wire:model.blur="last_name"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('last_name') border-red-500 @enderror"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('last_name') border-red-500 @enderror"
                                         placeholder="Doe">
                                     @error('last_name')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -129,7 +129,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Email <span
                                             class="text-red-500">*</span></label>
                                     <input type="email" wire:model.blur="email"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('email') border-red-500 @enderror"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('email') border-red-500 @enderror"
                                         placeholder="john@example.com">
                                     @error('email')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -141,7 +141,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Phone <span
                                             class="text-red-500">*</span></label>
                                     <input type="tel" wire:model.blur="phone"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('phone') border-red-500 @enderror"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('phone') border-red-500 @enderror"
                                         placeholder="(555) 000-0000">
                                     @error('phone')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -153,7 +153,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Street Address <span
                                             class="text-red-500">*</span></label>
                                     <input type="text" wire:model.blur="address"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('address') border-red-500 @enderror"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('address') border-red-500 @enderror"
                                         placeholder="123 Main St">
                                     @error('address')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -165,7 +165,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">City <span
                                             class="text-red-500">*</span></label>
                                     <input type="text" wire:model.blur="city"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('city') border-red-500 @enderror"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('city') border-red-500 @enderror"
                                         placeholder="Enter City">
                                     @error('city')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -177,7 +177,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">State <span
                                             class="text-red-500">*</span></label>
                                     <select wire:model="state"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent">
                                         <option value="">Select State</option>
                                         @foreach ($states as $state)
                                             <option value="{{ $state }}">{{ $state }}</option>
@@ -193,7 +193,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">ZIP Code <span
                                             class="text-red-500">*</span></label>
                                     <input type="number" wire:model.blur="zip_code" placeholder="Zip Code"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('zip_code') border-red-500 @enderror"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('zip_code') border-red-500 @enderror"
                                         placeholder="10001">
                                     @error('zip_code')
                                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -205,7 +205,7 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Country <span
                                             class="text-red-500">*</span></label>
                                     <select wire:model.blur="country"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ">
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent ">
                                         <option value="india">India</option>
                                     </select>
                                     @error('country')
@@ -223,7 +223,7 @@
                                     Back to Cart
                                 </a>
                                 <button type="submit"
-                                    class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                    class="px-6 py-2 bg-[#0b7a93] hover:bg-[#0aaace] text-white font-medium rounded-lg  transition-colors">
                                     Continue to Billing
                                 </button>
                             </div>
@@ -242,7 +242,7 @@
                                 <label class="flex items-center gap-3 cursor-pointer">
                                     <input type="checkbox" wire:change="toggleSameAsShipping"
                                         {{ $sameAsShipping ? 'checked' : '' }}
-                                        class="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500">
+                                        class="w-5 h-5 text-[#0b7a93] rounded focus:ring-2 focus:ring-[#0b7a93]">
                                     <span class="text-gray-700 font-medium">Same as shipping address</span>
                                 </label>
                             </div>
@@ -255,7 +255,7 @@
                                                 class="text-red-500">*</span></label>
                                         <input type="text" wire:model.blur="billingFirstName"
                                             placeholder="Enter First Name..."
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingFirstName') border-red-500 @enderror">
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('billingFirstName') border-red-500 @enderror">
                                         @error('billingFirstName')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                         @enderror
@@ -267,7 +267,7 @@
                                                 class="text-red-500">*</span></label>
                                         <input type="text" wire:model.blur="billingLastName"
                                             placeholder="Enter Last Name..."
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingLastName') border-red-500 @enderror">
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('billingLastName') border-red-500 @enderror">
                                         @error('billingLastName')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                         @enderror
@@ -278,7 +278,7 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Email <span
                                                 class="text-red-500">*</span></label>
                                         <input type="email" wire:model.blur="billingEmail"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingEmail') border-red-500 @enderror"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('billingEmail') border-red-500 @enderror"
                                             placeholder="john@example.com">
                                         @error('billingEmail')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -290,7 +290,7 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Phone <span
                                                 class="text-red-500">*</span></label>
                                         <input type="tel" wire:model.blur="billingPhone"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingPhone') border-red-500 @enderror"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('billingPhone') border-red-500 @enderror"
                                             placeholder="(555) 000-0000">
                                         @error('billingPhone')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -304,7 +304,7 @@
                                             <span class="text-red-500">*</span></label>
                                         <input type="text" wire:model.blur="billingAddress"
                                             placeholder="Address..."
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingAddress') border-red-500 @enderror">
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('billingAddress') border-red-500 @enderror">
                                         @error('billingAddress')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                         @enderror
@@ -315,7 +315,7 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">City <span
                                                 class="text-red-500">*</span></label>
                                         <input type="text" wire:model.blur="billingCity" placeholder="City Name.."
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingCity') border-red-500 @enderror">
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('billingCity') border-red-500 @enderror">
                                         @error('billingCity')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                         @enderror
@@ -326,7 +326,7 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">State <span
                                                 class="text-red-500">*</span></label>
                                         <select wire:model="billingState"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent">
                                             <option value="">Select State</option>
                                             @foreach ($states as $state)
                                                 <option value="{{ $state }}">{{ $state }}</option>
@@ -343,7 +343,7 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">ZIP Code <span
                                                 class="text-red-500">*</span></label>
                                         <input type="number" wire:model.blur="billingZipCode" placeholder="Zip Code"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('billingZipCode') border-red-500 @enderror">
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent @error('billingZipCode') border-red-500 @enderror">
                                         @error('billingZipCode')
                                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                                         @enderror
@@ -355,7 +355,7 @@
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Country <span
                                                 class="text-red-500">*</span></label>
                                         <select wire:model.blur="billingCountry"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ">
+                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0b7a93] focus:border-transparent ">
                                             <option value="india">India</option>
                                         </select>
                                         @error('billingCountry')
@@ -374,7 +374,7 @@
                                     Back
                                 </button>
                                 <button type="submit"
-                                    class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                    class="px-6 py-2 bg-[#0b7a93] hover:bg-[#0aaace] text-white font-medium rounded-lg transition-colors">
                                     Continue to Payment
                                 </button>
                             </div>
@@ -394,7 +394,7 @@
                             <label
                                 class="flex items-center p-4 border-2 {{ $paymentMethod === 'cod' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
                                 <input type="radio" wire:model="paymentMethod" value="cod"
-                                    class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
+                                    class="w-5 h-5 text-[#0b7a93] focus:ring-2 focus:ring-[#0b7a93]">
                                 <div class="ml-3">
                                     <p class="font-semibold text-gray-900">Cash On Delivery</p>
                                     <p class="text-sm text-gray-600">Quick and easy checkout</p>
@@ -409,7 +409,7 @@
                             class="flex items-center p-4 border-2 {{ $paymentMethod == 'stripe' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
 
                             <input type="radio" wire:model.live="paymentMethod" value="stripe"
-                                class="w-5 h-5 text-blue-600 focus:ring-2 focus:ring-blue-500">
+                                class="w-5 h-5 text-[#0b7a93] focus:ring-2 focus:ring-[#0b7a93]">
 
                             <div class="ml-3">
                                 <p class="font-semibold text-gray-900">Credit or Debit Card</p>
@@ -430,7 +430,7 @@
                                 Back
                             </button>
                             <button type="submit"
-                                class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                class="px-6 py-2 bg-[#0b7a93] hover:bg-[#0aaace] text-white font-medium rounded-lg  transition-colors">
                                 Review Order
                             </button>
                         </div>
@@ -573,11 +573,6 @@
                             </div>
                         </div>
 
-                        <!-- Confirm Message -->
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-                            <p class="text-sm text-blue-800">By clicking "Place Order", you agree to our terms and
-                                conditions and authorize payment.</p>
-                        </div>
 
                         <!-- Navigation Buttons -->
                         <div class="flex justify-between">
@@ -585,10 +580,24 @@
                                 class="px-6 py-2 border-2 border-gray-300 text-gray-700 font-medium rounded-lg hover:border-gray-400 transition-colors">
                                 Back
                             </button>
+
                             <button wire:click="placeOrder" wire:loading.attr="disabled"
                                 wire:loading.class="opacity-50 cursor-not-allowed" wire:target="placeOrder"
-                                class="px-8 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors">
-                                Place Order
+                                class=" text-center bg-[#0b7a93] px-8 py-2  text-white font-medium rounded-lg hover:bg-green-700 transition-colors">
+                                <span wire:loading.remove wire:target="placeOrder">Proceed to Checkout</span>
+
+
+                                <span wire:loading wire:target="placeOrder" class="flex gap-4">
+                                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z">
+                                        </path>
+                                    </svg>
+
+                                </span>
+
                             </button>
                         </div>
                     </div>

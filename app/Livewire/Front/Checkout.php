@@ -95,10 +95,6 @@ class Checkout extends Component
 
     public $orderId;
 
-    public $orderNumber;
-
-    protected $listeners = ['paymentSuccess'];
-
     public function applyCoupon()
     {
         $this->validate([
@@ -427,7 +423,7 @@ class Checkout extends Component
         }
 
         $order->update([
-            'payment_status' => 'paid',
+            'status' => 'pending',
             'transaction_id' => $paymentIntent['id'],
             'payment_data' => json_encode($paymentIntent),
             'is_payment' => true,
@@ -559,6 +555,6 @@ class Checkout extends Component
             'discount' => $this->discount,
             'total' => $this->total,
 
-        ]);
+        ])->layoutData(['metaTitle' => 'Checkout - ShopHub', 'metaDescription' => 'Checkout - ShopHub']);
     }
 }

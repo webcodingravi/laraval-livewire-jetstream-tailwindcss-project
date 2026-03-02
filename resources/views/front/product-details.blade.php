@@ -1,5 +1,5 @@
 <div>
-    <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-8 md:py-12 px-4 md:px-6 lg:px-8 mt-[100px]">
+    <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-8 md:py-12  mt-[100px]">
         <!-- Breadcrumb Navigation -->
         <div class="md:w-11/12 px-8 md:px-0 mx-auto mb-8">
             <div class="flex items-center gap-2 text-sm text-gray-600">
@@ -40,7 +40,7 @@
                     <div class="grid grid-cols-4 gap-3">
                         @foreach ($product->productImages as $image)
                             <button @click="mainImage = '{{ asset('storage/uploads/product/' . $image->image_name) }}'"
-                                class="aspect-square rounded-lg overflow-hidden border-2 border-indigo-600 shadow-md hover:shadow-lg transition">
+                                class="aspect-square rounded-lg overflow-hidden border-2 border-[#0b7a93] shadow-md hover:shadow-lg transition">
                                 <img src="{{ asset('storage/uploads/product/' . $image->image_name) }}" alt="View 1"
                                     class="w-full h-full object-cover">
                             </button>
@@ -87,12 +87,12 @@
                             class="space-y-3 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-200">
                             <div class="flex items-baseline gap-3">
                                 <span
-                                    class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">{{ config('app.currency.symbol') }}{{ number_format($price, 2) }}</span>
+                                    class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-[#0b7a93]">{{ config('app.currency.symbol') }}{{ number_format($price, 2) }}</span>
                                 <input type="hidden" wire:model="price" value="{{ $price }}">
 
                                 @if ($old_price)
                                     <span
-                                        class="text-2xl text-gray-400 line-through">{{ config('app.currency.symbol') }}{{ number_format($old_price, 2) }}</span>
+                                        class="text-lg text-gray-400 line-through">{{ config('app.currency.symbol') }}{{ number_format($old_price, 2) }}</span>
                                     <input type="hidden" wire:model="old_price" value="{{ $old_price }}">
                                 @endif
 
@@ -119,7 +119,8 @@
                         @if (!empty($product->colors) && $product->colors->count())
                             <div>
                                 <label class="block text-sm font-semibold text-gray-900 mb-3">Color</label>
-                                <select class="border border-slate-200 rounded cursor-pointer text-slate-800"
+                                <select
+                                    class="border border-slate-200 rounded-md focus:outline-0 focus:ring-0 active:ring-0 cursor-pointer text-slate-800"
                                     wire:model="color">
                                     <option value="">--Select Color--</option>
                                     @foreach ($product->colors as $color)
@@ -176,7 +177,7 @@
 
                             @if (Auth::check())
                                 <button type="submit"
-                                    class="col-span-2 py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+                                    class="col-span-1 py-4 px-6 bg-[#0b7a93] text-white font-bold rounded-xl hover:shadow-2xl transition transform hover:scale-95 active:scale-95 flex items-center justify-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 8m10 0l2 8m-12 0h12">
@@ -186,7 +187,7 @@
                                 </button>
                             @else
                                 <a href="{{ route('login') }}" wire:navigate
-                                    class="col-span-2 py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+                                    class="col-span-1 py-4 px-6 bg-[#0b7a93] text-white font-bold rounded-xl hover:shadow-2xl transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 8m10 0l2 8m-12 0h12">
@@ -235,19 +236,19 @@
             <!-- Tab Navigation -->
             <div class="flex flex-wrap gap-2 md:gap-6 border-b-2 border-gray-200 mb-8">
                 <button @click="activeTab = 'description'"
-                    :class="activeTab === 'description' ? 'text-indigo-600 border-b-2 border-indigo-600 font-bold' :
+                    :class="activeTab === 'description' ? 'text-[#0b7a93] border-b-2 border-[#0b7a93] font-bold' :
                         'text-gray-600 hover:text-gray-900'"
                     class="py-4 px-2 md:px-0 transition relative -mb-0.5">
                     Description
                 </button>
                 <button @click="activeTab = 'specifications'"
-                    :class="activeTab === 'specifications' ? 'text-indigo-600 border-b-2 border-indigo-600 font-bold' :
+                    :class="activeTab === 'specifications' ? 'text-[#0b7a93] border-b-2 border-[#0b7a93] font-bold' :
                         'text-gray-600 hover:text-gray-900'"
                     class="py-4 px-2 md:px-0 transition relative -mb-0.5">
                     Specifications
                 </button>
                 <button @click="activeTab = 'reviews'"
-                    :class="activeTab === 'reviews' ? 'text-indigo-600 border-b-2 border-indigo-600 font-bold' :
+                    :class="activeTab === 'reviews' ? 'text-[#0b7a93] border-b-2 border-[#0b7a93] font-bold' :
                         'text-gray-600 hover:text-gray-900'"
                     class="py-4 px-2 md:px-0 transition relative -mb-0.5">
                     Reviews (248)
@@ -277,7 +278,7 @@
                         <div
                             class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
                             <div class="text-center">
-                                <div class="text-4xl font-bold text-indigo-600">4.8</div>
+                                <div class="text-4xl font-bold text-[#0b7a93]">4.8</div>
                                 <div class="text-yellow-400 text-lg">★★★★★</div>
                                 <p class="text-xs text-gray-600 mt-1">248 reviews</p>
                             </div>
@@ -292,7 +293,7 @@
                                 <div class="flex items-center gap-2 text-sm mb-1">
                                     <span class="w-8">4★</span>
                                     <div class="flex-1 bg-gray-300 rounded-full h-2">
-                                        <div class="bg-blue-500 h-2 rounded-full" style="width: 12%"></div>
+                                        <div class="bg-[#0b7a93] h-2 rounded-full" style="width: 12%"></div>
                                     </div>
                                     <span class="w-8 text-right text-gray-600">30</span>
                                 </div>
@@ -313,11 +314,11 @@
                             </div>
                             <div class="col-span-2 flex flex-col gap-2">
                                 <button
-                                    class="py-2 px-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">
+                                    class="py-2 px-4 bg-[#0b7a93] text-white rounded-lg font-semibold hover:bg-indigo-700 transition">
                                     Write a Review
                                 </button>
                                 <button
-                                    class="py-2 px-4 border-2 border-indigo-600 text-indigo-600 rounded-lg font-semibold hover:bg-indigo-50 transition">
+                                    class="py-2 px-4 border-2 border-[#0b7a93] text-[#0b7a93] rounded-lg font-semibold hover:bg-indigo-50 transition">
                                     Verified Purchases Only
                                 </button>
                             </div>
@@ -344,7 +345,7 @@
                                     days of use. Highly recommend!</p>
                                 <div class="flex gap-3">
                                     <button
-                                        class="text-sm text-gray-600 hover:text-indigo-600 transition flex items-center gap-1">
+                                        class="text-sm text-gray-600 hover:text-[#0b7a93] transition flex items-center gap-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -374,7 +375,7 @@
                                     outstanding even for extended listening sessions. Worth every penny!</p>
                                 <div class="flex gap-3">
                                     <button
-                                        class="text-sm text-gray-600 hover:text-indigo-600 transition flex items-center gap-1">
+                                        class="text-sm text-gray-600 hover:text-[#0b7a93] transition flex items-center gap-1">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -389,7 +390,7 @@
 
                         <!-- Show More Reviews Button -->
                         <button
-                            class="w-full py-3 mt-6 border-2 border-indigo-600 text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 transition">
+                            class="w-full py-3 mt-6 border-2 border-[#0b7a93] text-[#0b7a93] font-bold rounded-lg hover:bg-indigo-50 transition">
                             Load More Reviews
                         </button>
                     </div>
@@ -410,6 +411,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Product Card 1 -->
 
+
                     @foreach ($relatedProducts as $product)
                         <div
                             class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden">
@@ -426,19 +428,47 @@
 
                                 <!-- Wishlist Button -->
 
-                                <button
-                                    class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center">
-
-                                    <i class="ri-heart-line text-xl text-slate-400"></i>
-
-                                </button>
-
+                                @if (Auth::check())
+                                    <button wire:click="wishlists"
+                                        class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center {{ $isWishlisted
+                                            ? 'bg-rose-100 text-rose-600 border-rose-300'
+                                            : 'bg-white text-gray-700 border-gray-300 hover:border-rose-300' }}">
 
 
-                                @if ($product->is_hot)
+                                        <svg class="w-5 h-5 mx-auto"
+                                            fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                            </path>
+                                        </svg>
+
+
+
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" wire:navigate
+                                        class="absolute top-3 left-3 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-700 border-gray-300 hover:border-rose-300">
+
+
+                                        <svg class="w-5 h-5 mx-auto"
+                                            fill="{{ $isWishlisted ? 'currentColor' : 'none' }}"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                            </path>
+                                        </svg>
+
+
+
+                                    </a>
+                                @endif
+
+
+                                @if ($product->is_featured)
                                     <div
-                                        class="absolute top-3 right-3 bg-rose-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                                        Hot
+                                        class="absolute top-3 right-3 bg-[#0b7a93] text-white px-3 py-1 rounded-full text-xs font-bold">
+                                        Featured
                                     </div>
                                 @endif
                             </div>
@@ -446,7 +476,7 @@
                             <!-- Product Info -->
                             <div class="p-4">
 
-                                <p class="text-xs font-semibold text-indigo-600 mb-1 uppercase">
+                                <p class="text-xs font-semibold text-[#0b7a93] mb-1 uppercase">
                                     <a wire:navigate
                                         href="{{ route('products', [$product->category->slug, $product->subCategory->slug]) }}">
                                         {{ $product->subCategory->name }}
@@ -460,7 +490,7 @@
                                 </h3>
 
                                 <div class="flex items-center gap-2 mb-4">
-                                    <span class="text-xl font-bold text-indigo-600">
+                                    <span class="text-xl font-bold text-[[#0b7a93]]">
                                         {{ config('app.currency.symbol') }}{{ number_format($product->price, 2) }}
                                     </span>
 
@@ -491,13 +521,13 @@
 
                                 <!-- Add to Cart Button -->
                                 @if (Auth::check())
-                                    <button
-                                        class="w-full py-2 bg-indigo-600 text-white font-bold rounded-lg hover:shadow-lg transition">
+                                    <button wire:click="addToCart({{ $productId }})"
+                                        class="w-full py-2 bg-[#0b7a93] text-white font-bold rounded-lg hover:shadow-lg transition">
                                         <i class="ri-shopping-cart-2-line"></i> Add to Cart
                                     </button>
                                 @else
                                     <a href="{{ route('login') }}" wire:navigate
-                                        class="block text-center w-full py-2 bg-indigo-600 text-white font-bold rounded-lg">
+                                        class="block text-center w-full py-2 bg-[#0b7a93] text-white font-bold rounded-lg">
                                         <i class="ri-shopping-cart-2-line"></i> Add to Cart
                                     </a>
                                 @endif

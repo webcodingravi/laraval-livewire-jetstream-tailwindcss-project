@@ -3,9 +3,10 @@
 namespace App\Livewire\Front;
 
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Color;
-use App\Models\SubCategory;
 use App\Models\Product;
+use App\Models\SubCategory;
 use App\Services\AddToCartService;
 use App\Services\WishlistService;
 use Livewire\Component;
@@ -15,177 +16,186 @@ class Products extends Component
 {
     use WithPagination;
 
-
     public $category;
+
     public $subCategory;
+
     public $selectedCategories = [];
+
     public $selectedBrands = [];
+
     public $selectedColors = [];
+
     public $minPrice = null;
+
     public $maxPrice = null;
+
     public $isWishlisted = [];
-    public $metaTitle;
-    public $metaDescription;
 
+    public $metaTitle = 'Hello';
 
+    public $metaDescription = 'Hello';
 
+    // Toggle Wishlist
+    public function add_wishlists($productId)
+    {
+        try {
 
- // Toggle Wishlist
-public function add_wishlists($productId) {
-  try{
+            $this->isWishlisted[$productId] = WishlistService::toggle($productId);
+            $this->dispatch('wishlistUpdated');
 
-    $this->isWishlisted[$productId]= WishlistService::toggle($productId);
-     $this->dispatch('wishlistUpdated');
-
-  }
-  catch(\Exception $e) {
-    $this->dispatch('alert',type:'error',title:'Error!',text:$e->getMessage());
-  }
-}
-
-
-// Add to Cart
-public function addToCart($productId) {
-     try{
-     AddToCartService::add($productId);
-     $this->dispatch('alert',type:'success',title:'Success !',text:"Added successfully");
-
-   }catch(\Exception $e) {
-        $this->dispatch('alert',type:'error',title:'Error!',text:$e->getMessage());
-   }
-
-
-    $this->dispatch('cartUpdated');
-}
-
-
-
-
-    public function mount($category = null,$subCategory = null) {
-     $this->category = $category;
-     $this->subCategory = $subCategory;
-
-     foreach(Product::all() as $product) {
-          $this->isWishlisted[$product->id] = WishlistService::checkWishlist($product->id);
-     }
+        } catch (\Exception $e) {
+            $this->dispatch('alert', type: 'error', title: 'Error!', text: $e->getMessage());
+        }
     }
 
-    public function updatedSelectedCategories() {
+    // Add to Cart
+    public function addToCart($productId)
+    {
+        try {
+            AddToCartService::add($productId);
+            $this->dispatch('alert', type: 'success', title: 'Success !', text: 'Added successfully');
+
+        } catch (\Exception $e) {
+            $this->dispatch('alert', type: 'error', title: 'Error!', text: $e->getMessage());
+        }
+
+        $this->dispatch('cartUpdated');
+    }
+
+    public function mount($category = null, $subCategory = null)
+    {
+        $this->category = $category;
+        $this->subCategory = $subCategory;
+
+        // Category Meta
+        $category = Category::where('slug', $category)->first();
+        if (! empty($category)) {
+            $this->metaTitle = $category->meta_title;
+            $this->metaDescription = $category->meta_description;
+        }
+
+        // SubCategory Meta
+        $subCategory = SubCategory::where('slug', $subCategory)->first();
+        if (! empty($subCategory)) {
+            $this->metaTitle = $subCategory->meta_title;
+            $this->metaDescription = $subCategory->meta_description;
+        }
+
+        foreach (Product::all() as $product) {
+            $this->isWishlisted[$product->id] = WishlistService::checkWishlist($product->id);
+        }
+    }
+
+    public function updatedSelectedCategories()
+    {
         $this->resetPage();
     }
 
-    public function updatedMinPrice() {
+    public function updatedMinPrice()
+    {
         $this->resetPage();
     }
 
-    public function updatedMaxPrice() {
+    public function updatedMaxPrice()
+    {
         $this->resetPage();
     }
 
-    public function clearAllFilters() {
-        $this->reset(['selectedCategories','selectedBrands','selectedColors','minPrice','maxPrice']);
+    public function clearAllFilters()
+    {
+        $this->reset(['selectedCategories', 'selectedBrands', 'selectedColors', 'minPrice', 'maxPrice']);
         $this->resetPage();
     }
 
     public function toggleColor($colorId)
-{
-    if (in_array($colorId, $this->selectedColors)) {
+    {
+        if (in_array($colorId, $this->selectedColors)) {
 
-        $this->selectedColors = array_diff($this->selectedColors, [$colorId]);
+            $this->selectedColors = array_diff($this->selectedColors, [$colorId]);
 
-    } else {
+        } else {
 
-        $this->selectedColors[] = $colorId;
+            $this->selectedColors[] = $colorId;
 
+        }
+
+        $this->resetPage();
     }
-
-    $this->resetPage();
-}
-
 
     public function render()
     {
-        $products = Product::with(['category:id,name,slug','subCategory:id,name,slug','productImages:id,product_id,image_name','colors:id,name'])
+        $products = Product::with(['category:id,name,slug', 'subCategory:id,name,slug', 'productImages:id,product_id,image_name', 'colors:id,name'])
+            ->when(! empty($this->category), function ($query) {
+                $query->whereHas('category', function ($q) {
+                    $q->where('slug', $this->category);
+                });
 
-        ->when(!empty($this->category),function($query) {
-            $query->whereHas('category',function($q) {
-               $q->where('slug',$this->category);
-            });
+            })
+            ->when(! empty($this->subCategory), function ($query) {
+                $query->whereHas('subCategory', function ($q) {
+                    $q->where('slug', $this->subCategory);
+                });
+            })
+            ->when(! empty($this->selectedCategories), function ($query) {
+                $query->whereHas('category', function ($q) {
+                    $q->where('id', $this->selectedCategories);
+                });
+            })
+            ->when(! empty($this->selectedBrands), function ($query) {
+                $query->whereHas('brand', function ($q) {
+                    $q->where('id', $this->selectedBrands);
+                });
+            })
+            ->when(! empty($this->selectedColors), function ($query) {
+                $query->whereHas('colors', function ($q) {
+                    $q->whereIn('colors.id', $this->selectedColors);
+                });
 
-        })
-        ->when(!empty($this->subCategory),function ($query) {
-            $query->whereHas('subCategory',function($q) {
-              $q->where('slug',$this->subCategory);
-            });
- })
-        ->when(!empty($this->selectedCategories),function($query) {
-           $query->whereHas('category',function($q){
-            $q->where('id',$this->selectedCategories);
-           });
-        })
-
-          ->when(!empty($this->selectedBrands),function($query) {
-           $query->whereHas('brand',function($q){
-            $q->where('id',$this->selectedBrands);
-           });
-        })
-        ->when(!empty($this->selectedColors), function ($query) {
-            $query->whereHas('colors', function ($q) {
-                $q->whereIn('colors.id', $this->selectedColors);
-            });
-
-})
-        ->when(!empty($this->minPrice),function($query) {
-            $query->where('price','>=',$this->minPrice);
-        })
-
-        ->when(!empty($this->maxPrice),function($query) {
-            $query->where('price','<=',$this->maxPrice);
-        })
-
-        ->orderBy('id','desc')
-        ->paginate(10);
-
+            })
+            ->when(! empty($this->minPrice), function ($query) {
+                $query->where('price', '>=', $this->minPrice);
+            })
+            ->when(! empty($this->maxPrice), function ($query) {
+                $query->where('price', '<=', $this->maxPrice);
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
         $subCategories = SubCategory::withCount('product')->with('category:id,name,slug')
-        ->when(!empty($this->category),function($query) {
-            $query->whereHas('category',function($q) {
-                $q->where('slug',$this->category);
-            });
-        })
-      ->orderBy('name','asc')->get();
+            ->when(! empty($this->category), function ($query) {
+                $query->whereHas('category', function ($q) {
+                    $q->where('slug', $this->category);
+                });
+            })
+            ->orderBy('name', 'asc')->get();
 
-      $brands = Brand::with(['category:id,name,slug','SubCategory:id,name,slug'])
-          ->when($this->category,function($query) {
-            $query->whereHas('category',function ($q) {
-                $q->where('slug',$this->category);
-            });
-          })
-       ->when($this->subCategory,function($query) {
-            $query->whereHas('SubCategory',function ($q) {
-                $q->where('slug',$this->subCategory);
-            });
-          })
+        $brands = Brand::with(['category:id,name,slug', 'SubCategory:id,name,slug'])
+            ->when($this->category, function ($query) {
+                $query->whereHas('category', function ($q) {
+                    $q->where('slug', $this->category);
+                });
+            })
+            ->when($this->subCategory, function ($query) {
+                $query->whereHas('SubCategory', function ($q) {
+                    $q->where('slug', $this->subCategory);
+                });
+            })
+            ->orderBy('brand_name', 'asc')->get();
 
-        ->orderBy('brand_name','asc')->get();
+        $colors = Color::with(['category:id,name,slug', 'subCategory:id,name,slug'])
+            ->when(! empty($this->category), function ($query) {
+                $query->whereHas('category', function ($q) {
+                    $q->where('slug', $this->category);
+                });
+            })
+            ->when(! empty($this->subCategory), function ($query) {
+                $query->whereHas('SubCategory', function ($q) {
+                    $q->where('slug', $this->subCategory);
+                });
+            })
+            ->orderBy('name', 'asc')->get();
 
-      $colors = Color::with(['category:id,name,slug','subCategory:id,name,slug'])
-      ->when(!empty($this->category),function($query) {
-        $query->whereHas('category',function($q) {
-            $q->where('slug',$this->category);
-        });
-         })
-        ->when(!empty($this->subCategory),function($query) {
-            $query->whereHas('SubCategory',function($q) {
-                $q->where('slug',$this->subCategory);
-            });
-        })
-
-
-        ->orderBy('name','asc')->get();
-
-
-
-        return view('front.products',compact('products','subCategories','brands','colors'));
+        return view('front.products', compact('products', 'subCategories', 'brands', 'colors'))->layoutData(['metaTitle' => $this->metaTitle, 'metaDescription' => $this->metaDescription]);
     }
 }
