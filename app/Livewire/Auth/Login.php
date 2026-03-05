@@ -20,7 +20,7 @@ class Login extends Component
     public function mount()
     {
         if (auth()->check()) {
-            return redirect()->intended(route('admin.dashboard'));
+            return redirect()->intended(route('home'));
         }
     }
 
@@ -32,7 +32,7 @@ class Login extends Component
 
                 session()->regenerate();
 
-                return redirect()->intended(route('admin.dashboard'));
+                return redirect()->intended(route('home'));
 
             } else {
                 session()->flash('error', 'Invalid email or Password');
