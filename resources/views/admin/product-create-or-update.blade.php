@@ -131,10 +131,7 @@
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
                                             {{ $product->sku }}</p>
-
-
                                     </td>
-
 
 
                                     </td>

@@ -160,131 +160,14 @@
             </div>
         </div>
 
-        <!-- Divider -->
-        <div class="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent my-12"></div>
 
-        <!-- Bottom Section -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Payment Methods -->
-            <div>
-                <h5 class="text-xs font-bold text-gray-400 mb-4 tracking-widest">WE ACCEPT</h5>
-                <div class="flex flex-wrap gap-3">
-                    <div class="w-12 h-8 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700 hover:border-indigo-500 transition cursor-pointer"
-                        title="Visa">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-8 h-5">
-                            <rect fill="#1A1F71" width="48" height="32" rx="4" /><text x="24" y="20"
-                                font-size="8" fill="white" text-anchor="middle" dominant-baseline="middle"
-                                font-weight="bold">VISA</text>
-                        </svg>
-                    </div>
-                    <div class="w-12 h-8 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700 hover:border-indigo-500 transition cursor-pointer"
-                        title="Mastercard">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-8 h-5">
-                            <rect fill="#EB001B" width="48" height="32" rx="4" />
-                            <circle cx="16" cy="16" r="7" fill="#FF5F00" opacity="0.8" />
-                        </svg>
-                    </div>
-                    <div class="w-12 h-8 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700 hover:border-indigo-500 transition cursor-pointer"
-                        title="PayPal">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-8 h-5">
-                            <rect fill="#003087" width="48" height="32" rx="4" /><text x="24" y="20"
-                                font-size="7" fill="white" text-anchor="middle" dominant-baseline="middle"
-                                font-weight="bold">PP</text>
-                        </svg>
-                    </div>
-                    <div class="w-12 h-8 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700 hover:border-indigo-500 transition cursor-pointer"
-                        title="Apple Pay">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 32" class="w-8 h-5">
-                            <rect fill="white" width="48" height="32" rx="4" /><text x="24" y="20"
-                                font-size="6" fill="black" text-anchor="middle" dominant-baseline="middle"
-                                font-weight="bold">Apple</text>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Trust Badges -->
-            <div>
-                <h5 class="text-xs font-bold text-gray-400 mb-4 tracking-widest">TRUST & SECURITY</h5>
-                <div class="space-y-2">
-                    <div
-                        class="flex items-center gap-2 text-sm text-gray-400 hover:text-indigo-400 transition cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        </svg>
-                        <span>SSL Encrypted</span>
-                    </div>
-                    <div
-                        class="flex items-center gap-2 text-sm text-gray-400 hover:text-indigo-400 transition cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 12l2 2 4-4"></path>
-                            <circle cx="12" cy="12" r="10"></circle>
-                        </svg>
-                        <span>Money-Back Guarantee</span>
-                    </div>
-                    <div
-                        class="flex items-center gap-2 text-sm text-gray-400 hover:text-indigo-400 transition cursor-pointer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22A10 10 0 1 1 12 2a10 10 0 0 1 0 20z"></path>
-                            <path d="M12 6v6l4 2"></path>
-                        </svg>
-                        <span>24/7 Support</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Download Apps -->
-            <div>
-                <h5 class="text-xs font-bold text-gray-400 mb-4 tracking-widest">DOWNLOAD APP</h5>
-                <div class="space-y-2">
-                    <a href="#"
-                        class="flex items-center gap-3 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition border border-gray-700 hover:border-indigo-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="white">
-                            <path
-                                d="M17.05 13.5c-.91 0-1.64.75-1.64 1.67s.73 1.67 1.64 1.67 1.64-.75 1.64-1.67-.73-1.67-1.64-1.67zm2.5-4.33H6.88c-.99 0-1.78.88-1.78 1.99V14c0 1.1.79 1.99 1.78 1.99h12.67c.99 0 1.77-.88 1.77-1.99V10.16c0-1.1-.78-1.99-1.77-1.99zm-6.33 6.67c-2.05 0-3.71-1.66-3.71-3.71s1.66-3.71 3.71-3.71 3.71 1.66 3.71 3.71-1.66 3.71-3.71 3.71z" />
-                        </svg>
-                        <div class="text-left">
-                            <p class="text-xs text-gray-400">Get it on</p>
-                            <p class="text-sm font-semibold">Google Play</p>
-                        </div>
-                    </a>
-                    <a href="#"
-                        class="flex items-center gap-3 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition border border-gray-700 hover:border-indigo-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="white">
-                            <path
-                                d="M17.05 13.5c-.91 0-1.64.75-1.64 1.67s.73 1.67 1.64 1.67 1.64-.75 1.64-1.67-.73-1.67-1.64-1.67zm2.5-4.33H6.88c-.99 0-1.78.88-1.78 1.99V14c0 1.1.79 1.99 1.78 1.99h12.67c.99 0 1.77-.88 1.77-1.99V10.16c0-1.1-.78-1.99-1.77-1.99zm-6.33 6.67c-2.05 0-3.71-1.66-3.71-3.71s1.66-3.71 3.71-3.71 3.71 1.66 3.71 3.71-1.66 3.71-3.71 3.71z" />
-                        </svg>
-                        <div class="text-left">
-                            <p class="text-xs text-gray-400">Download on the</p>
-                            <p class="text-sm font-semibold">App Store</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Footer Bottom -->
-    <div class="bg-black bg-opacity-40 border-t border-gray-800">
-        <div class="px-4 md:px-8 lg:px-16 xl:px-24 py-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-400">
-                <div class="text-center md:text-left">
-                    <p>© 2025 ShopHub. All Rights Reserved.</p>
-                </div>
-                <div class="flex flex-wrap items-center justify-center gap-6">
-                    <a href="#" class="hover:text-indigo-400 transition">Privacy Policy</a>
-                    <a href="#" class="hover:text-indigo-400 transition">Terms of Service</a>
-                    <a href="#" class="hover:text-indigo-400 transition">Cookie Policy</a>
-                </div>
-                <div class="text-center md:text-right">
-                    <p>Made with <span class="text-rose-500">❤</span> for shoppers worldwide</p>
-                </div>
-            </div>
+    <div class="bg-black bg-opacity-40">
+        <div class="text-center py-6">
+            <p>© {{ date('Y') }} ShopHub. All Rights Reserved.</p>
         </div>
+
     </div>
 </footer>

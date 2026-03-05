@@ -6,6 +6,7 @@ use App\Models\CartItem;
 use App\Models\DiscountCode;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\PaymentSetting as ModelsPaymentSetting;
 use App\Models\ShippingMethod;
 use App\Models\UserAddress;
 use Carbon\Carbon;
@@ -88,6 +89,8 @@ class Checkout extends Component
     public $cardValid = false;
 
     public $orderId;
+
+    public $paymentSetting = [];
 
     public function applyCoupon()
     {
@@ -174,6 +177,8 @@ class Checkout extends Component
             $this->type = $savedAddress->type;
 
         }
+
+        $this->paymentSetting = ModelsPaymentSetting::firstOrFail();
 
         $this->calculateTotals();
     }

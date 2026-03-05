@@ -141,6 +141,8 @@
                                                             <p class="font-semibold text-gray-900">
                                                                 {{ $firstItem?->product_name ?? 'No product' }}
                                                             </p>
+                                                            <p class="text-sm text-gray-600">SKU:
+                                                                {{ $order->orderItems[0]->product->sku }}</p>
                                                             @if ($firstItem?->color)
                                                                 <p class="text-sm text-gray-600">Color:
                                                                     {{ $firstItem->color }}</p>
@@ -561,6 +563,9 @@
                                                     <p class="font-semibold text-gray-900">
                                                         {{ $firstItem?->product_name ?? 'No product' }}
                                                     </p>
+                                                    <p class="text-sm text-gray-600">SKU:
+                                                        {{ $order->orderItems[0]->product->sku }}</p>
+
                                                     @if ($firstItem?->color)
                                                         <p class="text-sm text-gray-600">Color:
                                                             {{ $firstItem->color }}</p>

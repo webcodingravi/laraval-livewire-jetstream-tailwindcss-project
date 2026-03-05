@@ -19,8 +19,6 @@
         <!-- Search and Filter -->
         <div class="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-6">
             <div class="flex md:flex-row flex-col md:justify-end items-center gap-4">
-
-
                 <div>
                     <button wire:click="$toggle('showTrashed')"
                         class="bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded active:scale-95 duration-300 text-white transition-all px-6 py-2">
@@ -70,15 +68,11 @@
                                         <p class="font-semibold text-gray-900">
                                             {{ ($Shippings->currentPage() - 1) * $Shippings->perPage() + $loop->iteration }}
                                         </p>
-
-
                                     </td>
 
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
                                             {{ $Shipping->name }}</p>
-
-
                                     </td>
 
 

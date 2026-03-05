@@ -3,26 +3,29 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use DirectoryTree\Authorization\Traits\Authorizable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
-use DirectoryTree\Authorization\Traits\Authorizable;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable
 {
+    use Authorizable;
     use HasApiTokens;
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use HasProfilePhoto;
     use Notifiable;
+    use SoftDeletes;
     use TwoFactorAuthenticatable;
-    use Authorizable;
 
     /**
      * The attributes that are mass assignable.
@@ -41,7 +44,7 @@ class User extends Authenticatable
         'google_id',
         'profile_photo_path',
         'role',
-        'email_verified_at'
+        'email_verified_at',
     ];
 
     /**
@@ -78,8 +81,8 @@ class User extends Authenticatable
         ];
     }
 
-
-    public function addresss() {
-        return $this->hasMany(UserAddress::class);
+    public function address()
+    {
+        return $this->hasOne(UserAddress::class);
     }
 }

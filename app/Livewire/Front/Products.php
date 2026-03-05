@@ -32,9 +32,16 @@ class Products extends Component
 
     public $isWishlisted = [];
 
-    public $metaTitle = 'Hello';
+    public $metaTitle;
 
-    public $metaDescription = 'Hello';
+    public $metaDescription;
+
+    public $perPage = 10;
+
+    public function loadMore()
+    {
+        $this->perPage += 10;
+    }
 
     // Toggle Wishlist
     public function add_wishlists($productId)
@@ -160,7 +167,7 @@ class Products extends Component
                 $query->where('price', '<=', $this->maxPrice);
             })
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate($this->perPage);
 
         $subCategories = SubCategory::withCount('product')->with('category:id,name,slug')
             ->when(! empty($this->category), function ($query) {

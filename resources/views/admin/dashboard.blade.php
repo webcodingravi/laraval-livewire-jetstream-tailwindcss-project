@@ -13,7 +13,8 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm font-medium">Total Sales</p>
-                        <p class="text-2xl md:text-3xl font-bold text-gray-900 mt-2">$12,540</p>
+                        <p class="text-2xl md:text-3xl font-bold text-gray-900 mt-2">
+                            {{ config('app.currency.symbol') . number_format($totalSales, 2) }}</p>
                         <p class="text-green-600 text-sm mt-2">↑ 12% from last month</p>
                     </div>
                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -30,7 +31,8 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm font-medium">Total Orders</p>
-                        <p class="text-2xl md:text-3xl font-bold text-gray-900 mt-2">1,847</p>
+                        <p class="text-2xl md:text-3xl font-bold text-gray-900 mt-2">{{ number_format($totalOrders) }}
+                        </p>
                         <p class="text-green-600 text-sm mt-2">↑ 8% from last month</p>
                     </div>
                     <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -47,7 +49,8 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm font-medium">Active Users</p>
-                        <p class="text-2xl md:text-3xl font-bold text-gray-900 mt-2">2,356</p>
+                        <p class="text-2xl md:text-3xl font-bold text-gray-900 mt-2">{{ number_format($totalUsers) }}
+                        </p>
                         <p class="text-green-600 text-sm mt-2">↑ 5% from last month</p>
                     </div>
                     <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -150,46 +153,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-3 px-4 text-gray-900">#10234</td>
-                            <td class="py-3 px-4 text-gray-600">John Doe</td>
-                            <td class="py-3 px-4 text-gray-900 font-semibold">$1,240</td>
-                            <td class="py-3 px-4">
-                                <span
-                                    class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">Completed</span>
-                            </td>
-                            <td class="py-3 px-4 text-gray-600">Jan 28, 2026</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-3 px-4 text-gray-900">#10233</td>
-                            <td class="py-3 px-4 text-gray-600">Jane Smith</td>
-                            <td class="py-3 px-4 text-gray-900 font-semibold">$856</td>
-                            <td class="py-3 px-4">
-                                <span
-                                    class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">Pending</span>
-                            </td>
-                            <td class="py-3 px-4 text-gray-600">Jan 27, 2026</td>
-                        </tr>
-                        <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-3 px-4 text-gray-900">#10232</td>
-                            <td class="py-3 px-4 text-gray-600">Mike Johnson</td>
-                            <td class="py-3 px-4 text-gray-900 font-semibold">$2,145</td>
-                            <td class="py-3 px-4">
-                                <span
-                                    class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">Processing</span>
-                            </td>
-                            <td class="py-3 px-4 text-gray-600">Jan 26, 2026</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-3 px-4 text-gray-900">#10231</td>
-                            <td class="py-3 px-4 text-gray-600">Sarah Williams</td>
-                            <td class="py-3 px-4 text-gray-900 font-semibold">$945</td>
-                            <td class="py-3 px-4">
-                                <span
-                                    class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">Completed</span>
-                            </td>
-                            <td class="py-3 px-4 text-gray-600">Jan 25, 2026</td>
-                        </tr>
+                        @if ($recentOrders->count())
+                            @foreach ($recentOrders as $order)
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="py-3 px-4 text-gray-900">#{{ $order->order_number }}</td>
+                                    <td class="py-3 px-4 text-gray-600">
+                                        {{ $order->shipping_first_name . ' ' . $order->shipping_last_name }}
+                                    </td>
+                                    <td class="py-3 px-4 text-gray-900 font-semibold">
+                                        {{ config('app.currency.symbol') . number_format($order->total, 2) }}</td>
+                                    <td class="py-3 px-4">
+                                        @if ($order->status === 'pending')
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                Pending
+                                            </span>
+                                        @elseif($order->status === 'inprogress')
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                In-Progress
+                                            </span>
+                                        @elseif($order->status === 'delivered')
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Delivered
+                                            </span>
+                                        @elseif($order->status === 'cancelled')
+                                            <span
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
+                                                Cancelled
+                                            </span>
+                                        @endif
+
+                                    </td>
+                                    <td class="py-3 px-4 text-gray-600">
+                                        {{ \Carbon\Carbon::parse($order->created_at)->format('M d, Y') }}</td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr colspan="5">No Orders</tr>
+                        @endif
+
                     </tbody>
                 </table>
             </div>

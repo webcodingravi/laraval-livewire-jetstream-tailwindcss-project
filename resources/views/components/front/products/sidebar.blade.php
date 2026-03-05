@@ -17,10 +17,9 @@
             @if (!empty($subCategories))
                 <div>
                     <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <span class="w-5 h-5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg"></span>
+                        <span class="w-5 h-5 bg-[#0b7a93] rounded-lg"></span>
                         Categories
                     </h3>
-
 
                     <div class="space-y-2">
                         @foreach ($subCategories as $category)
@@ -29,8 +28,8 @@
                                     <label class="flex items-center gap-3 cursor-pointer group">
                                         <input type="checkbox" value="{{ $category->id }}"
                                             wire:model.live.debounce.300ms="selectedCategories"
-                                            class="w-4 h-4 text-indigo-600 cursor-pointer focus:outline-none focus:ring-0">
-                                        <span class="text-gray-700 group-hover:text-indigo-600 transition"
+                                            class="w-4 h-4 text-[#0b7a93] cursor-pointer focus:outline-none focus:ring-0">
+                                        <span class="text-gray-700 group-hover:text-[#0b7a93] transition"
                                             x-text="category"></span>
 
                                     </label>
@@ -48,7 +47,7 @@
             <!-- Price Range Filter -->
             <div class="border-t border-gray-200 pt-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <span class="w-5 h-5 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg"></span>
+                    <span class="w-5 h-5 bg-[#0b7a93] rounded-lg"></span>
                     Price Range
                 </h3>
                 <div class="space-y-4">
@@ -62,7 +61,7 @@
                                     class="absolute left-3 top-2 text-gray-600">{{ config('app.currency.symbol') }}</span>
                                 <input type="number" x-model.number="priceRange[0]"
                                     wire:model.live.debounce.300ms="minPrice"
-                                    class="w-full pl-6 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-600 focus:outline-none">
+                                    class="w-full pl-6 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#0b7a93] focus:outline-none">
                             </div>
                         </div>
                         <div class="flex-1">
@@ -72,15 +71,15 @@
                                     class="absolute left-3 top-2 text-gray-600">{{ config('app.currency.symbol') }}</span>
                                 <input type="number" x-model.number="priceRange[1]"
                                     wire:model.live.debounce.300ms="maxPrice"
-                                    class="w-full pl-6 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-600 focus:outline-none">
+                                    class="w-full pl-6 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:border-[#0b7a93] focus:outline-none">
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center justify-between text-sm text-gray-600">
                         <span>Selected:</span>
-                        <span class="font-bold text-indigo-600">{{ config('app.currency.symbol') }}<span
-                                x-text="priceRange[0]"></span> -
-                            {{ config('app.currency.symbol') }}<span x-text="priceRange[1]"></span></span>
+                        <span class="font-bold text-[#0b7a93]">{{ config('app.currency.symbol') }}<span
+                                x-text="priceRange[0]"></span> - {{ config('app.currency.symbol') }}<span
+                                x-text="priceRange[1]"></span></span>
                     </div>
                 </div>
             </div>
@@ -89,7 +88,7 @@
 
             <div class="border-t border-gray-200 pt-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <span class="w-5 h-5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg"></span>
+                    <span class="w-5 h-5 bg-[#0b7a93] rounded-lg"></span>
                     Brands
                 </h3>
                 <div class="space-y-2">
@@ -98,9 +97,8 @@
                             <label class="flex items-center gap-3 cursor-pointer group">
                                 <input type="checkbox" value="{{ $brand->id }}"
                                     wire:model.live.debounce.300ms="selectedBrands"
-                                    class="w-4 h-4 text-indigo-600 rounded cursor-pointer focus:outline-none focus:ring-0">
-                                <span class="text-gray-700 group-hover:text-indigo-600 transition"
-                                    x-text="brand"></span>
+                                    class="w-4 h-4 text-[#0b7a93] rounded cursor-pointer focus:outline-none focus:ring-0">
+                                <span class="text-gray-700 group-hover:text-[#0b7a93] transition" x-text="brand"></span>
                             </label>
                         </template>
                     @endforeach
@@ -110,7 +108,7 @@
             <!-- Colors Filter -->
             <div class="border-t border-gray-200 pt-6">
                 <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <span class="w-5 h-5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg"></span>
+                    <span class="w-5 h-5 bg-[#0b7a93] rounded-lg"></span>
                     Colors
                 </h3>
                 <div class="flex gap-3 flex-wrap">
@@ -125,7 +123,7 @@
 
             <!-- Clear Filters Button -->
             <button wire:click="clearAllFilters"
-                class="w-full py-3 px-4 border-2 border-indigo-600 text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 transition mt-6">
+                class="w-full py-3 px-4 border-2 border-[#0b7a93] text-[#0b7a93] font-bold rounded-lg hover:bg-indigo-50 transition mt-6">
                 Clear All Filters
             </button>
         </div>

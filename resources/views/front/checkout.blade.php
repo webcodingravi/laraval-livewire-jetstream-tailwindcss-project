@@ -391,100 +391,105 @@
                         <!-- Payment Method Selection -->
                         <div class="space-y-4 mb-8">
                             <!-- COD -->
-                            <label
-                                class="flex items-center p-4 border-2 {{ $paymentMethod === 'cod' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
-                                <input type="radio" wire:model="paymentMethod" value="cod"
-                                    class="w-5 h-5 text-[#0b7a93] focus:ring-2 focus:ring-[#0b7a93]">
-                                <div class="ml-3">
-                                    <p class="font-semibold text-gray-900">Cash On Delivery</p>
-                                    <p class="text-sm text-gray-600">Quick and easy checkout</p>
-                                </div>
-                            </label>
+                            @if ($paymentSetting->cod)
+                                <label
+                                    class="flex items-center p-4 border-2 {{ $paymentMethod === 'cod' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
+                                    <input type="radio" wire:model="paymentMethod" value="cod"
+                                        class="w-5 h-5 text-[#0b7a93] focus:ring-2 focus:ring-[#0b7a93]">
+                                    <div class="ml-3">
+                                        <p class="font-semibold text-gray-900">Cash On Delivery</p>
+                                        <p class="text-sm text-gray-600">Quick and easy checkout</p>
+                                    </div>
+                                </label>
+                            @endif
 
 
                             <!-- Credit Card -->
-                            <label
-                                class="flex items-center p-4 border-2 {{ $paymentMethod == 'stripe' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
+                            @if ($paymentSetting->stripe)
+                                <label
+                                    class="flex items-center p-4 border-2 {{ $paymentMethod == 'stripe' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
 
-                                <input type="radio" wire:model.live="paymentMethod" value="stripe"
-                                    class="w-5 h-5 text-[#0b7a93] focus:ring-2 focus:ring-[#0b7a93]">
+                                    <input type="radio" wire:model.live="paymentMethod" value="stripe"
+                                        class="w-5 h-5 text-[#0b7a93] focus:ring-2 focus:ring-[#0b7a93]">
 
-                                <div class="ml-3">
-                                    <p class="font-semibold text-gray-900">Credit or Debit Card</p>
-                                    <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
-                                </div>
-                            </label>
+                                    <div class="ml-3">
+                                        <p class="font-semibold text-gray-900">Credit or Debit Card</p>
+                                        <p class="text-sm text-gray-600">Visa, Mastercard, American Express</p>
+                                    </div>
+                                </label>
 
-                            <div class="mt-4 {{ $paymentMethod == 'stripe' ? '' : 'hidden' }}">
+                                <div class="mt-4 {{ $paymentMethod == 'stripe' ? '' : 'hidden' }}">
 
-                                <div wire:ignore class=" bg-white border border-1 rounded-xl p-6 space-y-6">
-                                    <h2 class="text-xl font-semibold text-gray-800">
-                                        Card Details
-                                    </h2>
+                                    <div wire:ignore class=" bg-white border border-1 rounded-xl p-6 space-y-6">
+                                        <h2 class="text-xl font-semibold text-gray-800">
+                                            Card Details
+                                        </h2>
 
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-600 mb-2">
-                                            Cardholder Name
-                                        </label>
-                                        <input type="text" id="card-holder-name"
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-xl
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                                                Cardholder Name
+                                            </label>
+                                            <input type="text" id="card-holder-name"
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-xl
                                                 focus:ring-0
                                                 outline-none transition"
-                                            placeholder="Card Holder Name...">
+                                                placeholder="Card Holder Name...">
 
-                                    </div>
+                                        </div>
 
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-600 mb-2">
-                                            Card Number
-                                        </label>
-                                        <div id="card-number"
-                                            class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                                                Card Number
+                                            </label>
+                                            <div id="card-number"
+                                                class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white
                                    focus-within:ring-2 focus-within:ring-indigo-500
                                  focus-within:border-indigo-500 transition">
+                                            </div>
+
                                         </div>
 
-                                    </div>
-
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-600 mb-2">
-                                                Expiry
-                                            </label>
-                                            <div id="card-expiry"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-600 mb-2">
+                                                    Expiry
+                                                </label>
+                                                <div id="card-expiry"
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white
                                             focus-within:ring-2 focus-within:ring-indigo-500
                                          focus-within:border-indigo-500 transition">
+                                                </div>
+
                                             </div>
 
-                                        </div>
 
-
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-600 mb-2">
-                                                CVC
-                                            </label>
-                                            <div id="card-cvc"
-                                                class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-600 mb-2">
+                                                    CVC
+                                                </label>
+                                                <div id="card-cvc"
+                                                    class="w-full px-4 py-3 border border-gray-300 rounded-xl bg-white
                                              focus-within:ring-2 focus-within:ring-indigo-500
                                             focus-within:border-indigo-500 transition">
-                                            </div>
+                                                </div>
 
+                                            </div>
                                         </div>
+
+
+
+
                                     </div>
 
 
-
-
-                                </div>
-
-
-                                  @error('card')
+                                    @error('card')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                     @enderror
-                            </div>
+                                </div>
+                            @endif
 
                         </div>
+
 
 
                         <!-- Navigation Buttons -->
@@ -629,6 +634,7 @@
                         <div class="mb-8">
                             <h3 class="text-lg font-semibold text-gray-900 mb-4">Payment Method</h3>
                             <div class="bg-gray-50 p-4 rounded-lg">
+
                                 @if ($paymentMethod === 'stripe')
                                     <p class="text-gray-900">Online Payment </p>
                                 @else
