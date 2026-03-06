@@ -2,10 +2,13 @@
     <section class="py-20 bg-white">
         <div class="px-4 md:px-8 lg:px-16 xl:px-24">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                {{-- <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                    What Our Customers Say
+                </h2> --}}
+                <h2 class="text-4xl font-black text-gray-900 mb-2">
                     What Our Customers Say
                 </h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                <p class="text-md text-gray-600 max-w-2xl mx-auto">
                     Join thousands of satisfied customers who shop with us
                 </p>
             </div>

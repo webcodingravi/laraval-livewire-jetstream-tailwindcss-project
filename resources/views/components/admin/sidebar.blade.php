@@ -134,7 +134,6 @@
                     <!-- Orders Submenu -->
                     <div x-show="ordersOpen" x-transition class="ml-4 mt-2 space-y-1  pl-3 py-2">
 
-
                         <a href="{{ route('admin.orderList') }}" wire:naviage
                             class="flex items-center gap-3 px-4 py-2 rounded-lg text-gray-600 text-sm font-medium {{ Request::segment(2) === 'order-list' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-[#0b7a93] shadow-sm border-l-2 border-[#0b7a93]' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-[#0b7a93] hover:shadow-sm' }} transition transform hover:translate-x-1">
                             <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor"
@@ -147,6 +146,22 @@
 
                     </div>
                 </div>
+
+
+
+                <a href="{{ route('admin.HeroSlider') }}" wire:navigate
+                    class="flex items-center gap-3 px-4 py-2
+                    rounded-lg text-gray-600 text-sm font-medium
+                    {{ Request::segment(2) === 'hero-slider' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-[#0b7a93] shadow-sm border-l-2 border-[#0b7a93]' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-[#0b7a93] hover:shadow-sm' }}
+                    transition transform hover:translate-x-1">
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                    <span>Hero Slider</span>
+                </a>
+
+
 
                 <a href="{{ route('admin.customers') }}" wire:navigate
                     class="flex items-center gap-3 px-4 py-2

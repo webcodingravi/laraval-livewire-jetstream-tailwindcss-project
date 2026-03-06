@@ -1,14 +1,16 @@
 <div>
     <!-- Hero Section - Premium Banner -->
 
-    <x-front.hero-section />
+    {{-- <x-front.hero-section /> --}}
+
+    <livewire:components.front.hero-section />
 
     <!-- Category Section -->
-    <x-front.category :categories="$categories" />
+    <livewire:components.front.category />
 
     <!-- Featured Products Section -->
 
-    <x-front.featured-products :featuredProducts="$featuredProducts" :isWishlisted="$isWishlisted" />
+    <livewire:components.front.featured-product />
 
     <!-- Flash Sale Section -->
     {{-- <livewire:components.front.flash-sale-banner /> --}}

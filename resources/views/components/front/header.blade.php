@@ -1,6 +1,5 @@
 <div x-data="ecommerceHeader()" x-cloak>
     <!-- Top Bar - Promo/Info -->
-
     <!-- Main Navigation Header -->
     <nav class="fixed top-0 w-full bg-white z-[999] transition-all shadow">
         <div class="w-11/12 mx-auto py-4">
@@ -30,10 +29,6 @@
                     <a href="{{ route('home') }}" wire:navigate
                         class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Home</a>
 
-                    <a href="#"
-                        class="px-4 py-2 text-gray-700 hover:text-[#0b7a93]  transition font-medium text-md flex items-center gap-1">
-                        About Us
-                    </a>
 
 
                     <!-- Categories Mega Menu -->
@@ -86,25 +81,80 @@
                         @endif
                     </div>
 
+                    <a href="#"
+                        class="px-4 py-2 text-gray-700 hover:text-[#0b7a93]  transition font-medium text-md flex items-center gap-1">
+                        About Us
+                    </a>
 
                     <a href="#"
-                        class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Contact</a>
+                        class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Contact
+                        Us</a>
                 </div>
 
                 <!-- Search Bar - Hidden on Mobile -->
                 <div class="hidden lg:flex items-center justify-center w-full max-w-md">
-                    <form class="w-full relative ">
-                        <input type="text" placeholder="Search for products, brands, and more..."
+                    <div x-data="{ open: false }" @click.away="open=false" class="relative w-full max-w-lg">
+                        <input type="text" wire:model.live="search" @focus="open=true" @input="open=true"
+                            placeholder="Search for products, brands, and more..."
                             class="w-full px-5 py-4 rounded-full border-2 border-gray-200 focus:border-[#0b7a93] focus:outline-none focus:ring-2 focus:ring-indigo-200 text-sm transition">
-                        <button type="submit"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-[#0b7a93] hover:text-[#0b7a93] transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.35-4.35"></path>
-                            </svg>
-                        </button>
-                    </form>
+
+
+                        <!-- Search Result -->
+                        @if (!empty($results))
+
+                            <div x-show="open" class="absolute bg-white shadow-xl w-full mt-1 rounded-lg z-50 border">
+
+                                @foreach ($results as $product)
+                                    <a href="{{ route('product-detail', $product->slug) }}" wire:navigate
+                                        class="flex items-center gap-3 p-3 hover:bg-gray-100 transition">
+
+                                        <!-- Product Image -->
+
+                                        @if ($product->productImages->first())
+                                            <img src="{{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }}"
+                                                class="w-12 h-12 object-cover rounded">
+                                        @endif
+
+                                        <!-- Product Info -->
+
+                                        <div class="flex-1">
+
+                                            <p class="text-sm font-semibold text-gray-800 line-clamp-1">
+                                                {{ $product->title }}
+                                            </p>
+
+                                            <p class="text-[#0b7a93] font-bold text-sm">
+                                                {{ config('app.currency.symbol') }}{{ number_format($product->price, 2) }}
+                                            </p>
+
+                                        </div>
+
+                                    </a>
+                                @endforeach
+
+
+                                {{-- No product found --}}
+                                @if (count($results) == 0)
+                                    <div class="p-4 text-sm text-gray-500 text-center">
+                                        No products found
+                                    </div>
+                                @endif
+
+                                @if (count($results) >= 6)
+                                    <a href="{{ route('products') }}"
+                                        class="block text-center py-2 text-sm font-semibold text-[#0b7a93] hover:bg-gray-100">
+
+                                        View all results →
+
+                                    </a>
+                                @endif
+
+                            </div>
+
+                        @endif
+
+
+                    </div>
                 </div>
 
 
@@ -145,7 +195,13 @@
                                 class="flex items-center gap-2 p-2 md:p-3 text-gray-700 hover:text-[#24bad8] hover:bg-indigo-50 rounded-full transition">
                                 <div
                                     class="w-10 h-10 md:-mt-3 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full flex items-center justify-center text-white text-xs font-bold">
-                                    {{ substr(Auth::user()->name, 0, 1) }} {{ Auth::user()->first_name[0] ?? 'U' }}
+
+                                    @if (!empty(Auth::user()->profile_photo_path))
+                                        <img src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}"
+                                            class="rounded-full">
+                                    @else
+                                        {{ Auth::user()->first_name[0] ?? 'U' }}
+                                    @endif
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -218,18 +274,65 @@
 
             <!-- Mobile Search Bar -->
             <div class="lg:hidden mb-3">
-                <form class="relative">
-                    <input type="text" placeholder="Search..."
+                <div x-data="{ open: false }" @click.away="open=false" class="relative">
+                    <input type="text" wire:model.live="search" placeholder="Search..." @focus="open=true"
+                        @input="open=true"
                         class="w-full px-4 py-4 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:outline-none text-sm">
-                    <button type="submit"
-                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-indigo-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                    </button>
-                </form>
+                    <!-- Search Result -->
+                    @if (!empty($results))
+
+                        <div x-show="open" class="absolute bg-white shadow-xl w-full mt-1 rounded-lg z-50 border">
+
+                            @foreach ($results as $product)
+                                <a href="{{ route('product-detail', $product->slug) }}" wire:navigate
+                                    class="flex items-center gap-3 p-3 hover:bg-gray-100 transition">
+
+                                    <!-- Product Image -->
+
+                                    @if ($product->productImages->first())
+                                        <img src="{{ asset('storage/uploads/product/' . $product->productImages->first()->image_name) }}"
+                                            class="w-12 h-12 object-cover rounded">
+                                    @endif
+
+                                    <!-- Product Info -->
+
+                                    <div class="flex-1">
+
+                                        <p class="text-sm font-semibold text-gray-800 line-clamp-1">
+                                            {{ $product->title }}
+                                        </p>
+
+                                        <p class="text-[#0b7a93] font-bold text-sm">
+                                            {{ config('app.currency.symbol') }}{{ number_format($product->price, 2) }}
+                                        </p>
+
+                                    </div>
+
+                                </a>
+                            @endforeach
+
+
+                            {{-- No product found --}}
+                            @if (count($results) == 0)
+                                <div class="p-4 text-sm text-gray-500 text-center">
+                                    No products found
+                                </div>
+                            @endif
+
+                            @if (count($results) >= 6)
+                                <a href="{{ route('products') }}"
+                                    class="block text-center py-2 text-sm font-semibold text-[#0b7a93] hover:bg-gray-100">
+
+                                    View all results →
+
+                                </a>
+                            @endif
+
+                        </div>
+
+                    @endif
+
+                </div>
             </div>
 
 

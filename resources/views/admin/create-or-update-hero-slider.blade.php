@@ -3,8 +3,8 @@
         <!-- Page Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Categories</h2>
-                <p class="text-gray-600 mt-1">Manage your product categories</p>
+                <h2 class="text-3xl font-bold text-gray-900">Home Hero Sliders</h2>
+                <p class="text-gray-600 mt-1">Manage your Home Hero Sliders</p>
             </div>
 
             <button wire:click="openModal"
@@ -12,21 +12,13 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Add Category
+                Add Slider
             </button>
         </div>
 
         <!-- Search and Filter -->
         <div class="bg-white rounded-lg shadow-sm p-4 md:p-6 mb-6">
             <div class="flex md:flex-row flex-col md:justify-end items-center gap-4">
-                <div>
-                    <button wire:click="export">
-                        <i class="ri-file-excel-2-fill text-4xl text-green-600 hover:text-green-800"></i>
-
-                    </button>
-
-                </div>
-
 
                 <div>
                     <button wire:click="$toggle('showTrashed')"
@@ -36,7 +28,7 @@
                 </div>
 
                 <div>
-                    <select wire:model.live.debounce.500ms="filtterStatus"
+                    <select wire:model.live.debounce.500ms="filterStatus"
                         class="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All</option>
                         <option value="active">Active</option>
@@ -45,7 +37,7 @@
                 </div>
 
                 <div>
-                    <input type="text" wire:model.live.debounce.500ms="search" placeholder="Search categories..."
+                    <input type="text" wire:model.live.debounce.500ms="search" placeholder="Search By Title..."
                         class="border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
 
@@ -59,20 +51,22 @@
                     <thead class="bg-gray-50 border-b border-gray-200">
                         <tr>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">S.No.</th>
-                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Category Name</th>
-                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Slug</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Title</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Description</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Button Text</th>
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700">Button Link</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Status</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Created Date</th>
                             <th class="text-left py-4 px-4 font-semibold text-gray-700">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($categories->isNotEmpty())
-                            @foreach ($categories as $category)
+                        @if ($sliders->isNotEmpty())
+                            @foreach ($sliders as $slider)
                                 <tr class=" border-b border-gray-200 hover:bg-gray-50 transition">
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
-                                            {{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}
+                                            {{ ($sliders->currentPage() - 1) * $sliders->perPage() + $loop->iteration }}
                                         </p>
 
 
@@ -82,13 +76,13 @@
                                         <div class="flex items-center gap-3">
                                             <div
                                                 class="w-20 h-20 bg-indigo-100 rounded-lg flex items-center justify-center">
-                                                <img src="{{ asset('storage/uploads/category/' . $category->image) }}"
+                                                <img src="{{ asset('storage/uploads/slider/' . $slider->image) }}"
                                                     class="object-cover" alt="">
 
                                             </div>
                                             <div>
                                                 <p class="font-semibold text-gray-900">
-                                                    {{ $category->name }}</p>
+                                                    {{ $slider->title }}</p>
 
                                             </div>
                                         </div>
@@ -96,13 +90,28 @@
 
                                     <td class="py-4 px-4">
                                         <p class="font-semibold text-gray-900">
-                                            {{ $category->slug }}</p>
+                                            {{ $slider->description }}</p>
+
+
+                                    </td>
+
+
+                                    <td class="py-4 px-4">
+                                        <p class="font-semibold text-gray-900">
+                                            {{ $slider->button_text }}</p>
 
 
                                     </td>
 
                                     <td class="py-4 px-4">
-                                        @if ($category->status === 'active')
+                                        <p class="font-semibold text-gray-900">
+                                            {{ $slider->button_link }}</p>
+
+
+                                    </td>
+
+                                    <td class="py-4 px-4">
+                                        @if ($slider->status === 'active')
                                             <span
                                                 class='px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold'>Active</span>
                                         @else
@@ -113,12 +122,12 @@
 
                                     </td>
                                     <td class="py-4 px-4 text-gray-600">
-                                        {{ \Carbon\Carbon::parse($category->created_at)->format('d M Y') }}
+                                        {{ \Carbon\Carbon::parse($slider->created_at)->format('d M Y') }}
 
                                     </td>
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-2">
-                                            <button wire:click="edit({{ $category->id }})"
+                                            <button wire:click="edit({{ $slider->id }})"
                                                 class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
@@ -128,7 +137,7 @@
                                                 </svg>
                                             </button>
                                             @if (!$showTrashed)
-                                                <button wire:click="delete({{ $category->id }})"
+                                                <button wire:click="delete({{ $slider->id }})"
                                                     class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
@@ -138,12 +147,12 @@
                                                     </svg>
                                                 </button>
                                             @else
-                                                <button wire:click="restore({{ $category->id }})"
+                                                <button wire:click="restore({{ $slider->id }})"
                                                     class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition">
                                                     <i class="ri-reset-right-fill text-xl"></i>
                                                 </button>
 
-                                                <button wire:click="forceDelete({{ $category->id }})"
+                                                <button wire:click="forceDelete({{ $slider->id }})"
                                                     class="p-2 text-rose-600 hover:bg-indigo-50 rounded-lg transition">
                                                     <i class="ri-delete-bin-2-line text-xl"></i>
                                                     force delete
@@ -157,10 +166,9 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-center p-4">No Category</td>
+                                <td colspan="6" class="text-center p-4">Empty Hero Slider</td>
                             </tr>
                         @endif
-
 
                     </tbody>
                 </table>
@@ -168,7 +176,7 @@
 
             <!-- Pagination -->
             <div class="p-4">
-                {{ $categories->links() }}
+                {{ $sliders->links() }}
             </div>
         </div>
 
@@ -179,37 +187,52 @@
             <div class="bg-black/50 flex fixed justify-center inset-0 items-center animate__animated animate__fadeIn">
                 <div class="bg-white rounded md:w-6/12 w-full p-4 shadow-md animate__animated animate__zoomIn">
                     <div class="flex justify-between items-center">
-                        <h1 class="text-2xl font-semibold">{{ $isEdit ? 'Edit a Category' : 'Add a Category' }}</h1>
+                        <h1 class="text-2xl font-semibold">{{ $isEdit ? 'Edit Hero Slider' : 'Add Hero Slider' }}
+                        </h1>
                         <button class="text-xl cursor-pointer" wire:click="closeModal">X</button>
 
                     </div>
                     <hr class="text-slate-200 my-4">
-
-                    <form wire:submit.prevent="{{ $isEdit ? 'update' : 'save' }}" class="flex flex-col gap-8">
+                    <form wire:submit.prevent="save" class="flex flex-col gap-8" enctype="multipart/form-data">
                         <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Category Name<span
+                            <label class="font-medium text-md text-slate-800">Title<span
                                     class="text-rose-500">*</span></label>
-                            <input type="text" wire:model.live.debounce.500ms="name"
+                            <input type="text" wire:model.live.debounce.500ms="title"
                                 class="border rounded-md border-slate-200 p-4 focus:outline-none"
-                                placeholder="Enter Category Name...">
-                            @error('name')
+                                placeholder="Enter Title...">
+                            @error('title')
                                 <span class="text-rose-500">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Slug<span
+                            <label class="font-medium text-md text-slate-800">Description<span
                                     class="text-rose-500">*</span></label>
-                            <input type="text" wire:model="slug" readonly
+                            <textarea wire:model="description" class="border rounded-md border-slate-200 p-4 focus:outline-none" cols="2"
+                                rows="2" placeholder="Enter Description..."></textarea>
+
+                        </div>
+
+                        <div class="flex gap-1 flex-col">
+                            <label class="font-medium text-md text-slate-800">Button Text<span
+                                    class="text-rose-500">*</span></label>
+                            <input type="text" wire:model="button_text"
                                 class="border rounded-md border-slate-200 p-4 focus:outline-none"
-                                placeholder="Slug...">
-                            @error('slug')
-                                <span class="text-rose-500">{{ $message }}</span>
-                            @enderror
+                                placeholder="Enter Button Text...">
+
+                        </div>
+
+                        <div class="flex gap-1 flex-col">
+                            <label class="font-medium text-md text-slate-800">Button Link<span
+                                    class="text-rose-500">*</span></label>
+                            <input type="text" wire:model="button_link"
+                                class="border rounded-md border-slate-200 p-4 focus:outline-none"
+                                placeholder="https://www.example.com">
+
                         </div>
 
                         <div class="flex gap-1 flex-col md:border-r">
-                            <label class="font-medium text-md text-slate-800">Category Image</label>
+                            <label class="font-medium text-md text-slate-800">Image</label>
                             <div class="relative w-fit h-25">
                                 <i class="ri-upload-cloud-2-line text-6xl text-[#0b7a93]"></i>
                                 <input type="file" wire:model="image" accept="image/*"
@@ -225,7 +248,7 @@
                                     <img src="{{ $image->temporaryUrl() }}" class=" rounded border w-40">
                                 @elseif($oldImage)
                                     <img
-                                        src="{{ asset('storage/uploads/category/' . $oldImage) }}"class="rounded border w-40">
+                                        src="{{ asset('storage/uploads/slider/' . $oldImage) }}"class="rounded border w-40">
                                 @endif
                             </div>
 
@@ -243,38 +266,18 @@
                                 <option value="active">Active</option>
                                 <option value="deactive">Deactive</option>
                             </select>
-                            @error('status')
-                                <span class="text-rose-500">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Meta Title<span
-                                    class="text-rose-500">*</span></label>
-                            <input wire:model="meta_title" type="text"
-                                class="border rounded-md border-slate-200 p-4 focus:outline-none"
-                                placeholder="Enter Meta Title...">
-                        </div>
-
-                        <div class="flex gap-1 flex-col">
-                            <label class="font-medium text-md text-slate-800">Meta Description<span
-                                    class="text-rose-500">*</span></label>
-                            <textarea wire:model="meta_description" class="border rounded-md border-slate-200 p-4 focus:outline-none"
-                                name="" id="" cols="2" rows="2" placeholder="Enter Meta Description..."></textarea>
 
                         </div>
 
                         <div class="flex gap-1 flex-col">
-
                             <button wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed"
-                                wire:target={{ $isEdit ? 'update' : 'save' }}
+                                wire:target='save'
                                 class="px-4 py-2 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded active:scale-95 duration-300 text-white transition-all w-fit flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M5 13l4 4L19 7" />
                                 </svg>
-                                {{ $isEdit ? 'Update Category' : 'Add Category' }}</button>
-
+                                {{ $isEdit ? 'Update Slider' : 'Add Slider' }}</button>
 
                         </div>
                     </form>

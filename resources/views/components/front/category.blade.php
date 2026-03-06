@@ -1,39 +1,83 @@
 <div>
-    @if (count($categories) > 0)
-        <section class="py-20 bg-gray-50">
-            <div class="px-4 md:px-8 lg:px-16 xl:px-24">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-                        Shop by Category
-                    </h2>
-                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                        Explore our curated collections and find exactly what you're looking for
-                    </p>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Category Card 1 -->
+
+    @if (count($categories) > 0)
+
+        <div class="w-11/12 mx-auto py-10">
+
+            {{-- <h2 class="text-3xl font-bold mb-6 text-center py-8">Shop By Category</h2> --}}
+            <h2 class="text-3xl font-black text-gray-900 mb-2 text-center py-4">
+                Shop By Category
+            </h2>
+
+            <div wire:ignore>
+                <div class="owl-carousel category-slider">
 
                     @foreach ($categories as $category)
-                        <a href="{{ route('products', ['category' => $category->slug]) }}" wire:navigate
-                            class="group relative overflow-hidden rounded-2xl h-64  hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-                            style="background-image: url('{{ asset('storage/uploads/category/' . $category->image) }}'); background-size: contain; background-position: center; background-repeat: no-repeat;">
+                        <a href="{{ route('products', ['category' => $category->slug]) }}" class="text-center group">
+
                             <div
-                                class="absolute inset-0 bg-black  group-hover:opacity-20 opacity-20 transition-opacity duration-300">
+                                class="w-24 h-24 mx-auto rounded-full bg-gray-100
+                        flex items-center justify-center overflow-hidden
+                        group-hover:scale-110 transition duration-300 shadow">
+
+                                <img src="{{ asset('storage/uploads/category/' . $category->image) }}"
+                                    class="w-24 h-24 object-contain rounded-full">
+
                             </div>
 
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-white">
+                            <p class="mt-3 text-sm font-medium group-hover:text-indigo-600">
+                                {{ $category->name }}
+                            </p>
 
-                                <h3 class="text-2xl font-bold">{{ $category->name }}</h3>
-                                <p class="text-sm text-white font-medium mt-2">
-                                    {{ $category->product_count }} items
-                                </p>
-                            </div>
                         </a>
                     @endforeach
 
                 </div>
+
             </div>
-        </section>
+
+        </div>
     @endif
 </div>
+
+@push('script')
+    <script>
+        document.addEventListener("livewire:navigated", function() {
+
+            $('.category-slider').owlCarousel({
+
+                loop: false,
+                margin: 20,
+                nav: true,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 2500,
+                autoplayHoverPause: true,
+
+
+                navText: [
+                    '<span class="text-xl">‹</span>',
+                    '<span class="text-xl">›</span>'
+                ],
+
+                responsive: {
+                    0: {
+                        items: 3
+                    },
+                    600: {
+                        items: 4
+                    },
+                    900: {
+                        items: 6
+                    },
+                    1200: {
+                        items: 8
+                    }
+                }
+
+            });
+
+        });
+    </script>
+@endpush

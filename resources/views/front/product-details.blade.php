@@ -5,11 +5,11 @@
             <div class="flex items-center gap-2 text-sm text-gray-600">
                 <a href="{{ route('home') }}" class="hover:text-indigo-600 transition" wire:navigate>Home</a>
                 <span>/</span>
-                <a href="{{ route('products', $product->category->slug) }}"
+                <a href="{{ route('products', $product->category->slug) }}" wire:navigate
                     class="hover:text-indigo-600 transition">{{ $product->category->name }}</a>
                 <span>/</span>
                 <a href="{{ route('products', [$product->category->slug, $product->subCategory->slug]) }}"
-                    class="text-gray-900 font-medium">{{ $product->subCategory->name }}</a>
+                    class="text-gray-900 font-medium" wire:navigate>{{ $product->subCategory->name }}</a>
             </div>
         </div>
 
@@ -85,7 +85,7 @@
                     <form wire:submit.prevent="addToCart" class="flex flex-col gap-7">
                         <div
                             class="space-y-3 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-200">
-                            <div class="flex items-baseline gap-3">
+                            <div class="flex md:flex-row flex-col items-baseline gap-3">
                                 <span
                                     class="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-[#0b7a93]">{{ config('app.currency.symbol') }}{{ number_format($price, 2) }}</span>
                                 <input type="hidden" wire:model="price" value="{{ $price }}">
@@ -410,8 +410,6 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Product Card 1 -->
-
-
                     @foreach ($relatedProducts as $product)
                         <div
                             class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden">

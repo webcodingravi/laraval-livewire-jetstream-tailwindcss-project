@@ -6,7 +6,6 @@ use App\Models\CartItem;
 use App\Models\DiscountCode;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\PaymentSetting as ModelsPaymentSetting;
 use App\Models\ShippingMethod;
 use App\Models\UserAddress;
 use Carbon\Carbon;
@@ -16,9 +15,6 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
-
-// use Stripe\PaymentIntent;
-// use Stripe\Stripe;
 
 class Checkout extends Component
 {
@@ -89,8 +85,6 @@ class Checkout extends Component
     public $cardValid = false;
 
     public $orderId;
-
-    public $paymentSetting = [];
 
     public function applyCoupon()
     {
@@ -177,8 +171,6 @@ class Checkout extends Component
             $this->type = $savedAddress->type;
 
         }
-
-        $this->paymentSetting = ModelsPaymentSetting::firstOrFail();
 
         $this->calculateTotals();
     }

@@ -71,12 +71,10 @@
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <label for="password" class="block text-sm font-semibold text-gray-900">Password</label>
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}"
-                                class="text-sm text-[#00A6CC] font-semibold transition">
-                                Forgot?
-                            </a>
-                        @endif
+                        <a href="{{ route('forgot-password') }}" wire:navigate
+                            class="text-sm text-[#00A6CC] font-semibold transition">
+                            Forgot?
+                        </a>
                     </div>
                     <div class="relative">
                         <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">

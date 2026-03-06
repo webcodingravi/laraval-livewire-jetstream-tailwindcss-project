@@ -13,7 +13,8 @@
                     </div>
                     <h3 class="font-bold text-lg text-gray-900 mb-2">Fast Shipping</h3>
                     <p class="text-gray-600">
-                        Free shipping on all orders over $50. Delivery in 2-3 business days.
+                        Free shipping on all orders over {{ config('app.currency.symbol') }}50. Delivery in 2-3 business
+                        days.
                     </p>
                 </div>
 

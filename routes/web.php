@@ -5,6 +5,7 @@ use App\Livewire\Admin\AccountSetting;
 use App\Livewire\Admin\BrandCreateOrUpdate;
 use App\Livewire\Admin\CategoryCreateOrUpdate;
 use App\Livewire\Admin\ColorCreateOrUpdate;
+use App\Livewire\Admin\CreateOrUpdateHeroSlider;
 use App\Livewire\Admin\Customers;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\DiscountCodeCreateOrUpdate;
@@ -15,6 +16,7 @@ use App\Livewire\Admin\ShippingCreateOrUpdate;
 use App\Livewire\Admin\SMTPSetting;
 use App\Livewire\Admin\SubCategoryCreateOrUpdate;
 use App\Livewire\Admin\SystemSetting;
+use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Front\Checkout;
@@ -48,6 +50,9 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/register', Register::class)->name('register');
     // User Login Route
     Route::get('/login', Login::class)->name('login');
+
+    // Forgot Password Route
+    Route::get('/forgot-password', ForgotPassword::class)->name('forgot-password');
     // google se register
     Route::get('/auth/google', [SocialAuthController::class, 'redirect'])->name('google.redirect');
     Route::get('/auth/google/callback', [SocialAuthController::class, 'callback']);
@@ -105,5 +110,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:sanc
 
     // Customer Route
     Route::get('/customer', Customers::class)->name('customers');
+
+    // Hero slider Route admin
+    Route::get('/hero-slider', CreateOrUpdateHeroSlider::class)->name('HeroSlider');
 
 });

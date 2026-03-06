@@ -391,7 +391,7 @@
                         <!-- Payment Method Selection -->
                         <div class="space-y-4 mb-8">
                             <!-- COD -->
-                            @if ($paymentSetting->cod)
+                            @if (config('payment.cod'))
                                 <label
                                     class="flex items-center p-4 border-2 {{ $paymentMethod === 'cod' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
                                     <input type="radio" wire:model="paymentMethod" value="cod"
@@ -405,7 +405,7 @@
 
 
                             <!-- Credit Card -->
-                            @if ($paymentSetting->stripe)
+                            @if (config('payment.stripe.enabled'))
                                 <label
                                     class="flex items-center p-4 border-2 {{ $paymentMethod == 'stripe' ? 'border-blue-600 bg-blue-50' : 'border-gray-200' }} rounded-lg cursor-pointer transition-colors">
 
