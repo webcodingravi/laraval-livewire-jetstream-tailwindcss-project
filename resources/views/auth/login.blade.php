@@ -71,7 +71,7 @@
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <label for="password" class="block text-sm font-semibold text-gray-900">Password</label>
-                        <a href="{{ route('forgot-password') }}" wire:navigate
+                        <a href="{{ route('password.request') }}" wire:navigate
                             class="text-sm text-[#00A6CC] font-semibold transition">
                             Forgot?
                         </a>

@@ -19,6 +19,7 @@ use App\Livewire\Admin\SystemSetting;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
+use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Front\Checkout;
 use App\Livewire\Front\Home;
 use App\Livewire\Front\OrderConfirmed;
@@ -52,7 +53,11 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/login', Login::class)->name('login');
 
     // Forgot Password Route
-    Route::get('/forgot-password', ForgotPassword::class)->name('forgot-password');
+    Route::get('/forgot-password', ForgotPassword::class)->name('password.request');
+
+    // Reset Password Route
+    Route::get('/reset-password/{token}', ResetPassword::class)->name('password.reset');
+
     // google se register
     Route::get('/auth/google', [SocialAuthController::class, 'redirect'])->name('google.redirect');
     Route::get('/auth/google/callback', [SocialAuthController::class, 'callback']);
