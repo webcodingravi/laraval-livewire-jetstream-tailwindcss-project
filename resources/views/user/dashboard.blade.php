@@ -93,9 +93,7 @@
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-bold text-slate-900">Recent Orders</h2>
-                            <button wire:click="openModal"
-                                class="text-blue-600 hover:text-blue-700 text-sm font-medium">View
-                                All</button>
+
                         </div>
 
                         <!-- Orders Table -->
@@ -431,7 +429,7 @@
                                 </svg>
                                 <span class="text-sm font-medium">Payment Methods</span>
                             </a>
-                            <a href="#"
+                            <button wire:click="openModal"
                                 class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition text-slate-700">
                                 <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -439,7 +437,7 @@
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <span class="text-sm font-medium">Order History</span>
-                            </a>
+                            </button>
                             <a href="#"
                                 class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition text-slate-700">
                                 <svg class="w-5 h-5 text-orange-600 mr-3" fill="none" stroke="currentColor"

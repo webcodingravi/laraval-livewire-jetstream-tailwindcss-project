@@ -17,9 +17,7 @@
                     </a>
                 </div>
 
-                <div class="owl-carousel featured-product-slider">
-
-
+                <div class="md:grid grid-cols-4 gap-4">
                     @foreach ($featuredProducts as $product)
                         <div class="p-2">
                             <div wire:key="{{ $product->id }}"
@@ -144,8 +142,6 @@
                             </div>
                         </div>
                     @endforeach
-
-
                 </div>
 
 
@@ -162,48 +158,4 @@
 
 
 @push('script')
-    <script>
-        function initFeaturedSlider() {
-
-            let slider = $('.featured-product-slider');
-
-            if (!slider.length) return;
-
-            if (slider.hasClass('owl-loaded')) {
-                slider.trigger('destroy.owl.carousel');
-            }
-
-            slider.owlCarousel({
-                loop: false,
-                margin: 20,
-                nav: false,
-                dots: false,
-                autoplay: true,
-                autoplayTimeout: 3500,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    640: {
-                        items: 2
-                    },
-                    768: {
-                        items: 3
-                    },
-                    1024: {
-                        items: 4
-                    }
-                }
-            });
-
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(initFeaturedSlider, 200);
-        });
-
-        document.addEventListener("livewire:navigated", function() {
-            setTimeout(initFeaturedSlider, 200);
-        });
-    </script>
 @endpush

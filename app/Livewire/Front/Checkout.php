@@ -2,15 +2,19 @@
 
 namespace App\Livewire\Front;
 
+use App\Mail\OrderPlacedMail;
 use App\Models\CartItem;
 use App\Models\DiscountCode;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ShippingMethod;
+use App\Models\User;
 use App\Models\UserAddress;
+use App\Notifications\NewOrderNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Stripe\PaymentIntent;
@@ -387,6 +391,11 @@ class Checkout extends Component
             if ($this->paymentMethod === 'cod') {
                 CartItem::where('user_id', auth()->id())->delete();
                 session()->forget('coupon');
+                // Customer email
+                Mail::to(auth()->user()->email)->queue(new OrderPlacedMail($order));
+
+                // admin notification
+                $this->notifyAdmins($order);
 
                 return redirect()->route('order.confirmed', $order->order_number);
             }
@@ -435,7 +444,6 @@ class Checkout extends Component
         }
 
         $order->update([
-            'status' => 'pending',
             'transaction_id' => $paymentIntent['id'],
             'stripe_session_id' => $paymentIntent['id'],
             'payment_data' => json_encode($paymentIntent),
@@ -445,8 +453,30 @@ class Checkout extends Component
         CartItem::where('user_id', auth()->id())->delete();
         session()->forget('coupon');
 
+        try {
+            // customer email
+            Mail::to(auth()->user()->email)
+                ->queue(new OrderPlacedMail($order));
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+        }
+
+        // Admin notify
+        $this->notifyAdmins($order);
+
         return redirect()->route('order.confirmed', $this->orderId);
 
+    }
+
+    protected function notifyAdmins($order)
+    {
+        $admins = User::where('role', 'super_admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new NewOrderNotification($order, auth()->user()));
+        }
+
+        // Livewire bell component ko refresh karne ke liye event emit
+        $this->dispatch('orderPlaced');
     }
 
     private function saveOrder()

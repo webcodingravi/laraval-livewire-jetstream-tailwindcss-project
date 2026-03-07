@@ -3,6 +3,7 @@
 namespace App\Livewire\Auth;
 
 use App\Models\User;
+use App\Notifications\newUserRegistered;
 use DirectoryTree\Authorization\Role;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -75,6 +76,13 @@ class Register extends Component
             // assign default role to the user
             $userRole = Role::where('name', 'user')->firstOrFail();
             $user->roles()->save($userRole);
+
+            // Admin notification
+            $admins = User::where('role', 'super_admin')->get();
+
+            foreach ($admins as $admin) {
+                $admin->notify(new newUserRegistered($user));
+            }
 
             DB::commit();
             session()->flash('success', 'Registration successfully You can now log in');

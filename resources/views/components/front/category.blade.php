@@ -1,42 +1,40 @@
 <div>
 
-
     @if (count($categories) > 0)
 
-        <div class="w-11/12 mx-auto py-10">
+        <div class="bg-slate-50">
+            <div class="w-11/12 mx-auto py-10">
 
-            {{-- <h2 class="text-3xl font-bold mb-6 text-center py-8">Shop By Category</h2> --}}
-            <h2 class="text-3xl font-black text-gray-900 mb-2 text-center py-4">
-                Shop By Category
-            </h2>
+                <h2 class="text-2xl font-bold mb-6 text-center py-8">Shop By Category</h2>
 
-            <div wire:ignore>
-                <div class="owl-carousel category-slider">
+                <div wire:ignore>
+                    <div class="owl-carousel category-slider">
 
-                    @foreach ($categories as $category)
-                        <a href="{{ route('products', ['category' => $category->slug]) }}" class="text-center group">
+                        @foreach ($categories as $category)
+                            <a href="" class="text-center group">
 
-                            <div
-                                class="w-24 h-24 mx-auto rounded-full bg-gray-100
+                                <div
+                                    class="w-24 h-24 mx-auto rounded-full bg-gray-100
                         flex items-center justify-center overflow-hidden
                         group-hover:scale-110 transition duration-300 shadow">
 
-                                <img src="{{ asset('storage/uploads/category/' . $category->image) }}"
-                                    class="w-24 h-24 object-contain rounded-full">
+                                    <img src="{{ asset('storage/uploads/category/' . $category->image) }}"
+                                        class="w-24 h-24 object-contain rounded-full">
 
-                            </div>
+                                </div>
 
-                            <p class="mt-3 text-sm font-medium group-hover:text-indigo-600">
-                                {{ $category->name }}
-                            </p>
+                                <p class="mt-3 text-sm font-medium group-hover:text-indigo-600">
+                                    {{ $category->name }}
+                                </p>
 
-                        </a>
-                    @endforeach
+                            </a>
+                        @endforeach
+
+                    </div>
 
                 </div>
 
             </div>
-
         </div>
     @endif
 </div>

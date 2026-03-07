@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\newUserRegistered;
+use DirectoryTree\Authorization\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -51,6 +53,18 @@ class SocialAuthController extends Controller
                     'profile_photo_path' => $avatarPath,
                     'email_verified_at' => now(),
                 ]);
+
+                // default role
+                $userRole = Role::where('name', 'user')->first();
+                if ($userRole) {
+                    $user->roles()->save($userRole);
+
+                    $admins = User::where('role', 'super_admin')->get();
+
+                }
+                foreach ($admins as $admin) {
+                    $admin->notify(new newUserRegistered($user));
+                }
 
             } else {
                 // Only update google_id if missing

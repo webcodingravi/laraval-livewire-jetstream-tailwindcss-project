@@ -41,7 +41,19 @@ class FeaturedProduct extends Component
 
     public function mount()
     {
-        $featured = Product::with(['category:id,name,slug', 'subCategory:id,name,slug', 'productImages:id,product_id,image_name'])->where('is_featured', true)->where('status', 'active')->get();
+        $this->loadFeaturedProducts();
+    }
+
+    private function loadFeaturedProducts()
+    {
+        $featured = Product::with([
+            'category:id,name,slug',
+            'subCategory:id,name,slug',
+            'productImages:id,product_id,image_name',
+        ])->where('is_featured', true)
+            ->where('status', 'active')
+            ->get();
+
         $this->featuredProducts = $featured;
 
         foreach ($featured as $product) {

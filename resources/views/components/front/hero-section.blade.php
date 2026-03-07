@@ -30,7 +30,7 @@
         init() {
             setInterval(() => { this.next() }, 4000)
         }
-    }" class="relative w-full h-[420px] md:h-[674px] overflow-hidden mt-[99px]">
+    }" class="relative w-full h-[420px] md:h-[674px] overflow-hidden mt-[99px] ">
 
         <!-- SLIDES -->
         <template x-for="(slide,index) in slides" :key="index">

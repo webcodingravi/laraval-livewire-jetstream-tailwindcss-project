@@ -27,7 +27,7 @@
     <livewire:components.front.header />
 
 
-    <main class="bg-slate-100">
+    <main>
         {{ $slot }}
     </main>
 
@@ -49,10 +49,8 @@
         })
     </script>
 
-    {{-- jquery cdn --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    {{-- owl carousel cdn js --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
     @stack('script')
