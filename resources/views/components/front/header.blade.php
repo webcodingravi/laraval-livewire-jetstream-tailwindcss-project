@@ -6,7 +6,18 @@
             <!-- Top Row: Logo, Search, Icons -->
             <div class="flex items-center justify-between gap-4 mb-3">
                 <!-- Logo with Brand Name -->
-                <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition"
+                <a href="{{ route('home') }}" wire:navigate>
+                    {{-- {{ $setting }} --}}
+                    @if (!empty($setting->logo))
+                        <img src="{{ asset('storage/uploads/settings/' . $setting->logo) }}" />
+                    @elseif(!empty($setting->website_name))
+                        <h1
+                            class="text-xl font-bold bg-gradient-to-r from-[#24bad8] to-[#0b7a93] bg-clip-text text-transparent">
+                            {{ $setting->website_name }}</h1>
+                    @endif
+
+                </a>
+                {{-- <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition"
                     wire:navigate>
                     <div
                         class="w-12 h-12 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-lg flex items-center justify-center">
@@ -18,12 +29,13 @@
                         </svg>
                     </div>
                     <div class="sm:block">
+
                         <h1
                             class="text-xl font-bold bg-gradient-to-r from-[#24bad8] to-[#0b7a93] bg-clip-text text-transparent">
                             ShopHub</h1>
                         <p class="text-xs text-gray-500">Online Store</p>
                     </div>
-                </a>
+                </a> --}}
 
                 <div class="hidden md:flex items-center justify-center gap-5 flex-1 mx-w-2xl">
                     <a href="{{ route('home') }}" wire:navigate

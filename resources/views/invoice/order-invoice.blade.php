@@ -133,7 +133,7 @@
                     {{ $order->shipping_first_name }} {{ $order->shipping_last_name }}<br>
                     {{ $order->shipping_phone }}</br>
                     {{ $order->shipping_email }}<br>
-                    {{ $order->shipping_address }}
+
 
 
                 </td>
@@ -141,7 +141,41 @@
             </tr>
         </table>
         <!-- Products Table -->
+        <table width="100%">
+            <tr>
+                @php
+                    $shipping = $order->sippingAddress();
+                    $billing = $order->billingAddress();
+                @endphp
 
+                @if ($shipping)
+                    <td width="50%">
+                        <strong>Shipping Address</strong><br>
+                        {{ $shipping->first_name }} {{ $shipping->last_name }}<br>
+                        {{ $shipping->address }}<br>
+                        {{ $shipping->city }}, {{ $shipping->state }}<br>
+                        {{ $shipping->zip_code }}<br>
+                        {{ $shipping->country }}
+                    </td>
+                @endif
+
+                @if ($billing)
+                    <td width="50%">
+                        <strong>Billing Address</strong><br>
+                        {{ $billing->first_name ?? $shipping->first_name }}
+                        {{ $billing->last_name ?? $shipping->last_name }}<br>
+
+                        {{ $billing->address ?? $shipping->address }}<br>
+                        {{ $billing->city ?? $shipping->city }},
+                        {{ $billing->state ?? $shipping->state }}<br>
+
+                        {{ $billing->zip_code ?? $shipping->zip_code }}<br>
+                        {{ $billing->country ?? $shipping->country }}
+                    </td>
+                @endif
+
+            </tr>
+        </table>
         <table>
 
             <tr>

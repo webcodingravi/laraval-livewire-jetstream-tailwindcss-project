@@ -11,6 +11,7 @@ use App\Models\ShippingMethod;
 use App\Models\User;
 use App\Models\UserAddress;
 use App\Notifications\NewOrderNotification;
+use App\Notifications\OrderPlacedNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -397,6 +398,9 @@ class Checkout extends Component
                 // admin notification
                 $this->notifyAdmins($order);
 
+                // user notify
+                $this->notifyUser($order);
+
                 return redirect()->route('order.confirmed', $order->order_number);
             }
 
@@ -463,6 +467,8 @@ class Checkout extends Component
 
         // Admin notify
         $this->notifyAdmins($order);
+        // user notify
+        $this->notifyUser($order);
 
         return redirect()->route('order.confirmed', $this->orderId);
 
@@ -477,6 +483,15 @@ class Checkout extends Component
 
         // Livewire bell component ko refresh karne ke liye event emit
         $this->dispatch('orderPlaced');
+    }
+
+    protected function notifyUser($order)
+    {
+        $user = auth()->user();
+
+        $user->notify(new OrderPlacedNotification($order));
+
+        $this->dispatch('userOrderPlaced');
     }
 
     private function saveOrder()
@@ -508,6 +523,7 @@ class Checkout extends Component
                     'zip_code' => $this->zip_code,
                     'country' => $this->country,
                     'type' => 'shipping',
+                    'is_default' => 1,
                 ]
             );
             // Billing

@@ -14,8 +14,6 @@ class Dashboard extends Component
 {
     public $user;
 
-    public $recentOrders;
-
     public $allOrders;
 
     public $wishlistCount;
@@ -44,7 +42,6 @@ class Dashboard extends Component
 
     public function mount()
     {
-        $this->user = Auth::user();
         $this->loadDashboardData();
     }
 
@@ -56,11 +53,6 @@ class Dashboard extends Component
         $this->pendingOrderCount = Order::where('user_id', Auth::id())->where('status', 'pending')->count();
         $this->totalSpent = Order::where('user_id', Auth::id())->where('status', 'completed')->sum('total');
         $this->wishlistCount = ProductWishlist::where('user_id', Auth::id())->count();
-        $this->recentOrders = Order::with('orderItems.product.productImages')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->take(3)
-            ->get();
 
         $this->allOrders = Order::with('orderItems.product.productImages')
             ->where('user_id', Auth::id())

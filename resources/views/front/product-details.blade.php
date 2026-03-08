@@ -51,20 +51,41 @@
                 </div>
 
                 <!-- Product Details Section -->
+                @php
+                    $rating = $product->averageRating(); // 4.3
+                    $fullStars = floor($rating);
+                    $halfStar = $rating - $fullStars >= 0.5;
+                    $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                @endphp
+
                 <div class="space-y-6">
                     <!-- Product Title & Rating -->
                     <div>
                         <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">{{ $product->title }}</h1>
                         <div class="flex items-center gap-4">
-                            <div class="flex items-center gap-1">
-                                <span class="text-yellow-400">★★★★★</span>
-                                <span class="text-sm text-gray-600 ml-2">(248 reviews)</span>
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">
+                                    @for ($i = 0; $i < $fullStars; $i++)
+                                        ★
+                                    @endfor
+                                    @if ($halfStar)
+                                        ☆
+                                    @endif {{-- ya custom half star icon --}}
+                                    @for ($i = 0; $i < $emptyStars; $i++)
+                                        ☆
+                                    @endfor
+                                </span>
+                                <span class="text-sm text-gray-600 ml-2">
+                                    ({{ $product->ratings->count() }}
+                                    {{ $product->ratings->count() > 1 ? 'reviews' : 'review' }})
+                                </span>
                             </div>
                             @if ($product->quantity > 0)
                                 <span
                                     class="flex items-center gap-2 px-3 py-1 bg-green-50 rounded-full border border-green-200">
                                     <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                    <span class="text-sm font-medium text-green-700">In Stock ({{ $product->quantity }})
+                                    <span class="text-sm font-medium text-green-700">In Stock
+                                        ({{ $product->quantity }})
                                         left</span>
 
                                 </span>
@@ -251,7 +272,7 @@
                     :class="activeTab === 'reviews' ? 'text-[#0b7a93] border-b-2 border-[#0b7a93] font-bold' :
                         'text-gray-600 hover:text-gray-900'"
                     class="py-4 px-2 md:px-0 transition relative -mb-0.5">
-                    Reviews (248)
+                    Reviews ({{ $product->ratings->count() }})
                 </button>
 
             </div>
@@ -273,126 +294,9 @@
                 <div x-show="activeTab === 'reviews'" class="space-y-6">
                     <div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-6">Customer Reviews</h3>
+                        <span class="text-md text-slate-800 font-bold"> ({{ $product->ratings->count() }}
+                            {{ $product->ratings->count() > 1 ? 'Reviews' : 'Review' }})</span>
 
-                        <!-- Review Summary -->
-                        <div
-                            class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
-                            <div class="text-center">
-                                <div class="text-4xl font-bold text-[#0b7a93]">4.8</div>
-                                <div class="text-yellow-400 text-lg">★★★★★</div>
-                                <p class="text-xs text-gray-600 mt-1">248 reviews</p>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2 text-sm mb-1">
-                                    <span class="w-8">5★</span>
-                                    <div class="flex-1 bg-gray-300 rounded-full h-2">
-                                        <div class="bg-green-500 h-2 rounded-full" style="width: 85%"></div>
-                                    </div>
-                                    <span class="w-8 text-right text-gray-600">212</span>
-                                </div>
-                                <div class="flex items-center gap-2 text-sm mb-1">
-                                    <span class="w-8">4★</span>
-                                    <div class="flex-1 bg-gray-300 rounded-full h-2">
-                                        <div class="bg-[#0b7a93] h-2 rounded-full" style="width: 12%"></div>
-                                    </div>
-                                    <span class="w-8 text-right text-gray-600">30</span>
-                                </div>
-                                <div class="flex items-center gap-2 text-sm mb-1">
-                                    <span class="w-8">3★</span>
-                                    <div class="flex-1 bg-gray-300 rounded-full h-2">
-                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 2%"></div>
-                                    </div>
-                                    <span class="w-8 text-right text-gray-600">4</span>
-                                </div>
-                                <div class="flex items-center gap-2 text-sm mb-1">
-                                    <span class="w-8">2★</span>
-                                    <div class="flex-1 bg-gray-300 rounded-full h-2">
-                                        <div class="bg-orange-500 h-2 rounded-full" style="width: 1%"></div>
-                                    </div>
-                                    <span class="w-8 text-right text-gray-600">2</span>
-                                </div>
-                            </div>
-                            <div class="col-span-2 flex flex-col gap-2">
-                                <button
-                                    class="py-2 px-4 bg-[#0b7a93] text-white rounded-lg font-semibold hover:bg-indigo-700 transition">
-                                    Write a Review
-                                </button>
-                                <button
-                                    class="py-2 px-4 border-2 border-[#0b7a93] text-[#0b7a93] rounded-lg font-semibold hover:bg-indigo-50 transition">
-                                    Verified Purchases Only
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Individual Reviews -->
-                        <div class="space-y-6">
-                            <!-- Review 1 -->
-                            <div class="pb-6 border-b border-gray-200">
-                                <div class="flex items-start justify-between mb-3">
-                                    <div class="flex items-center gap-3">
-                                        <img src="https://via.placeholder.com/40" alt="User"
-                                            class="w-10 h-10 rounded-full">
-                                        <div>
-                                            <p class="font-semibold text-gray-900">John Mitchell</p>
-                                            <p class="text-xs text-gray-500">Verified Purchase • 2 weeks ago</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-yellow-400">★★★★★</span>
-                                </div>
-                                <h4 class="font-semibold text-gray-900 mb-2">Best headphones I've ever owned!</h4>
-                                <p class="text-gray-700 mb-3">The sound quality is exceptional, and the noise
-                                    cancellation is incredibly effective. Battery life easily gets me through 5-6
-                                    days of use. Highly recommend!</p>
-                                <div class="flex gap-3">
-                                    <button
-                                        class="text-sm text-gray-600 hover:text-[#0b7a93] transition flex items-center gap-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M14 10h4.764a2 2 0 011.789 2.894l-3.359 6.718A2 2 0 0115.406 24H4m-5-8h16m0 0a2 2 0 110-4H3">
-                                            </path>
-                                        </svg>
-                                        Helpful
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Review 2 -->
-                            <div class="pb-6 border-b border-gray-200">
-                                <div class="flex items-start justify-between mb-3">
-                                    <div class="flex items-center gap-3">
-                                        <img src="https://via.placeholder.com/40" alt="User"
-                                            class="w-10 h-10 rounded-full">
-                                        <div>
-                                            <p class="font-semibold text-gray-900">Sarah Anderson</p>
-                                            <p class="text-xs text-gray-500">Verified Purchase • 1 month ago</p>
-                                        </div>
-                                    </div>
-                                    <span class="text-yellow-400">★★★★★</span>
-                                </div>
-                                <h4 class="font-semibold text-gray-900 mb-2">Premium quality at a great price</h4>
-                                <p class="text-gray-700 mb-3">Exceeded my expectations in every way. The comfort is
-                                    outstanding even for extended listening sessions. Worth every penny!</p>
-                                <div class="flex gap-3">
-                                    <button
-                                        class="text-sm text-gray-600 hover:text-[#0b7a93] transition flex items-center gap-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M14 10h4.764a2 2 0 011.789 2.894l-3.359 6.718A2 2 0 0115.406 24H4m-5-8h16m0 0a2 2 0 110-4H3">
-                                            </path>
-                                        </svg>
-                                        Helpful
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Show More Reviews Button -->
-                        <button
-                            class="w-full py-3 mt-6 border-2 border-[#0b7a93] text-[#0b7a93] font-bold rounded-lg hover:bg-indigo-50 transition">
-                            Load More Reviews
-                        </button>
                     </div>
                 </div>
 

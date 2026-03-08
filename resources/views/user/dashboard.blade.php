@@ -1,7 +1,7 @@
 <div>
-    <div class="mt-[100px]">
+    <div class="mt-[100px] bg-slate-50">
         <!-- Main Content -->
-        <div class="md:w-11/12 mx-auto  py-12">
+        <div class="md:w-11/12 mx-auto  py-12 ">
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                 <!-- Total Orders Card -->
@@ -90,131 +90,8 @@
                 <div class="lg:col-span-3 space-y-8">
                     <!-- Recent Orders Section -->
 
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-xl font-bold text-slate-900">Recent Orders</h2>
 
-                        </div>
-
-                        <!-- Orders Table -->
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead>
-                                    <tr class="border-b border-slate-200">
-                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Order ID</th>
-                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Order Product</th>
-                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Date</th>
-                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Total</th>
-                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Payment Status
-                                        </th>
-                                        <th class="text-left py-3 px-4 font-semibold text-slate-700">Delivery Status
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (count($recentOrders) > 0)
-                                        @foreach ($recentOrders as $order)
-                                            @php
-                                                $firstItem = $order->orderItems->first(); // pehla item ya null
-                                                $product = $firstItem?->product; // product ya null
-                                                $image = $product?->productImages->first()?->image_name ?? '';
-                                            @endphp
-
-
-                                            <tr class="border-b border-slate-100 hover:bg-slate-50">
-                                                <td class="py-4 px-4 text-slate-900 font-medium">
-                                                    #{{ $order->order_number }}
-                                                </td>
-
-                                                <td class="py-4 px-4 text-slate-900 font-medium">
-                                                    <div class="flex items-center gap-3">
-                                                        <div
-                                                            class="w-20 h-20 bg-indigo-100 rounded-lg flex items-center justify-center">
-                                                            <img src="{{ asset('storage/uploads/product/' . $image) }}"
-                                                                class="object-cover w-full h-full rounded-lg"
-                                                                alt="{{ $firstItem?->product_name ?? '' }}">
-                                                        </div>
-
-                                                        <div>
-                                                            <p class="font-semibold text-gray-900">
-                                                                {{ $firstItem?->product_name ?? 'No product' }}
-                                                            </p>
-                                                            <p class="text-sm text-gray-600">SKU:
-                                                                {{ $order->orderItems[0]->product->sku }}</p>
-                                                            @if ($firstItem?->color)
-                                                                <p class="text-sm text-gray-600">Color:
-                                                                    {{ $firstItem->color }}</p>
-                                                            @endif
-                                                            @if ($firstItem?->size)
-                                                                <p class="text-sm text-gray-600">Size:
-                                                                    {{ $firstItem->size }}</p>
-                                                            @endif
-                                                            <p class="text-sm text-gray-600">Qty:
-                                                                {{ $firstItem?->quantity ?? 1 }}</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="py-4 px-4 text-slate-600">
-                                                    {{ \Carbon\Carbon::parse($order->created_at)->format('M d, Y') }}
-                                                </td>
-
-                                                <td class="py-4 px-4 text-slate-900 font-medium">
-                                                    {{ config('app.currency.symbol') . number_format($order->total, 2) }}
-                                                </td>
-
-                                                <td class="py-4 px-4">
-                                                    @if ($order->is_payment)
-                                                        <span
-                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                            Paid
-                                                        </span>
-                                                    @else
-                                                        <span
-                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                            Pending
-                                                        </span>
-                                                    @endif
-                                                </td>
-
-                                                <td class="py-4 px-4">
-                                                    @if ($order->status === 'completed')
-                                                        <span
-                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                            Completed
-                                                        </span>
-                                                    @elseif($order->status === 'pending')
-                                                        <span
-                                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                            Pending
-                                                        </span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @else
-                                        <tr class="text-center p-4">
-                                            <td colspan="8">No Record Found !</td>
-                                        </tr>
-                                    @endif
-
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Empty State -->
-                        <div class="text-center py-12" style="display: none;">
-                            <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                            </svg>
-                            <p class="mt-4 text-slate-600">No orders yet</p>
-                            <a href="#" class="text-blue-600 hover:text-blue-700 mt-2 inline-block">Start
-                                Shopping</a>
-                        </div>
-                    </div>
+                    <livewire:components.user.customer-orders />
 
 
 
@@ -380,74 +257,16 @@
                 <!-- Right Column: Account Management -->
                 <div class="space-y-6">
                     <!-- Profile Card -->
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-lg font-bold text-slate-900 mb-4">Account Details</h3>
-                        <div class="space-y-3">
-                            <div>
-                                <p class="text-xs text-slate-600 uppercase tracking-wide">Full Name</p>
-                                <p class="text-slate-900 font-medium">{{ Auth::user()->first_name }}
-                                    {{ Auth::user()->last_name }}</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-slate-600 uppercase tracking-wide">Email</p>
-                                <p class="text-slate-900 font-medium">{{ Auth::user()->email }}</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-slate-600 uppercase tracking-wide">Phone</p>
-                                <p class="text-slate-900 font-medium">{{ Auth::user()->phone_number ?? 'Not set' }}
-                                </p>
-                            </div>
-                            <div class="pt-2 border-t border-slate-200">
-                                <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">Edit
-                                    Profile</button>
-                            </div>
-                        </div>
-                    </div>
+
+                    <livewire:components.user.edit-account />
 
                     <!-- Quick Links -->
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <h3 class="text-lg font-bold text-slate-900 mb-4">Quick Links</h3>
                         <div class="space-y-2">
-                            <a href="#"
-                                class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition text-slate-700">
-                                <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                <span class="text-sm font-medium">My Addresses</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition text-slate-700">
-                                <svg class="w-5 h-5 text-purple-600 mr-3" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 10a4 4 0 014-4h10a4 4 0 014 4v7a4 4 0 01-4 4H7a4 4 0 01-4-4v-7z"></path>
-                                </svg>
-                                <span class="text-sm font-medium">Payment Methods</span>
-                            </a>
-                            <button wire:click="openModal"
-                                class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition text-slate-700">
-                                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <span class="text-sm font-medium">Order History</span>
-                            </button>
-                            <a href="#"
-                                class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition text-slate-700">
-                                <svg class="w-5 h-5 text-orange-600 mr-3" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
-                                    </path>
-                                </svg>
-                                <span class="text-sm font-medium">Notifications</span>
-                            </a>
+                            <livewire:components.user.my-address />
+
+                            <livewire:components.user.user-notifications />
                         </div>
                     </div>
 
@@ -455,38 +274,8 @@
                     <div class="bg-white rounded-lg shadow-md p-6">
                         <h3 class="text-lg font-bold text-slate-900 mb-4">Settings</h3>
                         <div class="space-y-2">
-                            <a href="#"
-                                class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition text-slate-700">
-                                <svg class="w-5 h-5 text-slate-600 mr-3" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                <span class="text-sm font-medium">Account Settings</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition text-slate-700">
-                                <svg class="w-5 h-5 text-slate-600 mr-3" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                    </path>
-                                </svg>
-                                <span class="text-sm font-medium">Change Password</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition text-slate-700">
-                                <svg class="w-5 h-5 text-slate-600 mr-3" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                                    </path>
-                                </svg>
-                                <span class="text-sm font-medium">Two-Factor Auth</span>
-                            </a>
+                            <livewire:components.user.change-password />
+
                         </div>
                     </div>
 
@@ -501,6 +290,7 @@
                     </div>
                 </div>
             </div>
+
 
 
         </div>

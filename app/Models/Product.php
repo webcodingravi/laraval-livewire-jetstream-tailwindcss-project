@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'title',
         'slug',
@@ -27,42 +28,63 @@ class Product extends Model
         'status',
         'meta_title',
         'meta_description',
-        'specifications'
+        'specifications',
     ];
 
-    public function category() {
-        return $this->belongsTo(Category::class,'category_id');
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function subCategory() {
-        return $this->belongsTo(SubCategory::class,'sub_category_id');
+    public function subCategory()
+    {
+        return $this->belongsTo(SubCategory::class, 'sub_category_id');
     }
 
-    public function brand() {
-        return $this->belongsTo(Brand::class,'brand_id');
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 
-    public function productImages() {
+    public function productImages()
+    {
         return $this->hasMany(ImageProduct::class, 'product_id');
     }
 
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class, 'product_colors', 'product_id', 'color_id');
+    }
 
-public function colors()
-{
-    return $this->belongsToMany(Color::class, 'product_colors', 'product_id','color_id');
-}
-
-    public function sizes() {
+    public function sizes()
+    {
         return $this->hasMany(ProductSize::class);
     }
 
-
-    public function getColors() {
-         return $this->belongsToMany(Color::class, 'product_colors');
+    public function getColors()
+    {
+        return $this->belongsToMany(Color::class, 'product_colors');
     }
 
-
-    public function getWishlist() {
+    public function getWishlist()
+    {
         return $this->hasMany(Wishlisted::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(ProductRating::class);
+    }
+
+    public function averageRating()
+    {
+        return cache()->remember("product_{$this->id}_avg_rating", 3600, function () {
+            return round($this->ratings()->avg('rating'), 1);
+        });
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class,'product_id');
     }
 }

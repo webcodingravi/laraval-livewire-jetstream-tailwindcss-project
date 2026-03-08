@@ -8,7 +8,18 @@
             <!-- Brand Section -->
             <div class="lg:col-span-1 md:col-span-1">
                 <div class="flex items-center gap-3 mb-6">
-                    <a href="{{ route('home') }}"
+                    <a href="{{ route('home') }}" wire:navigate>
+                        {{-- {{ $setting }} --}}
+                        @if (!empty($setting->logo))
+                            <img src="{{ asset('storage/uploads/settings/' . $setting->logo) }}" />
+                        @elseif(!empty($setting->website_name))
+                            <h1
+                                class="text-xl font-bold bg-gradient-to-r from-[#24bad8] to-[#0b7a93] bg-clip-text text-transparent">
+                                {{ $setting->website_name }}</h1>
+                        @endif
+
+                    </a>
+                    {{-- <a href="{{ route('home') }}"
                         class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition" wire:navigate>
                         <div
                             class="w-12 h-12 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-lg flex items-center justify-center">
@@ -25,16 +36,18 @@
                                 ShopHub</h1>
                             <p class="text-xs text-gray-500">Online Store</p>
                         </div>
-                    </a>
+                    </a> --}}
 
 
                 </div>
                 <p class="text-sm text-gray-400 mb-6 leading-relaxed">
-                    Your trusted destination for quality products and exceptional service. Shop with confidence and
-                    discover amazing deals every day.
+                    {{ $setting->footer_description ?? '' }}
+                    {{-- Your trusted destination for quality products and exceptional service. Shop with confidence and
+                    discover amazing deals every day. --}}
                 </p>
                 <!-- Social Links -->
                 <div class="flex items-center gap-4">
+
                     <a href="#"
                         class="w-10 h-10 bg-gray-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
@@ -78,21 +91,19 @@
             <div>
                 <h4 class="text-sm font-bold text-white mb-6 flex items-center gap-2">
                     <span class="w-1 h-5 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full"></span>
-                    Shop
+                    Useful Links
                 </h4>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">New
-                            Arrivals</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Best
-                            Sellers</a></li>
-                    <li><a href="#"
-                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Electronics</a></li>
-                    <li><a href="#"
-                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Fashion</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Home &
-                            Garden</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Sports &
-                            Outdoors</a></li>
+                    <li><a href="{{ route('home') }}" wire:navigate
+                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Home
+                        </a></li>
+                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">About Us
+                        </a></li>
+                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Contact
+                            Us</a></li>
+                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">FAQ</a>
+                    </li>
+
                 </ul>
             </div>
 
@@ -100,21 +111,21 @@
             <div>
                 <h4 class="text-sm font-bold text-white mb-6 flex items-center gap-2">
                     <span class="w-1 h-5 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full"></span>
-                    Support
+                    Customer Service
                 </h4>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Contact
-                            Us</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Track
-                            Order</a></li>
+                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Pyament
+                            Methods</a></li>
+                    <li><a href="#"
+                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Money-back
+                            guarantee</a></li>
                     <li><a href="#"
                             class="text-sm hover:text-indigo-400 transition-colors duration-300">Returns</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">FAQ</a>
-                    </li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Shipping
-                            Info</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Size
-                            Guide</a></li>
+
+                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Terms and
+                            Conditions</a></li>
+                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Privacy
+                            Policy</a></li>
                 </ul>
             </div>
 
@@ -122,22 +133,12 @@
             <div>
                 <h4 class="text-sm font-bold text-white mb-6 flex items-center gap-2">
                     <span class="w-1 h-5 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full"></span>
-                    Company
+                    My Account
                 </h4>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">About
-                            Us</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Blog</a>
-                    </li>
-                    <li><a href="#"
-                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Careers</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Press</a>
-                    </li>
-                    <li><a href="#"
-                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Sustainability</a>
-                    </li>
-                    <li><a href="#"
-                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Partners</a></li>
+                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">View
+                            Cart</a></li>
+
                 </ul>
             </div>
 
@@ -166,7 +167,9 @@
     <!-- Footer Bottom -->
     <div class="bg-black bg-opacity-40">
         <div class="text-center py-6">
-            <p>© {{ date('Y') }} ShopHub. All Rights Reserved.</p>
+            <p>© {{ date('Y') }} @if (!empty($setting->website_name))
+                    {{ $setting->website_name }}
+                @endif. All Rights Reserved.</p>
         </div>
 
     </div>

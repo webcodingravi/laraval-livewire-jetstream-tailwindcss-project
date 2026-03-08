@@ -21,5 +21,19 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    
+    public function shippingAddress()
+    {
+        return $this->belongsTo(UserAddress::class, 'shipping_address_id');
+    }
+
+    public function billingAddress()
+    {
+        return $this->belongsTo(UserAddress::class, 'billing_address_id');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_items')
+            ->withPivot('quantity', 'price');
+    }
 }

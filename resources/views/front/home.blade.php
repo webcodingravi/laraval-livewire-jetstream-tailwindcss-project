@@ -12,6 +12,10 @@
 
     <livewire:components.front.featured-product />
 
+    <!-- Tranding Products Section -->
+
+    <livewire:components.front.tranding-product />
+
     <!-- Flash Sale Section -->
     {{-- <livewire:components.front.flash-sale-banner /> --}}
 
@@ -20,8 +24,8 @@
     <x-front.benefits-section />
 
     <!-- Testimonials Section -->
-    <x-front.testimonials />
+    {{-- <x-front.testimonials /> --}}
 
     <!-- CTA Section - Newsletter -->
-    <x-front.newsletter />
+    {{-- <x-front.newsletter /> --}}
 </div>

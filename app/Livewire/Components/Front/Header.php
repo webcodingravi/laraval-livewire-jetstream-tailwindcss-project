@@ -14,6 +14,8 @@ class Header extends Component
 
     public $results = [];
 
+    public $setting;
+
     public function updatedSearch()
     {
         if (strlen($this->search) < 2) {
@@ -46,10 +48,12 @@ class Header extends Component
 
     }
 
-    public function mount()
+    public function mount($setting)
     {
         $this->refreshWishlistCount();
         $this->refreshCart();
+         $this->setting = $setting;
+
     }
 
     public function render()
