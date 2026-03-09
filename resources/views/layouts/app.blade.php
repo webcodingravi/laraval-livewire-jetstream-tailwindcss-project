@@ -41,6 +41,13 @@
 
     <x-front.footer :setting="$setting" />
 
+    <button id="scrollUp"
+        class="fixed bottom-5 right-5 w-10 h-10 bg-gray-800 hover:bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-lg transition transform hover:scale-110">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20" viewBox="0 0 24 24">
+        <path d="M4 12l1.41 1.41L11 7.83v12.34h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
+    </svg>
+</button>
+
     @livewireScripts
 
     <script>
@@ -54,7 +61,24 @@
                     showConfirmButton: false
                 })
             })
-        })
+        });
+
+    const scrollBtn = document.getElementById('scrollUp');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) {
+        scrollBtn.classList.remove('scale-0');
+        scrollBtn.classList.add('scale-100');
+    } else {
+        scrollBtn.classList.remove('scale-100');
+        scrollBtn.classList.add('scale-0');
+    }
+});
+
+scrollBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

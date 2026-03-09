@@ -93,14 +93,28 @@
                         @endif
                     </div>
 
-                    <a href="#"
-                        class="px-4 py-2 text-gray-700 hover:text-[#0b7a93]  transition font-medium text-md flex items-center gap-1">
-                        About Us
-                    </a>
+                    @php
+                        $pages = [
+                            'about' => \App\Models\Page::where('slug', 'about-us')->first(),
+                            'contact' => \App\Models\Page::where('slug', 'contact-us')->first(),
+                        ];
+                    @endphp
 
-                    <a href="#"
-                        class="px-4 py-2 text-gray-700 hover:text-[#0b7a93] transition font-medium text-md">Contact
-                        Us</a>
+
+                        @if ($pages['about'])
+                            <a href="{{ route('pages', $pages['about']->slug) }}" class="px-4 py-2 text-gray-700 hover:text-[#0b7a93]  transition font-medium text-md flex items-center gap-1" >About Us</a>
+                        @else
+                            <span class="text-gray-400 cursor-not-allowed">About Us</span>
+                        @endif
+
+
+
+                        @if ($pages['contact'])
+                            <a href="{{ route('pages', $pages['contact']->slug) }}"  class="px-4 py-2 text-gray-700 hover:text-[#0b7a93]  transition font-medium text-md flex items-center gap-1">Contact Us</a>
+                        @else
+                            <span class="text-gray-400 cursor-not-allowed">Contact Us</span>
+                        @endif
+                 
                 </div>
 
                 <!-- Search Bar - Hidden on Mobile -->

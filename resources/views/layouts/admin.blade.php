@@ -1,3 +1,8 @@
+@php
+    $setting = \App\Models\SystemSetting::firstOrFail();
+
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +11,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="{{ $metaDescription ?? '' }}">
-    <title>{{ $metaTitle ?? 'Admin' }}</title>
-    <link rel="icon" href="{{ asset('assets/img/favicon.jpeg') }}" type="image/x-icon">
+    <title>{{ $metaTitle ?? $setting->website_name }}</title>
+    @if (!empty($setting->favicon))
+        <link rel="icon" href="{{ asset('storage/uploads/settings/' . $setting->favicon) }}" type="image/x-icon">
+    @endif
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
 
@@ -23,7 +31,7 @@
 
 <body class="bg-gray-50">
     <div class="flex h-screen bg-gray-100">
-        <livewire:components.admin.sidebar />
+        <livewire:components.admin.sidebar :setting="$setting" />
 
         <div class="flex-1 flex flex-col overflow-x-hidden">
             <livewire:components.admin.header />

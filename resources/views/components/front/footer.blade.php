@@ -38,7 +38,6 @@
                         </div>
                     </a> --}}
 
-
                 </div>
                 <p class="text-sm text-gray-400 mb-6 leading-relaxed">
                     {{ $setting->footer_description ?? '' }}
@@ -48,84 +47,144 @@
                 <!-- Social Links -->
                 <div class="flex items-center gap-4">
 
-                    <a href="#"
-                        class="w-10 h-10 bg-gray-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="currentColor">
-                            <path
-                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                        </svg>
-                    </a>
-                    <a href="#"
-                        class="w-10 h-10 bg-gray-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="currentColor">
-                            <path
-                                d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7z" />
-                        </svg>
-                    </a>
-                    <a href="#"
-                        class="w-10 h-10 bg-gray-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="currentColor">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                            <path
-                                d="M16.6915026,12.4744748 L16.5351617,12.4744748 C16.5351617,13.4816746 15.5383057,14.4744748 14.5972826,14.4744748 C13.6562595,14.4744748 12.6594034,13.4816746 12.6594034,12.4744748 L12.503662,12.4744748 C12.503662,13.4816746 11.5068059,14.4744748 10.5657829,14.4744748 C9.62476129,14.4744748 8.62790524,13.4816746 8.62790524,12.4744748 L8.4715644,12.4744748 C8.4715644,14.0151496 9.70174148,15.272768 11.1272231,15.272768 C12.5527047,15.272768 13.7828818,14.0151496 13.7828818,12.4744748 C13.7828818,14.0151496 14.975505,15.272768 16.4009866,15.272768 C17.8264682,15.272768 19.0566453,14.0151496 19.0566453,12.4744748 L16.6915026,12.4744748 Z M18.7621002,9.85114075 L18.6915026,9.85114075 C18.6915026,9.23547596 18.0299061,8.72180624 17.9592437,8.72180624 C17.5751037,8.72180624 17.1272231,9.23547596 17.0910163,9.85114075 C16.6562595,9.85114075 16.2032436,9.23547596 16.1272231,8.72180624 C15.9103222,8.05717523 15.4625022,7.54337683 14.8751841,7.54337683 C14.0167625,7.54337683 13.3039647,8.39936425 13.3039647,9.35216403 L13.3039647,11.4744748 C13.3039647,11.8168476 13.5667291,12.1272768 13.9140767,12.1272768 L17.6272231,12.1272768 C18.1248969,12.1272768 18.5,11.7166219 18.5,11.4744748 L18.5,9.85114075 L18.7621002,9.85114075 Z"
-                                fill="#000" />
-                        </svg>
-                    </a>
-                    <a href="#"
-                        class="w-10 h-10 bg-gray-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="currentColor">
-                            <path
-                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                        </svg>
-                    </a>
+                    @if (!empty($setting->facebook_link))
+                        <a href="{{ $setting->facebook_link }}"
+                            class="w-10 h-10 bg-gray-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                        </a>
+                    @endif
+
+                    @if (!empty($setting->twitter_link))
+                        <a href="{{ $setting->twitter_link }}"
+                            class="w-10 h-10 bg-gray-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2s9 5 20 5a9.5 9.5 0 00-9-5.5c4.75 2.25 7-7 7-7z" />
+                            </svg>
+                        </a>
+                    @endif
+
+                    @if (!empty($setting->instagram_link))
+                        <a href="{{ $setting->instagram_link }}"
+                            class="w-10 h-10 bg-gray-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+                                fill="currentColor" fill="currentColor">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.056 1.97.246 2.428.413a4.92 4.92 0 011.675 1.09 4.92 4.92 0 011.09 1.675c.167.458.357 1.258.413 2.428.058 1.266.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.056 1.17-.246 1.97-.413 2.428a4.902 4.902 0 01-1.09 1.675 4.902 4.902 0 01-1.675 1.09c-.458.167-1.258.357-2.428.413-1.266.058-1.645.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.056-1.97-.246-2.428-.413a4.902 4.902 0 01-1.675-1.09 4.902 4.902 0 01-1.09-1.675c-.167-.458-.357-1.258-.413-2.428C2.175 15.747 2.163 15.368 2.163 12s.012-3.584.07-4.85c.056-1.17.246-1.97.413-2.428a4.902 4.902 0 011.09-1.675 4.902 4.902 0 011.675-1.09c.458-.167 1.258-.357 2.428-.413C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.013 7.052.072 5.78.131 4.842.312 4.042.625a6.92 6.92 0 00-2.5 1.64A6.92 6.92 0 00.625 4.042C.312 4.842.131 5.78.072 7.052.013 8.332 0 8.741 0 12s.013 3.668.072 4.948c.059 1.272.24 2.21.553 3.01a6.92 6.92 0 001.64 2.5 6.92 6.92 0 002.5 1.64c.8.313 1.738.494 3.01.553C8.332 23.987 8.741 24 12 24s3.668-.013 4.948-.072c1.272-.059 2.21-.24 3.01-.553a6.92 6.92 0 002.5-1.64 6.92 6.92 0 001.64-2.5c.313-.8.494-1.738.553-3.01.059-1.28.072-1.689.072-4.948s-.013-3.668-.072-4.948c-.059-1.272-.24-2.21-.553-3.01a6.92 6.92 0 00-1.64-2.5 6.92 6.92 0 00-2.5-1.64c-.8-.313-1.738-.494-3.01-.553C15.668.013 15.259 0 12 0z" />
+                                <path fill="currentColor"
+                                    d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a3.999 3.999 0 110-7.998 3.999 3.999 0 010 7.998z" />
+
+                            </svg>
+                        </a>
+                    @endif
+                    @if (!empty($setting->youtube_link))
+                        <a href="{{ $setting->youtube_link }}"
+                            class="w-10 h-10 bg-gray-800  hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M23.498 6.186a2.997 2.997 0 00-2.108-2.108C19.754 3.667 12 3.667 12 3.667s-7.754 0-9.39.411a2.997 2.997 0 00-2.108 2.108A31.342 31.342 0 000 12a31.342 31.342 0 00.502 5.814 2.997 2.997 0 002.108 2.108C4.246 20.333 12 20.333 12 20.333s7.754 0 9.39-.411a2.997 2.997 0 002.108-2.108A31.342 31.342 0 0024 12a31.342 31.342 0 00-.502-5.814zM9.545 15.568V8.432l6.182 3.568-6.182 3.568z" />
+                            </svg>
+                        </a>
+                    @endif
                 </div>
             </div>
 
+            @php
+                $pages = [
+                    'about' => \App\Models\Page::where('slug', 'about-us')->first(),
+                    'contact' => \App\Models\Page::where('slug', 'contact-us')->first(),
+                    'payment' => \App\Models\Page::where('slug', 'payment-methods')->first(),
+                    'moneyback' => \App\Models\Page::where('slug', 'money-back-guarantee')->first(),
+                    'returns' => \App\Models\Page::where('slug', 'returns')->first(),
+                    'terms' => \App\Models\Page::where('slug', 'terms-and-conditions')->first(),
+                    'privacy' => \App\Models\Page::where('slug', 'privacy-policy')->first(),
+                ];
+            @endphp
 
 
-            <!-- Shop Section -->
+            <!-- Useful Links -->
             <div>
                 <h4 class="text-sm font-bold text-white mb-6 flex items-center gap-2">
                     <span class="w-1 h-5 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full"></span>
                     Useful Links
                 </h4>
                 <ul class="space-y-3">
-                    <li><a href="{{ route('home') }}" wire:navigate
-                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Home
-                        </a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">About Us
-                        </a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Contact
-                            Us</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">FAQ</a>
+                    <li><a href="{{ route('home') }}"
+                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Home</a></li>
+
+                    <li>
+                        @if ($pages['about'])
+                            <a href="{{ route('pages', $pages['about']->slug) }}">About Us</a>
+                        @else
+                            <span class="text-gray-400 cursor-not-allowed">About Us</span>
+                        @endif
                     </li>
 
+                    <li>
+                        @if ($pages['contact'])
+                            <a href="{{ route('pages', $pages['contact']->slug) }}">Contact Us</a>
+                        @else
+                            <span class="text-gray-400 cursor-not-allowed">Contact Us</span>
+                        @endif
+                    </li>
+
+                    
                 </ul>
             </div>
 
-            <!-- Customer Service Section -->
+            <!-- Customer Service -->
             <div>
                 <h4 class="text-sm font-bold text-white mb-6 flex items-center gap-2">
                     <span class="w-1 h-5 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-full"></span>
                     Customer Service
                 </h4>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Pyament
-                            Methods</a></li>
-                    <li><a href="#"
-                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Money-back
-                            guarantee</a></li>
-                    <li><a href="#"
-                            class="text-sm hover:text-indigo-400 transition-colors duration-300">Returns</a></li>
+                    <li>
+                        @if ($pages['payment'])
+                            <a href="{{ route('pages', $pages['payment']->slug) }}">Payment Methods</a>
+                        @else
+                            <span class="text-gray-400 cursor-not-allowed">Payment Methods</span>
+                        @endif
+                    </li>
 
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Terms and
-                            Conditions</a></li>
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">Privacy
-                            Policy</a></li>
+                    <li>
+                        @if ($pages['moneyback'])
+                            <a href="{{ route('pages', $pages['moneyback']->slug) }}">Money-back guarantee</a>
+                        @else
+                            <span class="text-gray-400 cursor-not-allowed">Money-back guarantee</span>
+                        @endif
+                    </li>
+
+                    <li>
+                        @if ($pages['returns'])
+                            <a href="{{ route('pages', $pages['returns']->slug) }}">Returns</a>
+                        @else
+                            <span class="text-gray-400 cursor-not-allowed">Returns</span>
+                        @endif
+                    </li>
+
+                    <li>
+                        @if ($pages['terms'])
+                            <a href="{{ route('pages', $pages['terms']->slug) }}">Terms and Conditions</a>
+                        @else
+                            <span class="text-gray-400 cursor-not-allowed">Terms and Conditions</span>
+                        @endif
+                    </li>
+
+                    <li>
+                        @if ($pages['privacy'])
+                            <a href="{{ route('pages', $pages['privacy']->slug) }}">Privacy Policy</a>
+                        @else
+                            <span class="text-gray-400 cursor-not-allowed">Privacy Policy</span>
+                        @endif
+                    </li>
                 </ul>
             </div>
 
@@ -136,8 +195,16 @@
                     My Account
                 </h4>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-sm hover:text-indigo-400 transition-colors duration-300">View
-                            Cart</a></li>
+                    @if (Auth::check())
+                        <li><a href="{{ route('cart') }}"
+                                class="text-sm hover:text-indigo-400 transition-colors duration-300">View
+                                Cart</a></li>
+                    @else
+                        <li><a href="{{ route('login') }}"
+                                class="text-sm hover:text-indigo-400 transition-colors duration-300">View
+                                Cart</a></li>
+                    @endif
+
 
                 </ul>
             </div>

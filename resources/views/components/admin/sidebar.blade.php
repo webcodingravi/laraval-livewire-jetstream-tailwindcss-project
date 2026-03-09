@@ -1,7 +1,17 @@
 <div>
     <aside id="sidebar"
         class="fixed md:static left-0 top-0 h-full w-64 bg-gradient-to-b from-white via-indigo-50 to-gray-50 text-gray-900 shadow-lg transform -translate-x-full md:translate-x-0 transition-transform z-40">
-        <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition px-8 py-4"
+        <a href="{{ route('home') }}" wire:navigate class="p-3">
+            {{-- {{ $setting }} --}}
+            @if (!empty($setting->logo))
+                <img src="{{ asset('storage/uploads/settings/' . $setting->logo) }}" />
+            @elseif(!empty($setting->website_name))
+                <h1 class="text-xl font-bold bg-gradient-to-r from-[#24bad8] to-[#0b7a93] bg-clip-text text-transparent">
+                    {{ $setting->website_name }}</h1>
+            @endif
+
+        </a>
+        {{-- <a href="{{ route('home') }}" class="flex-shrink-0 flex items-center gap-3 hover:opacity-80 transition px-8 py-4"
             wire:navigate>
             <div
                 class="w-12 h-12 bg-gradient-to-br from-[#24bad8] to-[#0b7a93] rounded-lg flex items-center justify-center">
@@ -19,7 +29,7 @@
                 <p class="text-xs text-gray-500">Online Store</p>
             </div>
         </a>
-        <hr>
+        <hr> --}}
 
 
 
@@ -160,6 +170,32 @@
                     </svg>
                     <span>Hero Slider</span>
                 </a>
+
+                <a href="{{ route('admin.pages') }}" wire:navigate
+                    class="flex items-center gap-3 px-4 py-2
+                    rounded-lg text-gray-600 text-sm font-medium
+                    {{ Request::segment(2) === 'pages' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-[#0b7a93] shadow-sm border-l-2 border-[#0b7a93]' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-[#0b7a93] hover:shadow-sm' }}
+                    transition transform hover:translate-x-1">
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                    <span>Pages</span>
+                </a>
+
+                <a href="{{ route('admin.contact') }}" wire:navigate
+                    class="flex items-center gap-3 px-4 py-2
+                    rounded-lg text-gray-600 text-sm font-medium
+                    {{ Request::segment(2) === 'contact-us' ? 'bg-gradient-to-r from-indigo-100 to-purple-100 text-[#0b7a93] shadow-sm border-l-2 border-[#0b7a93]' : 'hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-[#0b7a93] hover:shadow-sm' }}
+                    transition transform hover:translate-x-1">
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                    <span>Contact Us</span>
+                </a>
+
+
 
 
 

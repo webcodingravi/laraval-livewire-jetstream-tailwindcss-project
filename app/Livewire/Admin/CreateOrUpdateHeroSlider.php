@@ -193,6 +193,6 @@ class CreateOrUpdateHeroSlider extends Component
             })
             ->orderBy('id', 'desc')->paginate(10);
 
-        return view('admin.create-or-update-hero-slider', compact('sliders'))->layout('layouts.admin')->layoutData(['metaTitle' => 'Hero Slider - ShopHub']);
+        return view('admin.create-or-update-hero-slider', compact('sliders'))->layout('layouts.admin')->layoutData(['metaTitle' => 'Hero Slider - Admin']);
     }
 }

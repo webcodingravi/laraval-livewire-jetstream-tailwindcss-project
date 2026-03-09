@@ -6,6 +6,7 @@ use App\Livewire\Admin\BrandCreateOrUpdate;
 use App\Livewire\Admin\CategoryCreateOrUpdate;
 use App\Livewire\Admin\ColorCreateOrUpdate;
 use App\Livewire\Admin\CreateOrUpdateHeroSlider;
+use App\Livewire\Admin\CreateOrUpdatePages;
 use App\Livewire\Admin\Customers;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\DiscountCodeCreateOrUpdate;
@@ -13,6 +14,7 @@ use App\Livewire\Admin\OrderList;
 use App\Livewire\Admin\PaymentSetting;
 use App\Livewire\Admin\ProductCreateOrUpdate;
 use App\Livewire\Admin\ShippingCreateOrUpdate;
+use App\Livewire\Admin\ShowContact;
 use App\Livewire\Admin\SMTPSetting;
 use App\Livewire\Admin\SubCategoryCreateOrUpdate;
 use App\Livewire\Admin\SystemSetting;
@@ -23,6 +25,7 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Front\Checkout;
 use App\Livewire\Front\Home;
 use App\Livewire\Front\OrderConfirmed;
+use App\Livewire\Front\Pages\Pages;
 use App\Livewire\Front\ProductCart;
 use App\Livewire\Front\ProductDetails;
 use App\Livewire\Front\Products;
@@ -44,6 +47,9 @@ Route::get('/checkout', Checkout::class)->name('checkout');
 Route::get('/my-wishlist', Wishlisted::class)->name('wishlist');
 // Web Order Confirmed Message Route
 Route::get('/order-confirmed/{orderId}', OrderConfirmed::class)->name('order.confirmed');
+
+// Web pages Route
+Route::get('/pages/{slug}', Pages::class)->name('pages');
 
 // gust route
 Route::middleware(['guest'])->group(function () {
@@ -118,5 +124,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth:sanc
 
     // Hero slider Route admin
     Route::get('/hero-slider', CreateOrUpdateHeroSlider::class)->name('HeroSlider');
+
+    // Pages Route admin
+    Route::get('/pages', CreateOrUpdatePages::class)->name('pages');
+
+    // Contact Us Route admin
+    Route::get('/contact-us', ShowContact::class)->name('contact');
 
 });
